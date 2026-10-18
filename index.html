@@ -3,56 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite Pill // Zero-JS Cryptographic Pharmaceutical Verification Protocol</title>
-    <meta name="description" content="Vite Pill seals the global pharmaceutical supply chain with unit-level micro-QR serialization and admin-provisioned manufacturer accountability. 100% Zero-JavaScript.">
-    <meta name="keywords" content="Vite Pill, anti-counterfeit medicine, pharmaceutical verification, micro-QR serialization, zero javascript, zero-js">
-    <meta name="author" content="Vite Pill Security Consortium">
-    <meta property="og:title" content="Vite Pill // Pharmaceutical Anti-Counterfeit Protocol">
-    <meta property="og:description" content="Unit-level cryptographic drug serialization eliminating counterfeit medications. 100% Zero-JavaScript.">
-    <meta property="og:type" content="website">
-
-    <!-- High-Definition Medical Security Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' rx='20' fill='%2303060a'/%3E%3Cpath d='M 40 70 L 40 40 L 70 40' fill='none' stroke='%2300e5ff' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M 160 70 L 160 40 L 130 40' fill='none' stroke='%2300e5ff' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M 40 130 L 40 160 L 70 160' fill='none' stroke='%2300e5ff' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M 160 130 L 160 160 L 130 160' fill='none' stroke='%2300e5ff' stroke-width='10' stroke-linecap='round'/%3E%3Crect x='60' y='85' width='80' height='30' rx='15' fill='%2300ff88' /%3E%3Cline x1='100' y1='85' x2='100' y2='115' stroke='%2303060a' stroke-width='4' /%3E%3C/svg%3E">
-
-    <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, Space Mono -->
+    <title>Vite Pill — Pharmaceutical Anti-Counterfeit Verification</title>
+    <meta name="description" content="Vite Pill gives every medicine package a verifiable cryptographic identity. Verify medicine authenticity directly against licensed pharmaceutical manufacturers.">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%231d4ed8'/%3E%3Cpath d='M35 50h30M50 35v30' stroke='%23ffffff' stroke-width='10' stroke-linecap='round'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================================
-           VITE PILL LANDING SYSTEM — 100% PURE CSS (ZERO JAVASCRIPT)
-           Aesthetic: Swiss Clinical Cyber-Precision
+           Vite Pill — Clinical Pharmaceutical Design (100% Zero JavaScript)
            ========================================================================== */
         :root {
-            --bg-deep: #03060a;
-            --bg-surface: #070b13;
-            --bg-panel: rgba(10, 16, 28, 0.88);
-            --bg-input: #0b1220;
+            --color-canvas: #f8fafc;
+            --color-surface: #ffffff;
+            --color-surface-subtle: #f1f5f9;
+            --color-border: #e2e8f0;
+            --color-border-strong: #cbd5e1;
 
-            --border-tech: rgba(0, 229, 255, 0.22);
-            --border-subtle: rgba(255, 255, 255, 0.07);
+            --color-text-main: #0f172a;
+            --color-text-muted: #475569;
+            --color-text-subtle: #64748b;
 
-            --phosphor-green: #00ff88;
-            --phosphor-glow: rgba(0, 255, 136, 0.28);
-            --cyber-cyan: #00e5ff;
-            --cyber-glow: rgba(0, 229, 255, 0.25);
-            --alert-crimson: #ff1744;
-            --alert-glow: rgba(255, 23, 68, 0.25);
-            --warning-amber: #ffb700;
+            --color-pharma-blue: #1d4ed8;
+            --color-pharma-blue-hover: #1e40af;
+            --color-pharma-blue-soft: #eff6ff;
 
-            --text-pure: #ffffff;
-            --text-primary: #e2e8f0;
-            --text-muted: #8899ac;
-            --text-dim: #475569;
+            --color-verified-green: #15803d;
+            --color-verified-green-soft: #f0fdf4;
+            --color-verified-green-border: #bbf7d0;
 
-            --font-display: 'Space Grotesk', sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
-            --font-mono: 'Space Mono', monospace;
+            --color-alert-red: #b91c1c;
+            --color-alert-red-soft: #fef2f2;
+            --color-alert-red-border: #fecaca;
 
-            --radius-xs: 3px;
+            --color-warning-amber: #b45309;
+
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
             --radius-sm: 6px;
-            --radius-md: 12px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
         }
 
         *, *::before, *::after {
@@ -69,244 +61,163 @@
         }
 
         body {
-            font-family: var(--font-body);
-            background-color: var(--bg-deep);
-            background-image: 
-                linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px),
-                radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
-            background-size: 36px 36px, 36px 36px, 100% 100%;
-            color: var(--text-primary);
+            font-family: var(--font-sans);
+            background-color: var(--color-canvas);
+            color: var(--color-text-main);
             line-height: 1.6;
-            overflow-x: hidden;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, h4, h5 {
-            font-family: var(--font-display);
-            color: var(--text-pure);
-            letter-spacing: -0.03em;
-            line-height: 1.15;
+        h1, h2, h3, h4 {
+            color: var(--color-text-main);
             font-weight: 700;
+            letter-spacing: -0.025em;
+            line-height: 1.25;
         }
 
         p {
-            color: var(--text-muted);
+            color: var(--color-text-muted);
+            max-width: 72ch;
         }
 
         a {
-            color: var(--cyber-cyan);
+            color: var(--color-pharma-blue);
             text-decoration: none;
-            transition: all 0.15s ease;
+            transition: color 0.15s ease;
         }
 
         a:hover {
-            color: #80f0ff;
-        }
-
-        .mono {
-            font-family: var(--font-mono);
-            letter-spacing: -0.02em;
+            color: var(--color-pharma-blue-hover);
+            text-decoration: underline;
         }
 
         /* --------------------------------------------------------------------------
-           Header & Status Telemetry Bar
+           Header & Navigation
            -------------------------------------------------------------------------- */
-        .header-top {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 0.35rem 1.5rem;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-dim);
-            background: #020407;
-            text-transform: uppercase;
-        }
-
-        .status-pip {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--phosphor-green);
-            box-shadow: 0 0 8px var(--phosphor-green);
-            margin-right: 6px;
-        }
-
-        .navbar {
+        .site-header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            background: rgba(3, 6, 10, 0.92);
-            border-bottom: 1px solid var(--border-tech);
-            width: 100%;
+            z-index: 100;
         }
 
-        .nav-container {
-            max-width: 1200px;
+        .header-inner {
+            max-width: 1140px;
             margin: 0 auto;
-            padding: 0.85rem 1.5rem;
+            padding: 1rem 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .brand {
+        .brand-link {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: var(--text-pure);
-            font-family: var(--font-display);
-            font-size: 1.35rem;
+            gap: 0.65rem;
+            color: var(--color-text-main);
             font-weight: 800;
+            font-size: 1.25rem;
             letter-spacing: -0.03em;
+            text-decoration: none !important;
         }
 
-        .brand-glyph {
-            width: 32px;
-            height: 32px;
-            background: #000;
-            border: 1px solid var(--cyber-cyan);
-            border-radius: var(--radius-xs);
+        .brand-symbol {
+            width: 30px;
+            height: 30px;
+            background: var(--color-pharma-blue);
+            color: #ffffff;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            box-shadow: 0 0 10px var(--cyber-glow);
+            font-weight: 800;
+            font-size: 1.05rem;
         }
 
-        .brand-glyph::after {
-            content: '';
-            width: 14px;
-            height: 4px;
-            background: var(--phosphor-green);
-            border-radius: 2px;
-        }
-
-        .security-badge {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            padding: 0.2rem 0.5rem;
-            background: rgba(0, 229, 255, 0.08);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            color: var(--cyber-cyan);
-            border-radius: var(--radius-xs);
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        /* Pure CSS Mobile Navigation */
-        .mobile-nav-toggle {
+        /* Mobile Drawer (Pure CSS Checkbox Hack) */
+        .nav-toggle-input {
             display: none;
         }
 
-        .mobile-toggle-btn {
+        .nav-toggle-button {
             display: none;
             cursor: pointer;
-            padding: 0.45rem 0.75rem;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-tech);
-            border-radius: var(--radius-xs);
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--cyber-cyan);
+            padding: 0.4rem 0.75rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--color-text-main);
+            background: var(--color-surface-subtle);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
         }
 
-        .nav-menu {
+        .nav-list {
             display: flex;
             align-items: center;
             gap: 1.5rem;
             list-style: none;
         }
 
-        .nav-menu a {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        .nav-list a {
+            color: var(--color-text-muted);
+            font-size: 0.92rem;
             font-weight: 500;
-            padding: 0.35rem 0.65rem;
-            border-radius: var(--radius-xs);
+            padding: 0.35rem 0.5rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
         }
 
-        .nav-menu a:hover {
-            color: var(--text-pure);
+        .nav-list a:hover {
+            color: var(--color-pharma-blue);
         }
 
-        .btn-nav-cta {
-            background: #000 !important;
-            color: var(--phosphor-green) !important;
-            border: 1px solid var(--phosphor-green) !important;
-            font-family: var(--font-mono) !important;
-            font-size: 0.8rem !important;
-            font-weight: 700 !important;
-            padding: 0.45rem 1rem !important;
-            box-shadow: 0 0 12px var(--phosphor-glow);
+        .nav-primary-action {
+            background: var(--color-pharma-blue) !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: var(--radius-sm) !important;
         }
 
-        .btn-nav-cta:hover {
-            background: var(--phosphor-green) !important;
-            color: #000 !important;
+        .nav-primary-action:hover {
+            background: var(--color-pharma-blue-hover) !important;
+            text-decoration: none !important;
         }
 
         /* --------------------------------------------------------------------------
-           Hero Section (Clinical Telemetry Layout)
+           Hero Section
            -------------------------------------------------------------------------- */
-        .hero-section {
-            max-width: 1200px;
+        .hero {
+            max-width: 1140px;
             margin: 0 auto;
-            padding: 5rem 1.5rem 3.5rem;
+            padding: 4.5rem 1.5rem 3.5rem;
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
+            grid-template-columns: 1.2fr 0.8fr;
             gap: 3.5rem;
             align-items: center;
             width: 100%;
         }
 
-        .hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.3rem 0.75rem;
-            background: rgba(0, 229, 255, 0.08);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            border-radius: var(--radius-xs);
-            color: var(--cyber-cyan);
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 1.5rem;
-        }
-
         .hero-title {
-            font-size: 3.4rem;
+            font-size: 3rem;
             font-weight: 800;
-            letter-spacing: -0.04em;
+            letter-spacing: -0.035em;
+            line-height: 1.15;
             margin-bottom: 1.25rem;
-            color: #ffffff;
-        }
-
-        .hero-title span.accent-cyan {
-            color: var(--cyber-cyan);
-            text-shadow: 0 0 25px var(--cyber-glow);
-        }
-
-        .hero-title span.accent-green {
-            color: var(--phosphor-green);
-            text-shadow: 0 0 25px var(--phosphor-glow);
+            color: var(--color-text-main);
         }
 
         .hero-desc {
-            font-size: 1.12rem;
+            font-size: 1.15rem;
+            color: var(--color-text-muted);
             line-height: 1.65;
-            color: var(--text-muted);
             margin-bottom: 2rem;
-            max-width: 580px;
+            max-width: 540px;
         }
 
         .hero-actions {
@@ -315,224 +226,184 @@
             flex-wrap: wrap;
         }
 
+        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.55rem;
-            padding: 0.85rem 1.6rem;
+            gap: 0.5rem;
+            padding: 0.85rem 1.5rem;
             font-size: 0.95rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-            border-radius: var(--radius-xs);
+            font-weight: 600;
+            font-family: var(--font-sans);
+            border-radius: var(--radius-sm);
             border: 1px solid transparent;
             cursor: pointer;
-            text-decoration: none;
+            text-decoration: none !important;
             transition: all 0.15s ease;
         }
 
-        .btn-phosphor {
-            background: #000;
-            color: var(--phosphor-green);
-            border: 1px solid var(--phosphor-green);
-            box-shadow: 0 0 15px var(--phosphor-glow);
+        .btn-primary {
+            background: var(--color-pharma-blue);
+            color: #ffffff;
         }
 
-        .btn-phosphor:hover {
-            background: var(--phosphor-green);
-            color: #000;
-            transform: translateY(-1px);
+        .btn-primary:hover {
+            background: var(--color-pharma-blue-hover);
         }
 
-        .btn-cyber {
-            background: #000;
-            color: var(--cyber-cyan);
-            border: 1px solid var(--cyber-cyan);
-            box-shadow: 0 0 15px var(--cyber-glow);
+        .btn-secondary {
+            background: var(--color-surface);
+            color: var(--color-text-main);
+            border: 1px solid var(--color-border-strong);
         }
 
-        .btn-cyber:hover {
-            background: var(--cyber-cyan);
-            color: #000;
-            transform: translateY(-1px);
-        }
-
-        .btn-subtle {
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-primary);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .btn-subtle:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
+        .btn-secondary:hover {
+            background: var(--color-surface-subtle);
         }
 
         /* --------------------------------------------------------------------------
-           Interactive Pure CSS Optical Verification Simulator (Zero JS)
+           Tactile Medicine Verification Card (Pure CSS, The Memorable Element)
            -------------------------------------------------------------------------- */
-        .simulator-panel {
-            background: var(--bg-panel);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-tech);
-            border-radius: var(--radius-sm);
-            padding: 2rem;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+        .inspector-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
         }
 
-        .simulator-panel::before {
-            content: '+';
-            position: absolute;
-            top: 6px;
-            left: 8px;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--cyber-cyan);
-            opacity: 0.6;
-        }
-
-        .simulator-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .sim-tab-radio {
+        .sim-radio {
             display: none;
         }
 
-        .sim-tab-controller {
+        .sim-tabs {
             display: flex;
-            background: #000;
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-xs);
+            background: var(--color-surface-subtle);
+            border-radius: var(--radius-sm);
             padding: 3px;
             margin-bottom: 1.5rem;
         }
 
-        .sim-tab-controller label {
+        .sim-tabs label {
             flex: 1;
-            padding: 0.5rem 0.75rem;
+            padding: 0.45rem 0.75rem;
             text-align: center;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-size: 0.82rem;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: var(--radius-xs);
-            color: var(--text-dim);
+            border-radius: 4px;
+            color: var(--color-text-subtle);
             transition: all 0.15s ease;
         }
 
-        #tab-authentic:checked ~ .sim-tab-controller label[for="tab-authentic"] {
-            background: rgba(0, 255, 136, 0.15);
-            color: var(--phosphor-green);
-            border: 1px solid var(--phosphor-green);
+        #tab-authentic:checked ~ .sim-tabs label[for="tab-authentic"] {
+            background: #ffffff;
+            color: var(--color-verified-green);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        #tab-counterfeit:checked ~ .sim-tab-controller label[for="tab-counterfeit"] {
-            background: rgba(255, 23, 68, 0.15);
-            color: var(--alert-crimson);
-            border: 1px solid var(--alert-crimson);
+        #tab-counterfeit:checked ~ .sim-tabs label[for="tab-counterfeit"] {
+            background: #ffffff;
+            color: var(--color-alert-red);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        .sim-card-authentic,
-        .sim-card-counterfeit {
+        .sim-panel-authentic,
+        .sim-panel-counterfeit {
             display: none;
         }
 
-        #tab-authentic:checked ~ .sim-card-authentic {
+        #tab-authentic:checked ~ .sim-panel-authentic {
             display: block;
         }
 
-        #tab-counterfeit:checked ~ .sim-card-counterfeit {
+        #tab-counterfeit:checked ~ .sim-panel-counterfeit {
             display: block;
         }
 
-        .spec-item {
+        .spec-row {
             display: flex;
             justify-content: space-between;
             padding: 0.6rem 0;
-            border-bottom: 1px solid var(--border-subtle);
-            font-size: 0.85rem;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.88rem;
         }
 
-        .spec-item:last-child {
+        .spec-row:last-child {
             border-bottom: none;
         }
 
+        .spec-label {
+            color: var(--color-text-subtle);
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--color-text-main);
+        }
+
         /* --------------------------------------------------------------------------
-           Admin Provisioning Workflow Spotlight
+           Subject Section: How Restricted Provisioning Stops Counterfeits
            -------------------------------------------------------------------------- */
-        .workflow-section {
-            max-width: 1200px;
+        .section {
+            max-width: 1140px;
             margin: 0 auto;
             padding: 4rem 1.5rem;
             width: 100%;
         }
 
-        .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--cyber-cyan);
-            letter-spacing: 0.1em;
+        .section-heading {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-intro {
+            font-size: 1.05rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 640px;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .principle-box {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+        }
+
+        .principle-title {
+            font-size: 1.15rem;
             margin-bottom: 0.5rem;
         }
 
-        .section-title {
-            font-size: 2.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .workflow-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2.5rem;
-        }
-
-        .workflow-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-xs);
-            padding: 2rem;
-            position: relative;
-            transition: border-color 0.2s;
-        }
-
-        .workflow-card:hover {
-            border-color: var(--border-tech);
-        }
-
-        .card-number {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--cyber-cyan);
-            margin-bottom: 1rem;
-            display: block;
+        .principle-text {
+            font-size: 0.92rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
         }
 
         /* --------------------------------------------------------------------------
-           Mobile App Download Banner (753 KB APK)
+           Download App Banner (APK)
            -------------------------------------------------------------------------- */
-        .apk-banner {
-            max-width: 1200px;
-            margin: 2rem auto 4rem;
+        .app-banner {
+            max-width: 1140px;
+            margin: 1rem auto 4rem;
             padding: 0 1.5rem;
             width: 100%;
         }
 
-        .apk-inner {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-tech);
-            border-radius: var(--radius-xs);
-            padding: 3rem 2.5rem;
+        .app-banner-inner {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 2.75rem 2.25rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -541,7 +412,7 @@
         }
 
         /* --------------------------------------------------------------------------
-           Pure CSS Modal for Enterprise Portal Access (Zero JS)
+           Pure CSS Modal (Zero JS via :target)
            -------------------------------------------------------------------------- */
         .css-modal {
             position: fixed;
@@ -549,13 +420,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(3, 6, 10, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 1000;
             padding: 1.5rem;
         }
 
@@ -563,58 +434,63 @@
             display: flex;
         }
 
-        .modal-terminal {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-tech);
-            border-radius: var(--radius-xs);
-            padding: 2.5rem;
-            max-width: 480px;
+        .modal-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 2.25rem;
+            max-width: 440px;
             width: 100%;
             position: relative;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        .modal-close-btn {
+        .modal-close {
             position: absolute;
             top: 1rem;
             right: 1.25rem;
-            font-family: var(--font-mono);
-            font-size: 1.2rem;
-            color: var(--text-muted);
+            font-size: 1.25rem;
+            color: var(--color-text-subtle);
             text-decoration: none;
-        }
-
-        .modal-close-btn:hover {
-            color: #fff;
         }
 
         /* --------------------------------------------------------------------------
            Footer
            -------------------------------------------------------------------------- */
-        .footer {
-            border-top: 1px solid var(--border-subtle);
-            background: #020407;
-            padding: 3.5rem 1.5rem 2rem;
+        .site-footer {
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            padding: 3rem 1.5rem 1.5rem;
             margin-top: auto;
             width: 100%;
         }
 
-        .footer-grid {
-            max-width: 1200px;
+        .footer-inner {
+            max-width: 1140px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr;
             gap: 2.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.15rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.88rem;
+            color: var(--color-text-subtle);
+            max-width: 360px;
         }
 
         .footer-col h5 {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
+            font-size: 0.82rem;
+            color: var(--color-text-main);
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--cyber-cyan);
-            margin-bottom: 1.25rem;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.75rem;
         }
 
         .footer-col ul {
@@ -622,353 +498,299 @@
         }
 
         .footer-col li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .footer-col a {
-            color: var(--text-muted);
+            color: var(--color-text-muted);
             font-size: 0.88rem;
         }
 
         .footer-col a:hover {
-            color: var(--text-pure);
+            color: var(--color-pharma-blue);
         }
 
         .footer-bottom {
-            max-width: 1200px;
+            max-width: 1140px;
             margin: 0 auto;
-            padding-top: 1.75rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--color-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-dim);
+            font-size: 0.82rem;
+            color: var(--color-text-subtle);
             flex-wrap: wrap;
             gap: 1rem;
         }
 
         @media (max-width: 900px) {
-            .hero-section {
+            .hero {
                 grid-template-columns: 1fr;
-                padding-top: 3.5rem;
+                padding-top: 3rem;
             }
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2.4rem;
             }
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
+            .footer-inner {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 680px) {
-            .mobile-toggle-btn {
+            .nav-toggle-button {
                 display: block;
             }
-            .nav-menu {
+            .nav-list {
                 display: none;
                 position: absolute;
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--bg-deep);
+                background: var(--color-surface);
                 flex-direction: column;
                 align-items: stretch;
-                padding: 1.5rem;
-                gap: 0.75rem;
-                border-bottom: 1px solid var(--border-tech);
+                padding: 1.25rem;
+                gap: 0.65rem;
+                border-bottom: 1px solid var(--color-border);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.06);
             }
-            .mobile-nav-toggle:checked ~ .nav-menu {
+            .nav-toggle-input:checked ~ .nav-list {
                 display: flex;
-            }
-            .hero-title {
-                font-size: 2.1rem;
-            }
-            .footer-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Status Ticker -->
-    <div class="header-top">
-        <div>
-            <span class="status-pip"></span>
-            <span>VITE PILL CONSORTIUM // REGULATORY SERIALIZATION LEDGER</span>
-        </div>
-        <div class="mono" style="color: var(--cyber-cyan);">
-            ZERO-JS ARCHITECTURE // REVISION 2026.4
-        </div>
-    </div>
-
-    <!-- Main Navigation Bar (Zero JS) -->
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="#" class="brand">
-                <div class="brand-glyph"></div>
-                <span>VITE PILL</span>
-                <span class="security-badge">BIO-SEC</span>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="brand-link">
+                <span class="brand-symbol">+</span>
+                <span>Vite Pill</span>
             </a>
 
             <!-- Pure CSS Toggle -->
-            <input type="checkbox" id="mobile-toggle" class="mobile-nav-toggle">
-            <label for="mobile-toggle" class="mobile-toggle-btn">
-                <span>[ MENU ]</span>
-            </label>
+            <input type="checkbox" id="mobile-nav" class="nav-toggle-input">
+            <label for="mobile-nav" class="nav-toggle-button">Menu</label>
 
-            <nav class="nav-menu">
-                <a href="#workflow">Anti-Counterfeiting Workflow</a>
-                <a href="#simulator">Optical Simulator</a>
+            <nav class="nav-list">
+                <a href="#safeguards">Anti-counterfeit safeguards</a>
+                <a href="#inspector">Verification inspector</a>
                 <a href="vite-pill.apk" download>Android APK (753 KB)</a>
-                <a href="http://127.0.0.1:5000/scan">Public Scanner</a>
-                <a href="#portal-modal" class="btn-nav-cta">Portal Clearance</a>
+                <a href="http://127.0.0.1:5000/scan">Web scanner</a>
+                <a href="#portal-modal" class="nav-primary-action">Portal sign in</a>
             </nav>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero">
         <div class="hero-content">
-            <div class="hero-tag">
-                <span>🛡️ WHO & FDA UNIT SERIALIZATION PROTOCOL</span>
-            </div>
-            <h1 class="hero-title">
-                Zero-JS Cryptographic Defense Against <span class="accent-cyan">Counterfeit</span> <span class="accent-green">Medicine</span>.
-            </h1>
+            <h1 class="hero-title">Verify your medicine before taking it</h1>
             <p class="hero-desc">
-                Over 1,000,000 patients die every year from lethal counterfeit drugs. Vite Pill eliminates black-market clones through <b>Admin-Provisioned Manufacturer Accounts</b> and blister-level micro-QR serialization.
+                Counterfeit pharmaceuticals cause over one million preventable deaths every year. Vite Pill establishes unit-level verification so patients and pharmacies can confirm authentic batches directly with licensed manufacturers.
             </p>
             <div class="hero-actions">
-                <a href="http://127.0.0.1:5000/scan" class="btn btn-phosphor">
-                    <span>🔬 Public Optical Scanner</span>
+                <a href="http://127.0.0.1:5000/scan" class="btn btn-primary">
+                    Verify a medicine package
                 </a>
-                <a href="http://127.0.0.1:5000/login" class="btn btn-cyber">
-                    <span>🏭 Manufacturer Login</span>
+                <a href="vite-pill.apk" class="btn btn-secondary" download>
+                    Download mobile app (753 KB)
                 </a>
-                <a href="#portal-modal" class="btn btn-subtle">
-                    <span>🔒 Enterprise Clearance</span>
+                <a href="http://127.0.0.1:5000/login" class="btn btn-secondary">
+                    Manufacturer portal
                 </a>
             </div>
         </div>
 
-        <!-- Interactive Pure CSS Simulator (Zero JS) -->
-        <div class="simulator-panel" id="simulator">
-            <div class="simulator-header">
-                <div class="mono" style="font-size: 0.82rem; font-weight: 700; color: #fff;">
-                    OPTICAL VERIFICATION SIMULATOR
-                </div>
-                <span class="mono" style="font-size: 0.72rem; color: var(--cyber-cyan);">[PURE CSS]</span>
+        <!-- The Memorable Thing: Live Verification Inspector (Pure CSS, Zero JS) -->
+        <div class="inspector-card" id="inspector">
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--color-text-subtle); margin-bottom: 0.75rem;">
+                Verification inspection preview
             </div>
 
             <!-- Radio tab switchers in pure CSS -->
-            <input type="radio" name="sim-tab" id="tab-authentic" class="sim-tab-radio" checked>
-            <input type="radio" name="sim-tab" id="tab-counterfeit" class="sim-tab-radio">
+            <input type="radio" name="sim" id="tab-authentic" class="sim-radio" checked>
+            <input type="radio" name="sim" id="tab-counterfeit" class="sim-radio">
 
-            <div class="sim-tab-controller">
-                <label for="tab-authentic">[✓] Authentic Batch</label>
-                <label for="tab-counterfeit">[!] Counterfeit Clone</label>
+            <div class="sim-tabs">
+                <label for="tab-authentic">Authentic package</label>
+                <label for="tab-counterfeit">Unverified / Counterfeit</label>
             </div>
 
             <!-- Authentic State -->
-            <div class="sim-card-authentic">
-                <div style="background: rgba(0, 255, 136, 0.05); border: 1px solid var(--phosphor-green); border-radius: var(--radius-xs); padding: 1.25rem; text-align: center; margin-bottom: 1.25rem;">
-                    <div class="mono" style="color: var(--phosphor-green); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem;">
-                        [✓] AUTHENTIC MANUFACTURER BATCH
+            <div class="sim-panel-authentic">
+                <div style="background: var(--color-verified-green-soft); border: 1px solid var(--color-verified-green-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="color: var(--color-verified-green); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem;">
+                        ✓ Authentic medicine verified
                     </div>
-                    <div style="font-size: 0.78rem; color: #a7f3d0;">
-                        Cryptographic signature valid // Issued by provisioned entity
+                    <div style="font-size: 0.8rem; color: #166534;">
+                        Batch registered by Novartis Pharma AG
                     </div>
                 </div>
 
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">MEDICINE:</span>
-                    <span style="font-weight: 700; color: #fff;">Amoxicillin Trihydrate</span>
+                <div class="spec-row">
+                    <span class="spec-label">Medicine name</span>
+                    <span class="spec-value">Amoxicillin Trihydrate</span>
                 </div>
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">STRENGTH:</span>
-                    <span class="mono">500 MG</span>
+                <div class="spec-row">
+                    <span class="spec-label">Dosage strength</span>
+                    <span class="spec-value">500 mg</span>
                 </div>
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">PROVISIONED ENTITY:</span>
-                    <span style="color: var(--cyber-cyan); font-weight: 600;">Novartis Pharma AG</span>
+                <div class="spec-row">
+                    <span class="spec-label">Manufacturer</span>
+                    <span class="spec-value">Novartis Pharma AG</span>
                 </div>
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">SERIAL UID:</span>
-                    <span class="mono" style="color: var(--phosphor-green); font-size: 0.8rem;">a8f4c2e1b9304958</span>
+                <div class="spec-row">
+                    <span class="spec-label">Serial code</span>
+                    <span class="spec-value"><code>a8f4c2e1b9304958</code></span>
                 </div>
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">EXPIRY:</span>
-                    <span class="mono" style="color: var(--warning-amber);">2027-01-15 (VALID)</span>
+                <div class="spec-row">
+                    <span class="spec-label">Expiration</span>
+                    <span class="spec-value" style="color: var(--color-verified-green);">2027-01-15 (Valid)</span>
                 </div>
             </div>
 
             <!-- Counterfeit State -->
-            <div class="sim-card-counterfeit">
-                <div style="background: rgba(255, 23, 68, 0.06); border: 1px solid var(--alert-crimson); border-radius: var(--radius-xs); padding: 1.25rem; text-align: center; margin-bottom: 1.25rem;">
-                    <div class="mono" style="color: var(--alert-crimson); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem;">
-                        [!] CRITICAL: FAKE / UNVERIFIED DRUG
+            <div class="sim-panel-counterfeit">
+                <div style="background: var(--color-alert-red-soft); border: 1px solid var(--color-alert-red-border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+                    <div style="color: var(--color-alert-red); font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem;">
+                        ⚠️ Warning: Unverified or fake package
                     </div>
-                    <div style="font-size: 0.78rem; color: #ffdbe0;">
-                        No matching record under any licensed manufacturer
+                    <div style="font-size: 0.8rem; color: #991b1b;">
+                        Serial code does not match any licensed manufacturer record
                     </div>
                 </div>
 
-                <div style="background: rgba(255, 23, 68, 0.08); border-radius: var(--radius-xs); padding: 0.85rem; font-size: 0.82rem; color: #ffdbe0; line-height: 1.5; margin-bottom: 1rem;">
-                    <b>EMERGENCY PROTOCOL:</b> Do not consume this drug. Retain package as criminal evidence and contact safety authorities immediately.
+                <div style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.55; margin-bottom: 1rem;">
+                    Do not take this medicine. Keep the packaging and report where you purchased it immediately.
                 </div>
 
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">SAFETY HOTLINE:</span>
-                    <span><a href="tel:+18005550199">+1 (800) 555-0199</a></span>
+                <div class="spec-row">
+                    <span class="spec-label">Safety hotline</span>
+                    <span class="spec-value"><a href="tel:+18005550199">+1 (800) 555-0199</a></span>
                 </div>
-                <div class="spec-item">
-                    <span class="mono" style="font-size: 0.78rem; color: var(--text-dim);">INCIDENT DESK:</span>
-                    <span><a href="mailto:verify@vitepill.io">verify@vitepill.io</a></span>
+                <div class="spec-row">
+                    <span class="spec-label">Audit desk</span>
+                    <span class="spec-value"><a href="mailto:verify@vitepill.io">verify@vitepill.io</a></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- The Anti-Counterfeiting Workflow Explained -->
-    <section class="workflow-section" id="workflow">
-        <div class="section-label">[ SECURITY ARCHITECTURE // ANTI-COUNTERFEITING LOOP ]</div>
-        <h2 class="section-title">How Vite Pill Stops Counterfeiters Cold</h2>
-        <p style="max-width: 680px; font-size: 1.05rem;">
-            Counterfeiters succeed because ordinary barcodes only identify the <i>type</i> of product, not the individual unit, and anyone can print a fake barcode. Vite Pill closes this loophole:
+    <!-- Why Restricted Provisioning Stops Counterfeiting -->
+    <section class="section" id="safeguards">
+        <h2 class="section-heading">How restricted provisioning stops counterfeiting</h2>
+        <p class="section-intro">
+            Traditional barcodes only track product categories. Counterfeiters exploit this by printing identical labels on fake drugs. Vite Pill closes this loophole through three safeguards:
         </p>
 
-        <div class="workflow-grid">
-            <div class="workflow-card">
-                <span class="card-number">[ STEP 01 // ADMIN AUDIT & PROVISIONING ]</span>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--cyber-cyan);">No Public Sign-Up</h3>
-                <p style="font-size: 0.9rem; line-height: 1.6;">
-                    Fraudsters cannot create accounts. The <b>Regulatory Master Admin</b> inspects each pharmaceutical company's Good Manufacturing Practice (GMP) license and provisions dedicated manufacturer logins directly.
+        <div class="principles-grid">
+            <div class="principle-box">
+                <h3 class="principle-title">Admin-issued accounts only</h3>
+                <p class="principle-text">
+                    Counterfeiters cannot self-register. The regulatory administrator inspects Good Manufacturing Practice (GMP) licenses before manually creating manufacturer logins.
                 </p>
             </div>
 
-            <div class="workflow-card">
-                <span class="card-number">[ STEP 02 // CRYPTOGRAPHIC SERIALIZATION ]</span>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--phosphor-green);">Unit Micro-QR Minting</h3>
-                <p style="font-size: 0.9rem; line-height: 1.6;">
-                    Verified manufacturers log into their private console to serialize each batch. The engine mints a unique 16-hex UID and micro-QR code permanently tied to that verified corporate identity.
+            <div class="principle-box">
+                <h3 class="principle-title">Individual package serialization</h3>
+                <p class="principle-text">
+                    Instead of a shared barcode, every blister pack receives a unique 16-hex code and micro-QR permanently attributed to the issuing pharmaceutical corporation.
                 </p>
             </div>
 
-            <div class="workflow-card">
-                <span class="card-number">[ STEP 03 // ZERO-JS INSTANT VERIFICATION ]</span>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem; color: #fff;">Public Optical Scan</h3>
-                <p style="font-size: 0.9rem; line-height: 1.6;">
-                    Patients and pharmacy inspectors snap a photo or scan the micro-QR. The server performs an instant zero-script verification, surfacing the authentic certificate or triggering an emergency counterfeit alert.
+            <div class="principle-box">
+                <h3 class="principle-title">Instant patient verification</h3>
+                <p class="principle-text">
+                    Patients and retail pharmacists check authenticity in under a second on any device with zero scripts, receiving immediate drug facts or counterfeit warnings.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Android APK Banner -->
-    <section class="apk-banner">
-        <div class="apk-inner">
-            <div style="flex: 1; min-width: 280px;">
-                <div class="mono" style="font-size: 0.72rem; color: var(--phosphor-green); text-transform: uppercase; margin-bottom: 0.5rem;">
-                    [ FIELD-DEPLOYED INSPECTION ASSET ]
-                </div>
-                <h3 style="font-size: 1.85rem; margin-bottom: 0.5rem; color: #fff;">Vite Pill Android Application</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 520px;">
-                    Lightweight standalone optical scanner for clinical field inspectors, rural pharmacies, and border inspection posts. Direct camera decoding with zero background analytics.
+    <!-- Android APK Download Banner -->
+    <section class="app-banner">
+        <div class="app-banner-inner">
+            <div>
+                <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Android inspection application</h3>
+                <p style="font-size: 0.95rem; color: var(--color-text-muted); max-width: 500px; margin-bottom: 1.5rem;">
+                    Lightweight inspection tool for pharmacists, clinical dispensaries, and patient verification in low-connectivity settings.
                 </p>
-                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                    <a href="vite-pill.apk" class="btn btn-phosphor" download>
-                        <span>📥 Download vite-pill.apk (753 KB)</span>
+                <div style="display: flex; gap: 0.85rem; align-items: center; flex-wrap: wrap;">
+                    <a href="vite-pill.apk" class="btn btn-primary" download>
+                        Download vite-pill.apk (753 KB)
                     </a>
-                    <span class="mono" style="font-size: 0.75rem; color: var(--text-dim);">Android 8.0+ // SHA256 VERIFIED</span>
+                    <span style="font-size: 0.82rem; color: var(--color-text-subtle);">Android 8.0+ Compatible</span>
                 </div>
             </div>
-            <div style="border: 1px solid var(--border-tech); padding: 1.75rem; border-radius: var(--radius-xs); text-align: center; background: #000;">
-                <div style="font-size: 2.2rem; margin-bottom: 0.25rem;">📱</div>
-                <div class="mono" style="color: #fff; font-weight: 700; font-size: 0.9rem;">BUILD: v1.0.4</div>
-                <div class="mono" style="font-size: 0.7rem; color: var(--cyber-cyan);">SIZE: 753,001 BYTES</div>
+            <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center; min-width: 140px;">
+                <div style="font-size: 1.8rem; margin-bottom: 0.25rem;">📱</div>
+                <div style="font-weight: 700; font-size: 0.9rem;">Version 1.0.4</div>
+                <div style="font-size: 0.75rem; color: var(--color-text-subtle);">753 KB Package</div>
             </div>
         </div>
     </section>
 
     <!-- Pure CSS Modal for Portal Selection (Zero JS via :target) -->
     <div id="portal-modal" class="css-modal">
-        <div class="modal-terminal">
-            <a href="#" class="modal-close-btn" title="Close">[×]</a>
-            <div style="text-align: center; margin-bottom: 1.75rem;">
-                <div class="brand-glyph" style="margin: 0 auto 0.75rem;"></div>
-                <h3 style="font-size: 1.4rem; color: #fff;">Select Security Clearance Node</h3>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Choose your verified operational portal</p>
+        <div class="modal-card">
+            <a href="#" class="modal-close" title="Close modal">×</a>
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.35rem; margin-bottom: 0.35rem;">Select your portal</h3>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted);">Choose your operational role to proceed</p>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-                <a href="http://127.0.0.1:5000/scan" class="btn btn-phosphor" style="font-family: var(--font-mono); font-size: 0.85rem;">
-                    [ 🔬 CONSUMER / PATIENT SCANNER ]
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <a href="http://127.0.0.1:5000/scan" class="btn btn-primary">
+                    Public verification scanner
                 </a>
-                <a href="http://127.0.0.1:5000/login" class="btn btn-cyber" style="font-family: var(--font-mono); font-size: 0.85rem;">
-                    [ 🏭 LICENSED MANUFACTURER LOGIN ]
+                <a href="http://127.0.0.1:5000/login" class="btn btn-secondary">
+                    Manufacturer portal sign in
                 </a>
-                <a href="http://127.0.0.1:5000/admin-login" class="btn btn-subtle" style="font-family: var(--font-mono); font-size: 0.85rem;">
-                    [ 🔒 REGULATORY ADMIN PROVISIONING ]
+                <a href="http://127.0.0.1:5000/admin-login" class="btn btn-secondary">
+                    Regulatory administrator
                 </a>
-            </div>
-
-            <div class="mono" style="margin-top: 1.5rem; text-align: center; font-size: 0.72rem; color: var(--text-dim);">
-                VITE PILL SPECIFICATION STANDARD // 2026.4
             </div>
         </div>
     </div>
 
-    <!-- Technical Footer -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;">
-                    <div class="brand-glyph" style="width: 24px; height: 24px;"></div>
-                    <h4 style="margin: 0; color: #fff;">VITE PILL CONSORTIUM</h4>
+    <!-- Clinical Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <span class="brand-symbol" style="width: 22px; height: 22px; font-size: 0.75rem;">+</span>
+                    <h4 style="margin: 0;">Vite Pill</h4>
                 </div>
-                <p style="font-size: 0.88rem; max-width: 340px; margin-bottom: 1rem;">
-                    Zero-JavaScript pharmaceutical serialization framework securing medicine from manufacturing plant to patient hands.
-                </p>
-                <div class="mono" style="font-size: 0.75rem; color: var(--phosphor-green);">
-                    ✓ 100% ZERO-JAVASCRIPT ENFORCED
-                </div>
+                <p>Pharmaceutical anti-counterfeit verification system protecting healthcare chains with individual unit serialization.</p>
             </div>
 
             <div class="footer-col">
                 <h5>Portals</h5>
                 <ul>
-                    <li><a href="http://127.0.0.1:5000/scan">Patient Optical Scanner</a></li>
-                    <li><a href="http://127.0.0.1:5000/login">Manufacturer Console</a></li>
-                    <li><a href="http://127.0.0.1:5000/admin-login">Regulatory Admin</a></li>
-                    <li><a href="vite-pill.apk" download>Android APK Download</a></li>
+                    <li><a href="http://127.0.0.1:5000/scan">Public scanner</a></li>
+                    <li><a href="http://127.0.0.1:5000/login">Manufacturer portal</a></li>
+                    <li><a href="http://127.0.0.1:5000/admin-login">Administrator portal</a></li>
+                    <li><a href="vite-pill.apk" download>Android APK download</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
-                <h5>Architecture</h5>
+                <h5>Safety & Support</h5>
                 <ul>
-                    <li><a href="#workflow">Anti-Counterfeit Protocol</a></li>
-                    <li><a href="#simulator">Optical Matrix Simulator</a></li>
-                    <li><a href="https://github.com/SenpaiMudit/Vite-Pill">GitHub Source Repository</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h5>Emergency Lines</h5>
-                <ul>
-                    <li>Hotline: <a href="tel:+18005550199">+1 (800) 555-0199</a></li>
-                    <li>Audit Desk: <a href="mailto:verify@vitepill.io">verify@vitepill.io</a></li>
-                    <li>Security: <a href="mailto:security@vitepill.io">security@vitepill.io</a></li>
+                    <li>Safety hotline: <a href="tel:+18005550199">+1 (800) 555-0199</a></li>
+                    <li>Inquiries: <a href="mailto:verify@vitepill.io">verify@vitepill.io</a></li>
+                    <li>Source code: <a href="https://github.com/SenpaiMudit/Vite-Pill">GitHub repository</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <span>© 2026 VITE PILL CONSORTIUM. ALL RIGHTS RESERVED. ZERO-JS VERIFIED.</span>
-            <span>GOOD MANUFACTURING PRACTICE (GMP) COMPLIANT SERIALIZATION</span>
+            <span>© 2026 Vite Pill. Built with semantic HTML5 and CSS3 (Zero JavaScript).</span>
+            <span>Pharmaceutical Supply Chain Integrity Standard</span>
         </div>
     </footer>
 

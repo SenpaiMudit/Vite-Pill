@@ -11,14 +11,15 @@
         </div>
         <h1 class="panel-title">Verify Medicine Package</h1>
         <p class="panel-desc">
-            Directly verify the authenticity of any blister pack or medicine container. Server-side optical decoding validates the micro-QR against licensed manufacturer databases.
+            Directly verify the authenticity of any blister pack or medicine container. Server-side optical decoding
+            validates the micro-QR against licensed manufacturer databases.
         </p>
     </div>
 
     {% if error_msg %}
-        <div class="alert alert-danger">
-            <span>[SCAN_ERROR] {{ error_msg }}</span>
-        </div>
+    <div class="alert alert-danger">
+        <span>[SCAN_ERROR] {{ error_msg }}</span>
+    </div>
     {% endif %}
 
     <!-- Optical Image File Upload (Native HTML5 Form, Zero JS) -->
@@ -33,7 +34,8 @@
                 <div class="mono" style="font-size: 0.72rem; color: var(--text-dim); margin-bottom: 1.25rem;">
                     FORMATS: PNG, JPG, WEBP // MIN-RES: 300 DPI RECOMMENDED
                 </div>
-                <input type="file" name="qr_image" accept="image/*" capture="environment" required style="cursor: pointer; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem;">
+                <input type="file" name="qr_image" accept="image/*" capture="environment" required
+                    style="cursor: pointer; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem;">
             </div>
         </div>
 
@@ -43,7 +45,8 @@
     </form>
 
     <!-- Visual Divider -->
-    <div style="display: flex; align-items: center; margin: 2rem 0; color: var(--text-dim); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em;">
+    <div
+        style="display: flex; align-items: center; margin: 2rem 0; color: var(--text-dim); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em;">
         <span style="flex: 1; border-bottom: 1px solid var(--border-subtle);"></span>
         <span style="padding: 0 0.85rem;">OR QUERY SERIAL UID DIRECTLY</span>
         <span style="flex: 1; border-bottom: 1px solid var(--border-subtle);"></span>

@@ -1,123 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vite Pill — Cryptographic Drug Serialization & Anti-Counterfeit Verification Protocol. 100% Zero-JavaScript.">
-    <title>{% block title %}Vite Pill // Security Terminal{% endblock %}</title>
-    
+    <meta name="description"
+        content="Vite Pill — Zero-JS Pharmaceutical Anti-Counterfeit Verification & Safety System. Secure batch serialization and micro-QR medicine verification.">
+    <meta name="keywords"
+        content="anti-counterfeit, medicine verification, pharmaceutical safety, micro-QR, drug verification">
+    <meta name="author" content="Vite Pill">
+    <title>{% block title %}Vite Pill — Anti-Counterfeit Medicine Verification{% endblock %}</title>
+
+    <!-- Modern Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+
+    <!-- Pure CSS Design System (Zero JS) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_head %}{% endblock %}
 </head>
+
 <body>
 
-    <!-- Technical Status Bar -->
-    <div class="site-header">
-        <div class="header-top-ticker">
-            <div>
-                <span class="status-pip"></span>
-                <span>CRYPTOGRAPHIC NODE // SYS_VERIFIED</span>
-            </div>
-            <div class="mono" style="font-size: 0.65rem; color: var(--cyber-cyan);">
-                PROTOCOL: ZERO-JS // REVISION: 2026.4
-            </div>
-        </div>
-
+    <!-- Header with 100% Zero-JS Pure CSS Mobile Menu -->
+    <header class="site-header">
         <div class="header-container">
-            <a href="{{ url_for('index') }}" class="brand-link" title="Vite Pill Terminal Hub">
-                <div class="brand-glyph"></div>
-                <span>VITE PILL</span>
-                <span class="security-badge">BIO-SEC</span>
+            <a href="{{ url_for('index') }}" class="brand-link" title="Vite Pill Home">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Vite Pill Logo" class="brand-logo-img">
+                <span>Vite Pill</span>
+                <span class="brand-badge">Secured</span>
             </a>
 
-            <!-- Pure CSS Navigation Checkbox -->
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle System Menu">
-            <label for="nav-toggle" class="nav-toggle-label">
-                <span>[ MENU ]</span>
+            <!-- Pure CSS Toggle Checkbox (No JavaScript) -->
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle Navigation">
+            <label for="nav-toggle" class="nav-toggle-label" title="Toggle Navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
             </label>
 
             <nav class="nav-links">
                 <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Hub</a>
-                <a href="{{ url_for('scan_medicine') }}" class="{% if request.endpoint == 'scan_medicine' %}active{% endif %}">Verify Pill</a>
-
-                {% if session.get('user_id') and session.get('role') == 'company' %}
-                    <a href="{{ url_for('manufacturer_dashboard') }}" class="{% if request.endpoint == 'manufacturer_dashboard' %}active{% endif %}">
-                        🏭 {{ session.get('company_name', 'Manufacturer') }}
-                    </a>
-                    <a href="{{ url_for('add_medicine') }}" class="{% if request.endpoint == 'add_medicine' %}active{% endif %}">+ Register Batch</a>
-                    <a href="{{ url_for('logout') }}" style="color: var(--alert-crimson);">Sign Out</a>
-                {% elif session.get('user_id') and session.get('role') == 'admin' %}
-                    <a href="{{ url_for('admin_users') }}" class="{% if request.endpoint == 'admin_users' %}active{% endif %}">
-                        🛡️ Provisioning Terminal
-                    </a>
-                    <a href="{{ url_for('logout') }}" style="color: var(--alert-crimson);">Sign Out</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Manufacturer Login</a>
-                    <a href="{{ url_for('admin_login') }}" class="{% if request.endpoint in ['admin_login', 'admin_users'] %}active{% endif %}">Admin</a>
-                {% endif %}
-
-                <a href="{{ url_for('scan_medicine') }}" class="btn-cyber nav-btn-highlight">Optical Scan</a>
+                <a href="{{ url_for('scan_medicine') }}"
+                    class="{% if request.endpoint == 'scan_medicine' %}active{% endif %}">🔍 Verify Pill</a>
+                <a href="{{ url_for('add_medicine') }}"
+                    class="{% if request.endpoint == 'add_medicine' %}active{% endif %}">🏢 Manufacturer Portal</a>
+                <a href="{{ url_for('admin_login') }}"
+                    class="{% if request.endpoint in ['admin_login', 'admin_users'] %}active{% endif %}">🔒 Admin</a>
+                <a href="{{ url_for('scan_medicine') }}" class="nav-cta">Instant Scan</a>
             </nav>
         </div>
-    </div>
+    </header>
 
-    <!-- Alert Notifications -->
-    <div style="max-width: 680px; width: 100%; margin: 1.25rem auto 0; padding: 0 1.5rem;">
+    <!-- Flash Messages Container -->
+    <div style="max-width: 700px; width: 100%; margin: 1rem auto 0; padding: 0 1.25rem;">
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category if category != 'error' else 'danger' }}">
-                        <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            {% endif %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if category != 'error' else 'danger' }}">
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
         {% endwith %}
     </div>
 
-    <!-- Main Workspace -->
+    <!-- Main Content -->
     <main class="main-wrapper">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Technical Footer -->
+    <!-- Accessible, Mudit Misra Standard Footer -->
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
-                    <div class="brand-glyph" style="width: 24px; height: 24px;"></div>
-                    <h4 style="margin: 0; color: #fff;">VITE PILL PROTOCOL</h4>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Vite Pill"
+                        style="width: 24px; height: 24px;">
+                    <h4 style="margin: 0; color: #fff;">Vite Pill</h4>
                 </div>
-                <p>Decentralized pharmaceutical unit serialization network eliminating counterfeit distribution channels. 100% Zero-JavaScript guaranteed.</p>
-                <div class="mono" style="font-size: 0.72rem; color: var(--phosphor-green); margin-top: 0.75rem;">
-                    [✓] ZERO-JS RUNTIME: NO CLIENT-SIDE SCRIPT INJECTION VECTOR
-                </div>
+                <p>Decentralized pharmaceutical supply chain verification eliminating counterfeit medications via
+                    unit-level cryptographic serialization.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.82rem; color: #64748b;">
+                    ⚡ Powered by 100% Zero-JavaScript architecture for ultimate speed and privacy.
+                </p>
             </div>
 
             <div class="footer-col">
-                <h5>Authority Nodes</h5>
+                <h5>Portals</h5>
                 <ul>
-                    <li><a href="{{ url_for('scan_medicine') }}">Patient Optical Scan</a></li>
-                    <li><a href="{{ url_for('login') }}">Manufacturer Clearance</a></li>
-                    <li><a href="{{ url_for('admin_login') }}">Regulatory Provisioning</a></li>
+                    <li><a href="{{ url_for('scan_medicine') }}">Patient QR Scanner</a></li>
+                    <li><a href="{{ url_for('add_medicine') }}">Manufacturer Registry</a></li>
+                    <li><a href="{{ url_for('admin_login') }}">Master Admin</a></li>
+                    <li><a href="{{ url_for('login') }}">Employee Sign In</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
-                <h5>Emergency Lines</h5>
+                <h5>Direct Contact</h5>
                 <ul>
-                    <li>Hotline: <a href="tel:{{ support_phone }}">{{ support_phone }}</a></li>
-                    <li>Audit Desk: <a href="mailto:{{ support_email }}">{{ support_email }}</a></li>
-                    <li>Safety: <a href="mailto:security@vitepill.io">security@vitepill.io</a></li>
+                    <li>Phone: <a href="tel:{{ support_phone }}">{{ support_phone }}</a></li>
+                    <li>Email: <a href="mailto:{{ support_email }}">{{ support_email }}</a></li>
+                    <li>Security: <a href="mailto:security@vitepill.io">security@vitepill.io</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <span>© {{ current_year }} VITE PILL SECURITY CONSORTIUM. ALL RIGHTS RESERVED.</span>
-            <span>STANDARD: GMP / FDA COMPLIANT SERIALIZATION</span>
+            <span>© {{ current_year }} Vite Pill. All rights reserved. Zero-JS verified.</span>
+            <span>Pharmaceutical Supply Chain Integrity Standard v2.0</span>
         </div>
     </footer>
 
 </body>
+
 </html>

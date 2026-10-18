@@ -377,6 +377,28 @@ def serve_logo():
     abort(404)
 
 
+@app.route('/manifest.json')
+def serve_manifest():
+    """Serve Web App Manifest for PWABuilder and mobile home screen installation."""
+    for base in [os.path.join(app.root_path, 'static'), os.path.dirname(app.root_path), app.root_path]:
+        p = os.path.join(base, 'manifest.json')
+        if os.path.exists(p):
+            return send_from_directory(base, 'manifest.json', mimetype='application/manifest+json')
+    abort(404)
+
+
+@app.route('/icon-192.png')
+@app.route('/icon-512.png')
+def serve_pwa_icons():
+    """Serve 192x192 and 512x512 PWA launcher icons for Android TWA."""
+    filename = request.path.lstrip('/')
+    for base in [os.path.join(app.root_path, 'static'), os.path.dirname(app.root_path), app.root_path]:
+        p = os.path.join(base, filename)
+        if os.path.exists(p):
+            return send_from_directory(base, filename, mimetype='image/png')
+    abort(404)
+
+
 # -----------------------------------------------------------------------------
 # ERROR HANDLERS
 # -----------------------------------------------------------------------------

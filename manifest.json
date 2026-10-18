@@ -1,0 +1,26 @@
+{
+  "name": "Vite Pill — Medicine Authenticity Verification",
+  "short_name": "Vite Pill",
+  "description": "Instant anti-counterfeit medicine verification. Check pill safety, composition, and expiry.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284c7",
+  "orientation": "portrait",
+  "categories": ["medical", "health", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

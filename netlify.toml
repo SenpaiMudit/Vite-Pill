@@ -1,0 +1,56 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+# Route web app endpoints to the serverless Python function
+# Note: Existing static assets (index.html, logo.svg, vite-pill.apk, style.css) are served directly by Netlify CDN
+[[redirects]]
+  from = "/scan"
+  to = "/.netlify/functions/app/scan"
+  status = 200
+
+[[redirects]]
+  from = "/verify/*"
+  to = "/.netlify/functions/app/verify/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/.netlify/functions/app/login"
+  status = 200
+
+[[redirects]]
+  from = "/logout"
+  to = "/.netlify/functions/app/logout"
+  status = 200
+
+[[redirects]]
+  from = "/admin*"
+  to = "/.netlify/functions/app/admin:splat"
+  status = 200
+
+[[redirects]]
+  from = "/add"
+  to = "/.netlify/functions/app/add"
+  status = 200
+
+[[redirects]]
+  from = "/manufacturer/*"
+  to = "/.netlify/functions/app/manufacturer/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/static/*"
+  to = "/vite_pill/static/:splat"
+  status = 200
+  force = false
+
+# Fallback for other app routes
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app/:splat"
+  status = 200
+  force = false

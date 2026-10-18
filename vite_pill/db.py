@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 def get_db_config():
     """Detect database provider from environment variables."""
-    raw_url = os.environ.get('DATABASE_URL')
+    raw_url = os.environ.get('DATABASE_URL') or os.environ.get('NETLIFY_DATABASE_URL')
     if raw_url:
         # Standardize postgres:// to postgresql://
         if raw_url.startswith('postgres://'):

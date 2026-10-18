@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if is_authentic %}
+        Verified Authentic — {{ medicine['name'] }} | Vite Pill
+    {% else %}
+        Counterfeit Warning — Unverified Pill | Vite Pill
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 580px;">
+
+    {% if is_authentic and medicine %}
+        <!-- AUTHENTIC VERIFIED STATE -->
+        <div class="result-status authentic">
+            <span class="status-badge badge-authentic">✓ Cryptographically Verified</span>
+            <h1 class="card-title" style="color: var(--accent-emerald); font-size: 1.5rem; margin-top: 0.5rem;">Authentic Medicine Verified</h1>
+            <p style="font-size: 0.88rem; color: #a7f3d0;">The micro-QR code matches official pharmaceutical registry records.</p>
+        </div>
+
+        <table class="spec-table">
+            <tbody>
+                <tr>
+                    <th>Medicine Name</th>
+                    <td style="color: var(--accent-cyan); font-size: 1.1rem;">{{ medicine['name'] }}</td>
+                </tr>
+                <tr>
+                    <th>Dosage Strength</th>
+                    <td>{{ medicine['mg'] }} mg</td>
+                </tr>
+                <tr>
+                    <th>Manufacturer</th>
+                    <td>{{ medicine['registered_by'] }}</td>
+                </tr>
+                <tr>
+                    <th>Ideal Indications</th>
+                    <td style="font-size: 0.88rem; font-weight: 400;">{{ medicine['ideal_use'] }}</td>
+                </tr>
+                <tr>
+                    <th>Active Ingredients</th>
+                    <td style="font-size: 0.88rem; font-weight: 400;">{{ medicine['ingredients'] }}</td>
+                </tr>
+                <tr>
+                    <th>Manufacturing Date</th>
+                    <td>{{ medicine['manufacturing_date'] }}</td>
+                </tr>
+                <tr>
+                    <th>Expiration Date</th>
+                    <td>
+                        <span style="color: var(--accent-amber); font-weight: 700;">{{ medicine['expiry_date'] }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Cryptographic UID</th>
+                    <td class="mono">{{ medicine['uid'] }}</td>
+                </tr>
+                <tr>
+                    <th>Integrity Hash</th>
+                    <td class="mono" style="font-size: 0.72rem; color: var(--text-faint);">SHA256: VALID</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 0.85rem; font-size: 0.82rem; color: #34d399; margin-bottom: 1.5rem; text-align: left;">
+            🛡️ <b>Consumer Safety Note:</b> Ensure package seal is intact. Store at room temperature away from direct moisture.
+        </div>
+
+    {% else %}
+        <!-- COUNTERFEIT / UNVERIFIED WARNING STATE -->
+        <div class="result-status counterfeit">
+            <span class="status-badge badge-counterfeit">⚠️ Counterfeit Alert</span>
+            <h1 class="card-title" style="color: var(--accent-rose); font-size: 1.5rem; margin-top: 0.5rem;">Counterfeit or Unregistered Pill!</h1>
+            <p style="font-size: 0.88rem; color: #fca5a5;">No matching record found in the authentic pharmaceutical database.</p>
+        </div>
+
+        <div style="background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; text-align: left;">
+            <h4 style="color: #fb7185; margin-bottom: 0.5rem; font-size: 1rem;">🚨 Critical Patient Safety Warning:</h4>
+            <p style="font-size: 0.88rem; color: #fecdd3; line-height: 1.5; margin-bottom: 0.75rem;">
+                The scanned code <code class="mono" style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 4px;">{{ scanned_uid or 'Unknown' }}</code> does not correspond to any registered pharmaceutical batch.
+            </p>
+            <ul style="font-size: 0.84rem; color: #fecdd3; padding-left: 1.2rem; line-height: 1.6;">
+                <li><b>Do NOT ingest this medication.</b></li>
+                <li>It may contain lethal adulterants, incorrect dosages, or no active ingredients.</li>
+                <li>Quarantine the blister pack/bottle and notify the dispensing pharmacy.</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <a href="tel:{{ support_phone }}" class="btn btn-danger" style="margin-bottom: 0.75rem;">
+                📞 Report to Drug Safety Hotline ({{ support_phone }})
+            </a>
+            <a href="mailto:{{ support_email }}?subject=Counterfeit%20Drug%20Report%20UID%20{{ scanned_uid }}" class="btn btn-outline" style="font-size: 0.9rem;">
+                ✉️ Email FDA & Drug Integrity Team
+            </a>
+        </div>
+    {% endif %}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+        <a href="{{ url_for('scan_medicine') }}" class="btn btn-primary">
+            <span>🔍 Scan Another Pill</span>
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">
+            <span>🏠 Return to Hub</span>
+        </a>
+    </div>
+
+</div>
+{% endblock %}

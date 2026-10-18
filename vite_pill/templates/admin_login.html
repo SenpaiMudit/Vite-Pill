@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Master Admin Authentication — Vite Pill{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 440px;">
+    <div class="card-header">
+        <div class="card-icon" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25);">🔒</div>
+        <h1 class="card-title">Master Admin Login</h1>
+        <p class="card-subtitle">Restricted root access for pharmaceutical regulatory officers and platform supervisors.</p>
+    </div>
+
+    {% if error %}
+        <div class="alert alert-danger">
+            <span>⚠️ {{ error }}</span>
+        </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('admin_login') }}">
+        <div class="form-group">
+            <label class="form-label">Master Username</label>
+            <input type="text" name="username" class="form-input" placeholder="admin" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Master Password</label>
+            <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; background: linear-gradient(135deg, #d97706 0%, #b45309 100%);">
+            <span>Authenticate Master Session</span>
+        </button>
+    </form>
+
+    <div style="background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; padding: 0.75rem; margin-top: 1.5rem; font-size: 0.8rem; color: #fcd34d; text-align: left;">
+        ℹ️ Default credentials for initial setup: <code class="mono">admin</code> / <code class="mono">admin123</code>
+    </div>
+
+    <div style="text-align: center; margin-top: 1.25rem;">
+        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted);">← Return to Hub</a>
+    </div>
+</div>
+{% endblock %}

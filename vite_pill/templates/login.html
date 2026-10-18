@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Manufacturer Sign In — Vite Pill{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 440px;">
+    <div class="card-header">
+        <div class="card-icon">🔑</div>
+        <h1 class="card-title">Manufacturer Portal</h1>
+        <p class="card-subtitle">Sign in to access your company's pharmaceutical batch registry.</p>
+    </div>
+
+    {% if error %}
+        <div class="alert alert-danger">
+            <span>⚠️ {{ error }}</span>
+        </div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="form-group">
+            <label class="form-label">Manufacturer Username</label>
+            <input type="text" name="username" class="form-input" placeholder="e.g. pfizer_admin" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">
+            <span>Sign In to Registry</span>
+        </button>
+    </form>
+
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-faint);">
+        Need enterprise credentials? <a href="mailto:{{ support_email }}?subject=Enterprise%20Manufacturer%20Access%20Request">Contact Supply Chain Authority</a>
+    </div>
+
+    <div style="text-align: center; margin-top: 1rem;">
+        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted);">← Back to Hub</a>
+    </div>
+</div>
+{% endblock %}

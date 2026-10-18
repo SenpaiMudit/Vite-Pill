@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}404 — Page Not Found | Vite Pill{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 480px; text-align: center;">
+    <div class="card-icon" style="background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.25);">
+        🔍
+    </div>
+    <h1 class="card-title" style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--accent-rose);">{{ error_title or "404" }}</h1>
+    <h2 style="font-size: 1.2rem; color: var(--text-main); margin-bottom: 1rem;">Verification Route Not Found</h2>
+    <p style="margin-bottom: 1.75rem; font-size: 0.95rem; line-height: 1.5;">
+        {{ error_desc or "The pharmaceutical page, endpoint, or verification record you requested does not exist or has been relocated within the secured registry." }}
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <a href="{{ url_for('scan_medicine') }}" class="btn btn-emerald">
+            <span>📸 Go to Pill Scanner</span>
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline">
+            <span>🏠 Return to Portal Hub</span>
+        </a>
+    </div>
+
+    <div style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-faint);">
+        Need immediate assistance? Contact <a href="mailto:{{ support_email }}">{{ support_email }}</a> or call <a href="tel:{{ support_phone }}">{{ support_phone }}</a>.
+    </div>
+</div>
+{% endblock %}

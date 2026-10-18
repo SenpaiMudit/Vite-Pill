@@ -356,7 +356,7 @@ def download_apk():
 
 
 # -----------------------------------------------------------------------------
-# ERROR HANDLERS (Mudit Misra Standard: Custom 404, No Broken Pages)
+# ERROR HANDLERS
 # -----------------------------------------------------------------------------
 @app.errorhandler(404)
 def page_not_found(e):

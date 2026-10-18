@@ -56,3 +56,7 @@ vite_pill/database.db
 # Dynamic runtime generated QR codes
 vite_pill/static/qrcodes/*.png
 !vite_pill/static/qrcodes/.gitkeep
+
+# Detailed system explainer (internal documentation)
+SYSTEM_WALKTHROUGH.md
+

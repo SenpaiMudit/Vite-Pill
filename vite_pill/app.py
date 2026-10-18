@@ -10,9 +10,9 @@ from flask import (
 import qrcode
 from PIL import Image
 
-# Pyzbar import with fallback handling for environments lacking C shared libraries
+# zxing-cpp: pure-Python wheels, no native C library required
 try:
-    from pyzbar.pyzbar import decode
+    import zxingcpp
     PYZBAR_AVAILABLE = True
 except Exception:
     PYZBAR_AVAILABLE = False
@@ -107,24 +107,23 @@ def scan_medicine():
 
         try:
             img = Image.open(file)
-            
+
             if not PYZBAR_AVAILABLE:
-                # Friendly fallback if zbar C-library is missing on the host OS
                 return render_template(
-                    'scan_medicine.html', 
-                    error_msg="Pyzbar decoding engine is compiling. You can manually enter the UID in the box below."
+                    'scan_medicine.html',
+                    error_msg="QR decoder unavailable. Please type the UID code manually in the box below."
                 )
 
-            decoded_objects = decode(img)
+            results = zxingcpp.read_barcodes(img)
 
-            if not decoded_objects:
+            if not results:
                 return render_template(
                     'scan_medicine.html',
                     error_msg="Unclear or improper QR code. Please capture a clear, well-lit photo of the pill's micro-QR."
                 )
 
-            scanned_raw = decoded_objects[0].data.decode('utf-8').strip()
-            
+            scanned_raw = results[0].text.strip()
+
             # Extract UID if the QR contained a full verification URL
             if '/verify/' in scanned_raw:
                 scanned_uid = scanned_raw.split('/verify/')[-1].strip()

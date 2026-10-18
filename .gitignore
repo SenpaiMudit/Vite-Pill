@@ -48,6 +48,11 @@ ENV/
 Thumbs.db
 Desktop.ini
 
-# SQLite databases (keep demo database if desired, ignore local runtime overrides)
-# database.db
+# SQLite databases (runtime local database)
+database.db
 *.sqlite3-journal
+vite_pill/database.db
+
+# Dynamic runtime generated QR codes
+vite_pill/static/qrcodes/*.png
+!vite_pill/static/qrcodes/.gitkeep

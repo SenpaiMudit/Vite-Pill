@@ -1,43 +1,48 @@
 {% extends 'base.html' %}
 
-{% block title %}Master Admin Authentication — Vite Pill{% endblock %}
+{% block title %}Regulatory Master Admin Authentication // Vite Pill{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 440px;">
-    <div class="card-header">
-        <div class="card-icon" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.25);">🔒</div>
-        <h1 class="card-title">Master Admin Login</h1>
-        <p class="card-subtitle">Restricted root access for pharmaceutical regulatory officers and platform supervisors.</p>
+<div class="terminal-panel" style="max-width: 480px;">
+    <div class="panel-header">
+        <div class="panel-pretitle">
+            <span class="status-pip" style="background: var(--warning-amber); box-shadow: 0 0 8px var(--warning-amber);"></span>
+            <span>RESTRICTED ACCESS // REGULATORY GOVERNANCE NODE</span>
+        </div>
+        <h1 class="panel-title" style="font-size: 1.7rem;">Regulatory Admin Terminal</h1>
+        <p class="panel-desc">
+            Master authority console for drug safety inspectors and system regulators. Used exclusively to audit and provision authenticated manufacturer credentials.
+        </p>
     </div>
 
     {% if error %}
         <div class="alert alert-danger">
-            <span>⚠️ {{ error }}</span>
+            <span>[ACCESS_DENIED] {{ error }}</span>
         </div>
     {% endif %}
 
     <form method="POST" action="{{ url_for('admin_login') }}">
         <div class="form-group">
-            <label class="form-label">Master Username</label>
-            <input type="text" name="username" class="form-input" placeholder="admin" required autofocus>
+            <label class="form-label">Master Administrator ID</label>
+            <input type="text" name="username" class="form-input mono" placeholder="admin" required autofocus>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Master Password</label>
-            <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+            <label class="form-label">Master Passkey</label>
+            <input type="password" name="password" class="form-input" placeholder="••••••••••••" required>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; background: linear-gradient(135deg, #d97706 0%, #b45309 100%);">
-            <span>Authenticate Master Session</span>
+        <button type="submit" class="btn btn-subtle" style="margin-top: 0.75rem; border-color: var(--warning-amber); color: var(--warning-amber);">
+            <span>[ VERIFY MASTER CREDENTIALS ]</span>
         </button>
     </form>
 
-    <div style="background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; padding: 0.75rem; margin-top: 1.5rem; font-size: 0.8rem; color: #fcd34d; text-align: left;">
-        ℹ️ Default credentials for initial setup: <code class="mono">admin</code> / <code class="mono">admin123</code>
+    <div style="background: rgba(255, 183, 0, 0.05); border: 1px solid rgba(255, 183, 0, 0.2); border-radius: var(--radius-xs); padding: 0.75rem; margin-top: 1.5rem; font-size: 0.75rem; font-family: var(--font-mono); color: #ffd54f;">
+        ℹ️ Setup root credentials: <code class="mono">admin</code> // <code class="mono">admin123</code>
     </div>
 
     <div style="text-align: center; margin-top: 1.25rem;">
-        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted);">← Return to Hub</a>
+        <a href="{{ url_for('index') }}" style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">← Return to Terminal Hub</a>
     </div>
 </div>
 {% endblock %}

@@ -1,90 +1,103 @@
 {% extends 'base.html' %}
 
-{% block title %}Register Medicine Batch — Vite Pill Manufacturer Portal{% endblock %}
+{% block title %}Batch Serialization // {{ company_name }} | Vite Pill{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 600px;">
-    <div class="card-header">
-        <div class="card-icon" style="background: rgba(99, 102, 241, 0.12); border-color: rgba(99, 102, 241, 0.25);">🏢</div>
-        <h1 class="card-title">Pharmaceutical Batch Registry</h1>
-        <p class="card-subtitle">Generate cryptographic micro-QR codes and register authentic medication batches into the verification ledger.</p>
+<div class="terminal-panel" style="max-width: 680px;">
+    <div class="panel-header">
+        <div class="panel-pretitle">
+            <span class="status-pip"></span>
+            <span>MANUFACTURER REGISTRY // CLEARANCE: {{ company_name }}</span>
+        </div>
+        <h1 class="panel-title">Medicine Batch Serialization</h1>
+        <p class="panel-desc">
+            Authorized pharmaceutical registration terminal. Generating a micro-QR creates an unalterable cryptographic identity on the public verification ledger.
+        </p>
     </div>
 
     {% if error_msg %}
         <div class="alert alert-danger">
-            <span>⚠️ {{ error_msg }}</span>
+            <span>[COLLISION_ALERT] {{ error_msg }}</span>
         </div>
     {% endif %}
 
     {% if success_msg %}
         <div class="alert alert-success">
-            <span>✅ {{ success_msg }}</span>
+            <span>[SERIALIZATION_COMPLETE] {{ success_msg }}</span>
         </div>
 
         {% if qr_filename %}
-            <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 1.5rem; text-align: center; margin-bottom: 2rem;">
-                <h3 style="font-size: 1.1rem; color: var(--accent-emerald); margin-bottom: 1rem;">Cryptographic Micro-QR Generated</h3>
+            <div style="background: rgba(0, 255, 136, 0.03); border: 1px solid var(--phosphor-green); border-radius: var(--radius-xs); padding: 1.75rem; text-align: center; margin-bottom: 2rem;">
+                <div class="cert-stamp stamp-authentic" style="margin-bottom: 1rem;">
+                    [✓] CRYPTOGRAPHIC MICRO-QR MINTED
+                </div>
                 
-                <div style="background: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: 1rem;">
-                    <img src="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" alt="Medicine QR Code" style="width: 180px; height: 180px; display: block;">
+                <div style="background: #ffffff; padding: 12px; border-radius: var(--radius-xs); display: inline-block; margin-bottom: 1rem; border: 2px solid var(--phosphor-green); box-shadow: 0 0 20px var(--phosphor-glow);">
+                    <img src="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" alt="Cryptographic Medicine QR" style="width: 200px; height: 200px; display: block;">
                 </div>
 
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                    Batch Serial UID: <code class="mono" style="color: var(--accent-cyan); font-weight: 700;">{{ med_uid }}</code>
+                <div class="mono" style="font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem;">
+                    ASSIGNED SERIAL UID: <span style="color: var(--cyber-cyan); font-weight: 700;">{{ med_uid }}</span>
                 </div>
 
                 <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" download="vitepill_{{ med_uid }}.png" class="btn btn-emerald" style="width: auto; padding: 0.6rem 1.25rem; font-size: 0.9rem;">
-                        📥 Download QR Code (.PNG)
+                    <a href="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" download="vitepill_{{ med_uid }}.png" class="btn btn-phosphor" style="width: auto; padding: 0.65rem 1.4rem; font-size: 0.85rem; font-family: var(--font-mono);">
+                        📥 Download Micro-QR (.PNG)
                     </a>
-                    <a href="{{ url_for('verify_medicine', uid=med_uid) }}" class="btn btn-outline" style="width: auto; padding: 0.6rem 1.25rem; font-size: 0.9rem;">
-                        👁️ Preview Verification Page
+                    <a href="{{ url_for('verify_medicine', uid=med_uid) }}" target="_blank" class="btn btn-subtle" style="width: auto; padding: 0.65rem 1.4rem; font-size: 0.85rem; font-family: var(--font-mono);">
+                        Verify Batch Page ↗
                     </a>
                 </div>
             </div>
         {% endif %}
     {% endif %}
 
-    <!-- Batch Registration Form (Pure HTML POST, Zero JS) -->
+    <!-- Batch Serialization Form (Zero JS) -->
     <form action="{{ url_for('add_medicine') }}" method="POST">
         <div class="form-group">
-            <label class="form-label">Medicine Commercial & Generic Name</label>
-            <input type="text" name="name" class="form-input" placeholder="e.g. Paracetamol Extra or Azithromycin" required>
+            <label class="form-label">Authorized Pharmaceutical Entity</label>
+            <input type="text" class="form-input mono" value="{{ company_name }}" disabled style="opacity: 0.7; cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Commercial & Generic Drug Name</label>
+            <input type="text" name="name" class="form-input" placeholder="e.g. Ciprofloxacin HCl (or Lipitor / Amoxicillin)" required autofocus>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group">
-                <label class="form-label">Dosage Strength (MG)</label>
-                <input type="number" name="mg" class="form-input" placeholder="e.g. 500" min="1" step="any" required>
+                <label class="form-label">Active Strength (MG)</label>
+                <input type="number" name="mg" class="form-input mono" placeholder="500" min="1" step="any" required>
             </div>
             <div class="form-group">
                 <label class="form-label">Manufacturing Date</label>
-                <input type="date" name="manufacturing_date" class="form-input" required>
+                <input type="date" name="manufacturing_date" class="form-input mono" required>
             </div>
         </div>
 
         <div class="form-group">
             <label class="form-label">Expiration Date</label>
-            <input type="date" name="expiry_date" class="form-input" required>
+            <input type="date" name="expiry_date" class="form-input mono" required>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Active Chemical Ingredients & Excipients</label>
-            <textarea name="ingredients" class="form-textarea" placeholder="e.g. Paracetamol IP 500mg, Caffeine Anhydrous 30mg, Povidone K30" required></textarea>
+            <label class="form-label">Active Chemical Ingredients & Formulation (APIs)</label>
+            <textarea name="ingredients" class="form-textarea" placeholder="e.g. Ciprofloxacin Hydrochloride equivalent to 500mg Ciprofloxacin, Microcrystalline Cellulose, Starch" required></textarea>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Clinical Indication & Ideal Use</label>
-            <textarea name="ideal_use" class="form-textarea" placeholder="e.g. Relief of mild to moderate headache, fever reduction, and analgesic support" required></textarea>
+            <label class="form-label">Approved Clinical Indications & Dosage Instructions</label>
+            <textarea name="ideal_use" class="form-textarea" placeholder="e.g. Treatment of severe respiratory, urinary tract, and skin bacterial infections. Take as prescribed by physician." required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
-            <span>🔒 Secure Batch & Generate QR Code</span>
+        <button type="submit" class="btn btn-phosphor" style="margin-top: 0.75rem;">
+            <span>[ GENERATE CRYPTOGRAPHIC MICRO-QR & LOCK BATCH ]</span>
         </button>
     </form>
 
-    <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted);">← Return to Portal Hub</a>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; font-family: var(--font-mono);">
+        <a href="{{ url_for('manufacturer_dashboard') }}" style="color: var(--cyber-cyan);">← Return to Company Console</a>
+        <span style="color: var(--text-dim);">PROTOCOL // TAMPER-EVIDENT</span>
     </div>
 </div>
 {% endblock %}

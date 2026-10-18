@@ -1,57 +1,67 @@
 {% extends 'base.html' %}
 
-{% block title %}Verify Medicine — Vite Pill Anti-Counterfeit Scan{% endblock %}
+{% block title %}Optical Verification Scanner // Vite Pill Security{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 520px;">
-    <div class="card-header">
-        <div class="card-icon" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.25);">🔍</div>
-        <h1 class="card-title">Verify Medicine Authenticity</h1>
-        <p class="card-subtitle">Scan the micro-QR code printed on the pill package or blister pack to verify authenticity with pharmaceutical records.</p>
+<div class="terminal-panel" style="max-width: 540px;">
+    <div class="panel-header">
+        <div class="panel-pretitle">
+            <span class="status-pip"></span>
+            <span>PUBLIC SENSORY TERMINAL // OPTICAL INGESTION</span>
+        </div>
+        <h1 class="panel-title">Verify Medicine Package</h1>
+        <p class="panel-desc">
+            Directly verify the authenticity of any blister pack or medicine container. Server-side optical decoding validates the micro-QR against licensed manufacturer databases.
+        </p>
     </div>
 
     {% if error_msg %}
         <div class="alert alert-danger">
-            <span>⚠️ {{ error_msg }}</span>
+            <span>[SCAN_ERROR] {{ error_msg }}</span>
         </div>
     {% endif %}
 
-    <!-- Upload QR Image Form (Native HTML Form, Zero JS) -->
+    <!-- Optical Image File Upload (Native HTML5 Form, Zero JS) -->
     <form action="{{ url_for('scan_medicine') }}" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label class="form-label">Upload QR Code Photo</label>
-            <div class="form-file-dropzone">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸</div>
-                <div style="font-weight: 600; margin-bottom: 0.25rem;">Choose image or snap with camera</div>
-                <div style="font-size: 0.8rem; color: var(--text-faint); margin-bottom: 1rem;">Supports PNG, JPG, WEBP from mobile camera</div>
-                <input type="file" name="qr_image" accept="image/*" capture="environment" required>
+            <label class="form-label">Ingest Micro-QR Optical Image</label>
+            <div class="optical-dropzone">
+                <div class="optical-crosshair"></div>
+                <div style="font-family: var(--font-display); font-weight: 700; color: #fff; margin-bottom: 0.25rem;">
+                    UPLOAD PHOTO OR SNAP WITH CAMERA
+                </div>
+                <div class="mono" style="font-size: 0.72rem; color: var(--text-dim); margin-bottom: 1.25rem;">
+                    FORMATS: PNG, JPG, WEBP // MIN-RES: 300 DPI RECOMMENDED
+                </div>
+                <input type="file" name="qr_image" accept="image/*" capture="environment" required style="cursor: pointer; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem;">
             </div>
         </div>
 
-        <button type="submit" class="btn btn-emerald">
-            <span>📸 Scan & Verify Authenticity</span>
+        <button type="submit" class="btn btn-phosphor">
+            <span>[ INGEST & DECODE OPTICAL MATRIX ]</span>
         </button>
     </form>
 
-    <div style="display: flex; align-items: center; margin: 1.75rem 0; color: var(--text-faint); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
-        <span style="flex: 1; border-bottom: 1px solid var(--border-color);"></span>
-        <span style="padding: 0 0.75rem;">OR ENTER SERIAL CODE DIRECTLY</span>
-        <span style="flex: 1; border-bottom: 1px solid var(--border-color);"></span>
+    <!-- Visual Divider -->
+    <div style="display: flex; align-items: center; margin: 2rem 0; color: var(--text-dim); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em;">
+        <span style="flex: 1; border-bottom: 1px solid var(--border-subtle);"></span>
+        <span style="padding: 0 0.85rem;">OR QUERY SERIAL UID DIRECTLY</span>
+        <span style="flex: 1; border-bottom: 1px solid var(--border-subtle);"></span>
     </div>
 
-    <!-- Manual UID Entry Form (Pure HTML GET form redirecting to /verify/<uid>) -->
-    <form action="{{ url_for('scan_medicine') }}" method="GET" style="text-align: left;">
+    <!-- Direct Serial UID Lookup Form (Pure HTML GET form redirecting to /scan?manual_uid=...) -->
+    <form action="{{ url_for('scan_medicine') }}" method="GET">
         <div class="form-group">
-            <label class="form-label">Pill Serial UID (16-Hex Characters)</label>
-            <input type="text" id="manual_uid" name="manual_uid" class="form-input" placeholder="e.g. a8f4c2e1b9304958" required>
+            <label class="form-label">16-Hex Cryptographic Serial UID</label>
+            <input type="text" name="manual_uid" class="form-input mono" placeholder="e.g. a8f4c2e1b9304958" required>
         </div>
-        <button type="submit" class="btn btn-outline" style="font-size: 0.9rem;">
-            <span>Direct Serial Lookup</span>
+        <button type="submit" class="btn btn-subtle" style="font-family: var(--font-mono); font-size: 0.82rem;">
+            <span>[ EXECUTE DIRECT UID LOOKUP ]</span>
         </button>
     </form>
 
-    <div style="text-align: center; margin-top: 1.5rem;">
-        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted);">← Return to Portal Hub</a>
+    <div style="text-align: center; margin-top: 1.75rem; font-family: var(--font-mono); font-size: 0.8rem;">
+        <a href="{{ url_for('index') }}" style="color: var(--text-muted);">← Return to Gateway Hub</a>
     </div>
 </div>
 {% endblock %}

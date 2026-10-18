@@ -2,106 +2,108 @@
 
 {% block title %}
     {% if is_authentic %}
-        Verified Authentic — {{ medicine['name'] }} | Vite Pill
+        AUTHENTIC PHARMA CERTIFICATE // {{ medicine['name'] }} | Vite Pill
     {% else %}
-        Counterfeit Warning — Unverified Pill | Vite Pill
+        COUNTERFEIT WARNING // UNVERIFIED ENTITY | Vite Pill
     {% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 580px;">
+<div class="terminal-panel" style="max-width: 640px;">
 
     {% if is_authentic and medicine %}
-        <!-- AUTHENTIC VERIFIED STATE -->
-        <div class="result-status authentic">
-            <span class="status-badge badge-authentic">✓ Cryptographically Verified</span>
-            <h1 class="card-title" style="color: var(--accent-emerald); font-size: 1.5rem; margin-top: 0.5rem;">Authentic Medicine Verified</h1>
-            <p style="font-size: 0.88rem; color: #a7f3d0;">The micro-QR code matches official pharmaceutical registry records.</p>
+        <!-- AUTHENTIC PHARMACEUTICAL CERTIFICATE -->
+        <div class="cert-header authentic">
+            <span class="cert-stamp stamp-authentic">[✓] CERTIFIED AUTHENTIC BATCH</span>
+            <h1 class="panel-title" style="color: var(--phosphor-green); font-size: 1.6rem; margin: 0.5rem 0 0.25rem;">
+                Pharmaceutical Integrity Confirmed
+            </h1>
+            <p class="mono" style="font-size: 0.75rem; color: #a7f3d0;">
+                MATCH FOUND IN PROVISIONED MANUFACTURER REGISTRY
+            </p>
         </div>
 
-        <table class="spec-table">
-            <tbody>
-                <tr>
-                    <th>Medicine Name</th>
-                    <td style="color: var(--accent-cyan); font-size: 1.1rem;">{{ medicine['name'] }}</td>
-                </tr>
-                <tr>
-                    <th>Dosage Strength</th>
-                    <td>{{ medicine['mg'] }} mg</td>
-                </tr>
-                <tr>
-                    <th>Manufacturer</th>
-                    <td>{{ medicine['registered_by'] }}</td>
-                </tr>
-                <tr>
-                    <th>Ideal Indications</th>
-                    <td style="font-size: 0.88rem; font-weight: 400;">{{ medicine['ideal_use'] }}</td>
-                </tr>
-                <tr>
-                    <th>Active Ingredients</th>
-                    <td style="font-size: 0.88rem; font-weight: 400;">{{ medicine['ingredients'] }}</td>
-                </tr>
-                <tr>
-                    <th>Manufacturing Date</th>
-                    <td>{{ medicine['manufacturing_date'] }}</td>
-                </tr>
-                <tr>
-                    <th>Expiration Date</th>
-                    <td>
-                        <span style="color: var(--accent-amber); font-weight: 700;">{{ medicine['expiry_date'] }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Cryptographic UID</th>
-                    <td class="mono">{{ medicine['uid'] }}</td>
-                </tr>
-                <tr>
-                    <th>Integrity Hash</th>
-                    <td class="mono" style="font-size: 0.72rem; color: var(--text-faint);">SHA256: VALID</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="spec-grid">
+            <div class="spec-row">
+                <span class="spec-label">Medicine Name</span>
+                <span class="spec-val" style="color: var(--cyber-cyan); font-size: 1.05rem;">{{ medicine['name'] }}</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Active Strength</span>
+                <span class="spec-val mono">{{ medicine['mg'] }} MG</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Licensed Manufacturer</span>
+                <span class="spec-val" style="color: #fff;">{{ medicine['registered_by'] }}</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Chemical Formulation</span>
+                <span class="spec-val" style="font-size: 0.84rem; font-weight: 400; max-width: 320px;">{{ medicine['ingredients'] }}</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Clinical Indications</span>
+                <span class="spec-val" style="font-size: 0.84rem; font-weight: 400; max-width: 320px;">{{ medicine['ideal_use'] }}</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Manufacturing Date</span>
+                <span class="spec-val mono" style="color: var(--text-muted);">{{ medicine['manufacturing_date'] }}</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Expiration Date</span>
+                <span class="spec-val mono" style="color: var(--warning-amber);">{{ medicine['expiry_date'] }} (VERIFIED VALID)</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Cryptographic Serial UID</span>
+                <span class="spec-val mono" style="color: var(--cyber-cyan); font-size: 0.82rem;">{{ medicine['uid'] }}</span>
+            </div>
+        </div>
 
-        <div style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 0.85rem; font-size: 0.82rem; color: #34d399; margin-bottom: 1.5rem; text-align: left;">
-            🛡️ <b>Consumer Safety Note:</b> Ensure package seal is intact. Store at room temperature away from direct moisture.
+        <div style="background: rgba(0, 255, 136, 0.04); border: 1px solid var(--border-tech); border-radius: var(--radius-xs); padding: 0.85rem; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.75rem; line-height: 1.5;">
+            🛡️ <b>DISPENSING SAFETY CHECK:</b> Package seal and micro-QR stamp must show zero physical tampering. Administered strictly as directed by your prescribing physician.
         </div>
 
     {% else %}
-        <!-- COUNTERFEIT / UNVERIFIED WARNING STATE -->
-        <div class="result-status counterfeit">
-            <span class="status-badge badge-counterfeit">⚠️ Counterfeit Alert</span>
-            <h1 class="card-title" style="color: var(--accent-rose); font-size: 1.5rem; margin-top: 0.5rem;">Counterfeit or Unregistered Pill!</h1>
-            <p style="font-size: 0.88rem; color: #fca5a5;">No matching record found in the authentic pharmaceutical database.</p>
+        <!-- COUNTERFEIT / UNVERIFIED BIOHAZARD WARNING -->
+        <div class="cert-header counterfeit">
+            <span class="cert-stamp stamp-counterfeit">[!] CRITICAL COUNTERFEIT ALERT</span>
+            <h1 class="panel-title" style="color: var(--alert-crimson); font-size: 1.6rem; margin: 0.5rem 0 0.25rem;">
+                Unverified or Fake Drug Detected!
+            </h1>
+            <p class="mono" style="font-size: 0.75rem; color: #ff8095;">
+                NO RECORD IN SECURED PHARMACEUTICAL LEDGER
+            </p>
         </div>
 
-        <div style="background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; text-align: left;">
-            <h4 style="color: #fb7185; margin-bottom: 0.5rem; font-size: 1rem;">🚨 Critical Patient Safety Warning:</h4>
-            <p style="font-size: 0.88rem; color: #fecdd3; line-height: 1.5; margin-bottom: 0.75rem;">
-                The scanned code <code class="mono" style="background: rgba(0,0,0,0.3); padding: 0.2rem 0.4rem; border-radius: 4px;">{{ scanned_uid or 'Unknown' }}</code> does not correspond to any registered pharmaceutical batch.
+        <div style="background: rgba(255, 23, 68, 0.08); border: 1px solid var(--alert-crimson); border-radius: var(--radius-xs); padding: 1.25rem; margin-bottom: 1.75rem; text-align: left;">
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: #ff8095; margin-bottom: 0.5rem; font-weight: 700;">
+                🚨 DO NOT INGEST THIS MEDICATION
+            </div>
+            <p style="font-size: 0.85rem; color: #ffdbe0; line-height: 1.55; margin-bottom: 0.85rem;">
+                The queried identifier <code class="mono" style="background: rgba(0,0,0,0.5); padding: 0.2rem 0.4rem; color: #fff;">{{ scanned_uid or 'INVALID_CODE' }}</code> is not registered under any licensed pharmaceutical manufacturer provisioned by the Regulatory Authority.
             </p>
-            <ul style="font-size: 0.84rem; color: #fecdd3; padding-left: 1.2rem; line-height: 1.6;">
-                <li><b>Do NOT ingest this medication.</b></li>
-                <li>It may contain lethal adulterants, incorrect dosages, or no active ingredients.</li>
-                <li>Quarantine the blister pack/bottle and notify the dispensing pharmacy.</li>
+            <ul style="font-size: 0.82rem; color: #ffdbe0; padding-left: 1.2rem; line-height: 1.6;">
+                <li>The blister pack may contain dangerous contaminants or inactive fillers.</li>
+                <li>Immediately quarantine the package and retain it as forensic evidence.</li>
+                <li>Report the pharmacy or distributor to drug safety law enforcement.</li>
             </ul>
         </div>
 
-        <div style="text-align: center; margin-bottom: 1.5rem;">
-            <a href="tel:{{ support_phone }}" class="btn btn-danger" style="margin-bottom: 0.75rem;">
-                📞 Report to Drug Safety Hotline ({{ support_phone }})
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.75rem;">
+            <a href="tel:{{ support_phone }}" class="btn btn-danger">
+                📞 CALL DRUG INTEGRITY HOTLINE: {{ support_phone }}
             </a>
-            <a href="mailto:{{ support_email }}?subject=Counterfeit%20Drug%20Report%20UID%20{{ scanned_uid }}" class="btn btn-outline" style="font-size: 0.9rem;">
-                ✉️ Email FDA & Drug Integrity Team
+            <a href="mailto:{{ support_email }}?subject=Counterfeit%20Drug%20Report%20UID%20{{ scanned_uid }}" class="btn btn-subtle" style="font-family: var(--font-mono); font-size: 0.82rem;">
+                ✉️ DISPATCH INCIDENT REPORT TO AUDIT TEAM
             </a>
         </div>
     {% endif %}
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-        <a href="{{ url_for('scan_medicine') }}" class="btn btn-primary">
-            <span>🔍 Scan Another Pill</span>
+        <a href="{{ url_for('scan_medicine') }}" class="btn btn-phosphor" style="font-size: 0.85rem; font-family: var(--font-mono);">
+            [ SCAN ANOTHER PACKAGE ]
         </a>
-        <a href="{{ url_for('index') }}" class="btn btn-outline">
-            <span>🏠 Return to Hub</span>
+        <a href="{{ url_for('index') }}" class="btn btn-subtle" style="font-size: 0.85rem; font-family: var(--font-mono);">
+            [ RETURN TO GATEWAY ]
         </a>
     </div>
 

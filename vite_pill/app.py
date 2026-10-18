@@ -213,10 +213,27 @@ def verify_medicine(uid):
     return render_template('result.html', medicine=medicine_data, scanned_uid=uid, is_authentic=True)
 
 
-# --- PART 2: PHARMACEUTICAL COMPANY BATCH REGISTRY ---
+# --- PART 2: PHARMACEUTICAL COMPANY BATCH REGISTRY & DASHBOARD ---
+@app.route('/manufacturer/dashboard')
+@login_required
+def manufacturer_dashboard():
+    """Private dashboard for authorized manufacturers to review their registered batches."""
+    company_name = session.get('company_name', '')
+    conn = get_db_connection()
+    batches = conn.execute(
+        'SELECT * FROM medicine WHERE registered_by = ? ORDER BY created_at DESC',
+        (company_name,)
+    ).fetchall()
+    conn.close()
+    return render_template('manufacturer_dashboard.html', batches=batches, company_name=company_name)
+
+
 @app.route('/add', methods=['GET', 'POST'])
+@login_required
 def add_medicine():
-    """Register a new batch of medicine and generate cryptographic QR code."""
+    """Register a new batch of medicine and generate cryptographic QR code (Authorized Manufacturers Only)."""
+    company_name = session.get('company_name', 'Authorized Manufacturer')
+
     if request.method == 'POST':
         med_name = request.form.get('name', '').strip()
         med_mfg = request.form.get('manufacturing_date', '').strip()
@@ -224,10 +241,9 @@ def add_medicine():
         med_ingredients = request.form.get('ingredients', '').strip()
         med_use = request.form.get('ideal_use', '').strip()
         med_mg = request.form.get('mg', '').strip()
-        registered_by = session.get('company_name', 'Authorized Manufacturer')
 
         if not all([med_name, med_mfg, med_expiry, med_ingredients, med_use, med_mg]):
-            return render_template('add_medicine.html', error_msg="All medical fields are required to register a batch.")
+            return render_template('add_medicine.html', error_msg="All medical fields are required to register a batch.", company_name=company_name)
 
         conn = get_db_connection()
 
@@ -241,7 +257,8 @@ def add_medicine():
             conn.close()
             return render_template(
                 'add_medicine.html',
-                error_msg=f"Duplicate Batch Detected! A batch for '{med_name}' ({med_mg}mg) with these exact dates is already registered."
+                error_msg=f"Duplicate Batch Collision Blocked! A batch for '{med_name}' ({med_mg}mg) with these exact dates is already recorded.",
+                company_name=company_name
             )
 
         # Generate unique 16-character hex UID
@@ -255,7 +272,7 @@ def add_medicine():
             INSERT INTO medicine 
             (uid, name, manufacturing_date, expiry_date, ingredients, ideal_use, mg, registered_by) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (med_uid, med_name, med_mfg, med_expiry, med_ingredients, med_use, med_mg, registered_by))
+        ''', (med_uid, med_name, med_mfg, med_expiry, med_ingredients, med_use, med_mg, company_name))
         conn.commit()
         conn.close()
 
@@ -270,10 +287,12 @@ def add_medicine():
             'add_medicine.html',
             qr_filename=qr_filename,
             med_uid=med_uid,
-            success_msg=f"Medicine batch '{med_name}' successfully secured and registered!"
+            med_name=med_name,
+            company_name=company_name,
+            success_msg=f"Batch for '{med_name}' secured and signed by {company_name}!"
         )
 
-    return render_template('add_medicine.html')
+    return render_template('add_medicine.html', company_name=company_name)
 
 
 # --- PART 3: AUTHENTICATION & MASTER ADMIN PORTAL ---

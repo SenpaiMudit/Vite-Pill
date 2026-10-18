@@ -1,43 +1,52 @@
 {% extends 'base.html' %}
 
-{% block title %}Manufacturer Sign In — Vite Pill{% endblock %}
+{% block title %}Manufacturer Authentication // Vite Pill Security{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 440px;">
-    <div class="card-header">
-        <div class="card-icon">🔑</div>
-        <h1 class="card-title">Manufacturer Portal</h1>
-        <p class="card-subtitle">Sign in to access your company's pharmaceutical batch registry.</p>
+<div class="terminal-panel" style="max-width: 480px;">
+    <div class="panel-header">
+        <div class="panel-pretitle">
+            <span class="status-pip"></span>
+            <span>MANUFACTURER AUTHENTICATION // REG-CLEARANCE</span>
+        </div>
+        <h1 class="panel-title" style="font-size: 1.7rem;">Pharma Entity Login</h1>
+        <p class="panel-desc">
+            Sign in with credentials issued by the Regulatory Administrator to access your company's batch serialization registry.
+        </p>
     </div>
 
     {% if error %}
         <div class="alert alert-danger">
-            <span>⚠️ {{ error }}</span>
+            <span>[AUTH_FAILED] {{ error }}</span>
         </div>
     {% endif %}
+
+    <div style="background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border-tech); border-radius: var(--radius-xs); padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.78rem; font-family: var(--font-mono); color: var(--cyber-cyan); line-height: 1.5;">
+        🔒 <b>ANTI-FRAUD ARCHITECTURE:</b> To prevent counterfeiters from generating falsified QR codes, public registration is permanently disabled. Only verified pharmaceutical manufacturers provisioned by the Master Admin can serialize batches.
+    </div>
 
     <form method="POST" action="{{ url_for('login') }}">
         <div class="form-group">
             <label class="form-label">Manufacturer Username</label>
-            <input type="text" name="username" class="form-input" placeholder="e.g. pfizer_admin" required autofocus>
+            <input type="text" name="username" class="form-input mono" placeholder="e.g. pfizer_ops_01" required autofocus>
         </div>
 
         <div class="form-group">
-            <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+            <label class="form-label">Cryptographic Password</label>
+            <input type="password" name="password" class="form-input" placeholder="••••••••••••" required>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">
-            <span>Sign In to Registry</span>
+        <button type="submit" class="btn btn-cyber" style="margin-top: 0.75rem;">
+            <span>[ AUTHORIZE SESSION & ENTER REGISTRY ]</span>
         </button>
     </form>
 
-    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-faint);">
-        Need enterprise credentials? <a href="mailto:{{ support_email }}?subject=Enterprise%20Manufacturer%20Access%20Request">Contact Supply Chain Authority</a>
+    <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); text-align: center; font-size: 0.82rem; color: var(--text-dim); font-family: var(--font-mono);">
+        Unprovisioned entity? Contact Regulatory Desk at <a href="mailto:{{ support_email }}">{{ support_email }}</a>
     </div>
 
     <div style="text-align: center; margin-top: 1rem;">
-        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--text-muted);">← Back to Hub</a>
+        <a href="{{ url_for('index') }}" style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">← Return to Terminal Hub</a>
     </div>
 </div>
 {% endblock %}

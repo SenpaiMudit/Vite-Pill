@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Manufacturer Console // {{ company_name }} | Vite Pill{% endblock %}
+
+{% block content %}
+<div class="terminal-panel" style="max-width: 950px; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.5rem; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <div class="panel-pretitle">
+                <span class="status-pip"></span>
+                <span>AUTHENTICATED MANUFACTURER ENTITY</span>
+            </div>
+            <h1 class="panel-title" style="font-size: 1.8rem; margin-bottom: 0.25rem;">{{ company_name }}</h1>
+            <p class="mono" style="font-size: 0.78rem; color: var(--cyber-cyan);">
+                OPERATOR ID: <span style="color: #fff;">{{ session.get('username') }}</span> // CLEARANCE: LEVEL-2 PHARMA REGISTRY
+            </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+            <a href="{{ url_for('add_medicine') }}" class="btn btn-phosphor" style="width: auto; padding: 0.6rem 1.25rem; font-size: 0.85rem;">
+                + Serialize New Batch
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger" style="width: auto; padding: 0.6rem 1.25rem; font-size: 0.85rem;">
+                Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Overview Metric Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-xs); padding: 1rem;">
+            <div class="mono" style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Company Batches</div>
+            <div class="mono" style="font-size: 1.8rem; font-weight: 700; color: var(--phosphor-green);">{{ batches|length }}</div>
+        </div>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-xs); padding: 1rem;">
+            <div class="mono" style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Cryptographic Integrity</div>
+            <div class="mono" style="font-size: 1.8rem; font-weight: 700; color: var(--cyber-cyan);">100% SECURE</div>
+        </div>
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-xs); padding: 1rem;">
+            <div class="mono" style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Provisioning Source</div>
+            <div class="mono" style="font-size: 1.1rem; font-weight: 700; color: var(--warning-amber); margin-top: 0.4rem;">REGULATORY ADMIN</div>
+        </div>
+    </div>
+
+    <!-- Company Batches Table -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700;">Secured Medicine Batches</h3>
+        <span class="mono" style="font-size: 0.75rem; color: var(--text-dim);">FILTER: ALL_AUTHENTIC</span>
+    </div>
+
+    <div class="data-table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Serial UID</th>
+                    <th>Medicine Generic / Trade Name</th>
+                    <th>Strength</th>
+                    <th>Mfg Date</th>
+                    <th>Expiry Date</th>
+                    <th style="text-align: right;">Micro-QR & Verification</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in batches %}
+                <tr>
+                    <td class="mono" style="color: var(--cyber-cyan); font-weight: 700;">{{ b['uid'] }}</td>
+                    <td style="font-weight: 600; color: #fff;">{{ b['name'] }}</td>
+                    <td>{{ b['mg'] }} mg</td>
+                    <td class="mono" style="font-size: 0.8rem; color: var(--text-muted);">{{ b['manufacturing_date'] }}</td>
+                    <td class="mono" style="font-size: 0.8rem; color: var(--warning-amber);">{{ b['expiry_date'] }}</td>
+                    <td style="text-align: right;">
+                        <a href="{{ url_for('static', filename='qrcodes/' + b['uid'] + '.png') }}" download="micro_qr_{{ b['uid'] }}.png" class="btn btn-subtle" style="width: auto; padding: 0.35rem 0.65rem; font-size: 0.75rem; font-family: var(--font-mono); display: inline-flex;">
+                            📥 QR (.PNG)
+                        </a>
+                        <a href="{{ url_for('verify_medicine', uid=b['uid']) }}" target="_blank" class="btn btn-cyber" style="width: auto; padding: 0.35rem 0.65rem; font-size: 0.75rem; font-family: var(--font-mono); display: inline-flex;">
+                            Verify ↗
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="padding: 2.5rem; text-align: center; color: var(--text-dim); font-family: var(--font-mono);">
+                        No medicine batches registered under {{ company_name }} yet.
+                        <div style="margin-top: 1rem;">
+                            <a href="{{ url_for('add_medicine') }}" class="btn btn-phosphor" style="width: auto; display: inline-flex; padding: 0.5rem 1.25rem;">
+                                + Register First Batch
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-mono);">
+        <span>AUTHENTICATION DOMAIN: {{ company_name }}</span>
+        <span>ZERO-JS VERIFIED // TAMPER-EVIDENT</span>
+    </div>
+</div>
+{% endblock %}

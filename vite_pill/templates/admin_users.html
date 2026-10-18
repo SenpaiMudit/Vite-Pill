@@ -1,89 +1,115 @@
 {% extends 'base.html' %}
 
-{% block title %}Master Admin Dashboard — Vite Pill{% endblock %}
+{% block title %}Regulatory Provisioning Terminal // Vite Pill{% endblock %}
 
 {% block content %}
-<div class="card" style="max-width: 900px; width: 100%;">
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+<div class="terminal-panel" style="max-width: 1050px; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.5rem; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-            <h1 class="card-title" style="font-size: 1.6rem; text-align: left; margin: 0;">Master Admin Dashboard</h1>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;">Authorized enterprise manufacturer accounts & platform governance.</p>
+            <div class="panel-pretitle">
+                <span class="status-pip" style="background: var(--warning-amber); box-shadow: 0 0 8px var(--warning-amber);"></span>
+                <span>REGULATORY AUTHORITY GOVERNANCE CONSOLE</span>
+            </div>
+            <h1 class="panel-title" style="font-size: 1.85rem; margin-bottom: 0.25rem;">Manufacturer Identity Provisioning</h1>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;">
+                Audit, create, and revoke cryptographic logins for licensed pharmaceutical manufacturers.
+            </p>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
-            <a href="{{ url_for('add_medicine') }}" class="btn btn-outline" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem;">+ Batch Entry</a>
-            <a href="{{ url_for('logout') }}" class="btn btn-danger" style="width: auto; padding: 0.5rem 1rem; font-size: 0.85rem;">Sign Out</a>
+        <div style="display: flex; gap: 0.75rem;">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger" style="width: auto; padding: 0.55rem 1.25rem; font-size: 0.82rem; font-family: var(--font-mono);">
+                Term Master Session
+            </a>
         </div>
     </div>
 
-    <!-- Create New Manufacturer Account Form (Zero JS) -->
-    <div style="background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem;">
-        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.5rem;">
-            <span>➕ Provision Manufacturer Account</span>
-        </h3>
+    <!-- The Anti-Counterfeiting Mandate Explanation Box -->
+    <div style="background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border-tech); border-radius: var(--radius-xs); padding: 1.25rem; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span style="font-size: 1.2rem;">🛡️</span>
+            <h4 style="font-size: 0.95rem; color: var(--cyber-cyan); text-transform: uppercase; font-family: var(--font-mono);">
+                Core Protocol: Why Admin-Only Provisioning Stops Counterfeiting
+            </h4>
+        </div>
+        <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.55;">
+            Counterfeiters infiltrate supply chains by creating anonymous batches. Vite Pill guarantees that <b>no public user can ever create a manufacturer account</b>. Only the Master Regulatory Administrator can provision verified credentials after inspecting the pharmaceutical company's Good Manufacturing Practice (GMP) license. Every batch serialized is irrevocably signed by the provisioned entity.
+        </p>
+    </div>
+
+    <!-- Provision New Manufacturer Form (Zero JS) -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-xs); padding: 1.75rem; margin-bottom: 2.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 style="font-size: 1.15rem; color: #ffffff;">➕ Issue New Manufacturer Clearance</h3>
+            <span class="mono" style="font-size: 0.72rem; color: var(--phosphor-green);">[AUTH-LEVEL: TIER-2 ENTITY]</span>
+        </div>
 
         <form method="POST" action="{{ url_for('admin_users') }}">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
-                <div class="form-group" style="margin-bottom: 0.75rem;">
-                    <label class="form-label">Contact Full Name</label>
-                    <input type="text" name="full_name" class="form-input" placeholder="Dr. Sarah Connor" required>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">Pharmaceutical Corporation Name</label>
+                    <input type="text" name="company_name" class="form-input" placeholder="e.g. Novartis Pharma AG" required>
                 </div>
-                <div class="form-group" style="margin-bottom: 0.75rem;">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" name="phone" class="form-input" placeholder="+1 (800) 555-0199" required>
+                <div class="form-group">
+                    <label class="form-label">Representative Contact Name</label>
+                    <input type="text" name="full_name" class="form-input" placeholder="e.g. Dr. Helena Vance" required>
                 </div>
-                <div class="form-group" style="margin-bottom: 0.75rem;">
-                    <label class="form-label">Pharmaceutical Company</label>
-                    <input type="text" name="company_name" class="form-input" placeholder="AstraZeneca Global" required>
+                <div class="form-group">
+                    <label class="form-label">Official Phone / Emergency Contact</label>
+                    <input type="tel" name="phone" class="form-input mono" placeholder="+1 (800) 555-0199" required>
                 </div>
-                <div class="form-group" style="margin-bottom: 0.75rem;">
-                    <label class="form-label">Username</label>
-                    <input type="text" name="username" class="form-input" placeholder="astra_sarah" required>
+                <div class="form-group">
+                    <label class="form-label">Assigned Login Username</label>
+                    <input type="text" name="username" class="form-input mono" placeholder="e.g. novartis_batch_ops" required>
                 </div>
-                <div class="form-group" style="margin-bottom: 0.75rem;">
-                    <label class="form-label">Assigned Password</label>
-                    <input type="text" name="password" class="form-input" placeholder="SecurePass2026!" required>
+                <div class="form-group">
+                    <label class="form-label">Assigned Passkey</label>
+                    <input type="text" name="password" class="form-input mono" placeholder="e.g. NovSecPass#2026" required>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: auto; padding: 0.75rem 1.5rem;">
-                <span>Create Enterprise Account</span>
+            <button type="submit" class="btn btn-cyber" style="width: auto; padding: 0.75rem 1.75rem; margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem;">
+                [ ISSUE CREDENTIALS & STORE IN AUDIT LEDGER ]
             </button>
         </form>
     </div>
 
-    <!-- Registered Accounts Table -->
-    <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem; text-align: left;">Active Manufacturer Accounts</h3>
-    
-    <div style="overflow-x: auto; width: 100%; margin-bottom: 2.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
-        <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+    <!-- Active Manufacturer Accounts Table -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <h3 style="font-size: 1.15rem; color: #fff;">Authorized Pharmaceutical Entities ({{ users|length }})</h3>
+        <span class="mono" style="font-size: 0.72rem; color: var(--text-dim);">STATUS: ACTIVE_PERMITS</span>
+    </div>
+
+    <div class="data-table-container">
+        <table class="data-table">
             <thead>
-                <tr style="background: rgba(255, 255, 255, 0.04); border-bottom: 1px solid var(--border-color);">
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Name</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Company</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Username</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Phone</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted); text-align: right;">Action</th>
+                <tr>
+                    <th>Licensed Entity</th>
+                    <th>Representative</th>
+                    <th>Login Username</th>
+                    <th>Contact Phone</th>
+                    <th>Issued Date</th>
+                    <th style="text-align: right;">Revocation Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for u in users %}
-                <tr style="border-bottom: 1px solid var(--border-color);">
-                    <td style="padding: 0.75rem 1rem; font-weight: 600;">{{ u['full_name'] }}</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">{{ u['company_name'] }}</td>
-                    <td style="padding: 0.75rem 1rem;"><code class="mono">{{ u['username'] }}</code></td>
-                    <td style="padding: 0.75rem 1rem;"><a href="tel:{{ u['phone'] }}">{{ u['phone'] }}</a></td>
-                    <td style="padding: 0.75rem 1rem; text-align: right;">
+                <tr>
+                    <td style="font-weight: 700; color: var(--cyber-cyan);">{{ u['company_name'] }}</td>
+                    <td style="color: #fff;">{{ u['full_name'] }}</td>
+                    <td class="mono" style="color: var(--text-primary); font-size: 0.85rem;">{{ u['username'] }}</td>
+                    <td class="mono" style="font-size: 0.8rem;"><a href="tel:{{ u['phone'] }}">{{ u['phone'] }}</a></td>
+                    <td class="mono" style="font-size: 0.75rem; color: var(--text-dim);">{{ u['created_at'][:10] if u['created_at'] else '2026-01-01' }}</td>
+                    <td style="text-align: right;">
                         <form action="{{ url_for('delete_user', user_id=u['id']) }}" method="POST" style="display: inline; margin: 0;">
-                            <button type="submit" class="btn btn-danger" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;">
-                                Delete
+                            <button type="submit" class="btn btn-danger" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.72rem; font-family: var(--font-mono); display: inline-flex;">
+                                [ REVOKE PERMIT ]
                             </button>
                         </form>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="5" style="padding: 2rem; text-align: center; color: var(--text-faint);">
-                        No enterprise accounts created yet.
+                    <td colspan="6" style="padding: 2.5rem; text-align: center; color: var(--text-dim); font-family: var(--font-mono);">
+                        No manufacturer credentials issued yet. Use the form above to provision the first verified entity.
                     </td>
                 </tr>
                 {% endfor %}
@@ -91,29 +117,33 @@
         </table>
     </div>
 
-    <!-- Recent Secured Batches Table -->
-    <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem; text-align: left;">Recent Batch Ledger Entries</h3>
-    <div style="overflow-x: auto; width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
-        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+    <!-- Global Batch Audit Trail -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <h3 style="font-size: 1.15rem; color: #fff;">Supply Chain Batch Audit Log</h3>
+        <span class="mono" style="font-size: 0.72rem; color: var(--text-dim);">LIVE_REGISTRY // RECENT 10</span>
+    </div>
+
+    <div class="data-table-container">
+        <table class="data-table">
             <thead>
-                <tr style="background: rgba(255, 255, 255, 0.04); border-bottom: 1px solid var(--border-color);">
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Serial UID</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Medicine</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Strength</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted);">Expiry</th>
-                    <th style="padding: 0.75rem 1rem; color: var(--text-muted); text-align: right;">Action</th>
+                <tr>
+                    <th>Serial UID</th>
+                    <th>Registered Manufacturer</th>
+                    <th>Medicine Details</th>
+                    <th>Expiry</th>
+                    <th style="text-align: right;">Live Check</th>
                 </tr>
             </thead>
             <tbody>
                 {% for m in medicines %}
-                <tr style="border-bottom: 1px solid var(--border-color);">
-                    <td style="padding: 0.75rem 1rem;"><code class="mono" style="color: var(--accent-cyan);">{{ m['uid'] }}</code></td>
-                    <td style="padding: 0.75rem 1rem; font-weight: 600;">{{ m['name'] }}</td>
-                    <td style="padding: 0.75rem 1rem;">{{ m['mg'] }} mg</td>
-                    <td style="padding: 0.75rem 1rem; color: var(--accent-amber);">{{ m['expiry_date'] }}</td>
-                    <td style="padding: 0.75rem 1rem; text-align: right;">
-                        <a href="{{ url_for('verify_medicine', uid=m['uid']) }}" class="btn btn-outline" style="width: auto; padding: 0.35rem 0.75rem; font-size: 0.75rem;">
-                            Verify
+                <tr>
+                    <td class="mono" style="color: var(--phosphor-green); font-weight: 700;">{{ m['uid'] }}</td>
+                    <td style="font-weight: 600; color: #fff;">{{ m['registered_by'] }}</td>
+                    <td>{{ m['name'] }} ({{ m['mg'] }}mg)</td>
+                    <td class="mono" style="color: var(--warning-amber); font-size: 0.8rem;">{{ m['expiry_date'] }}</td>
+                    <td style="text-align: right;">
+                        <a href="{{ url_for('verify_medicine', uid=m['uid']) }}" target="_blank" class="btn btn-subtle" style="width: auto; padding: 0.3rem 0.65rem; font-size: 0.72rem; font-family: var(--font-mono); display: inline-flex;">
+                            Verify ↗
                         </a>
                     </td>
                 </tr>
@@ -121,5 +151,6 @@
             </tbody>
         </table>
     </div>
+
 </div>
 {% endblock %}

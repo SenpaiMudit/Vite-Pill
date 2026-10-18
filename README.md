@@ -6,12 +6,13 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.0.0-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![Zero-JS](https://img.shields.io/badge/JavaScript-0%25%20(Pure%20HTML%2BCSS)-yellow?style=for-the-badge&logo=html5&logoColor=white)](#-the-zero-javascript-philosophy)
-[![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
+[![Zero-JS](https://img.shields.io/badge/JavaScript-0%25%20(Pure%20HTML%2BCSS)-yellow?style=for-the-badge&logo=html5&logoColor=white)](#-the-zero-javascript-architecture)
+[![Managed DB](https://img.shields.io/badge/Database-PostgreSQL%20%7C%20SQLite-blue?style=for-the-badge&logo=postgresql&logoColor=white)](#-database-configuration)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SenpaiMudit/Vite-Pill)
 [![Android APK](https://img.shields.io/badge/Android%20App-753%20KB%20APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](vite-pill.apk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-**Vite Pill** is an anti-counterfeit pharmaceutical verification system engineered to combat fake medications across the global supply chain using unit-level micro-QR serialization and a **100% Zero-JavaScript** web architecture.
+**Vite Pill** is an anti-counterfeit pharmaceutical verification web application designed to combat fake medications across the global supply chain using unit-level micro-QR serialization and a strict **100% Zero-JavaScript** architecture accessible on any device.
 
 </div>
 
@@ -19,97 +20,70 @@
 
 ## 📌 Table of Contents
 
-- [The Crisis We Solve](#-the-crisis-we-solve)
-- [Core Architecture & Solution](#-core-architecture--solution)
-- [⚡ The Zero-JavaScript Philosophy](#-the-zero-javascript-philosophy)
-- [✨ Key Features](#-key-features)
-- [📱 Android Field App (APK)](#-android-field-app-apk)
+- [The Problem We Solve](#-the-problem-we-solve)
+- [How It Works](#-how-it-works)
+- [⚡ The Zero-JavaScript Architecture](#-the-zero-javascript-architecture)
 - [📐 System Flow & Verification Logic](#-system-flow--verification-logic)
+- [🚀 Hosting on Render (1-Click & Manual)](#-hosting-on-render-1-click--manual)
+- [🗄️ Database Configuration](#️-database-configuration)
+- [💻 Local Development & Installation](#-local-development--installation)
+- [📱 Android Field App (APK)](#-android-field-app-apk)
 - [🗂️ Project Structure](#️-project-structure)
-- [🚀 Quickstart & Installation](#-quickstart--installation)
-- [🌐 Deployment Guide](#-deployment-guide)
-- [🎨 Frontend Standard Compliance Matrix](#-frontend-standard-compliance-matrix)
-- [🔒 Security & Disclosures](#-security--disclosures)
-- [📄 License & Contact](#-license--contact)
+- [📄 License & Author](#-license--author)
 
 ---
 
-## 🌍 The Crisis We Solve
+## 🌍 The Problem We Solve
 
 According to the **World Health Organization (WHO)**:
-* Over **1,000,000 deaths occur annually** due to counterfeit and substandard pharmaceuticals.
+* Over **1,000,000 deaths occur every year** due to counterfeit and substandard pharmaceuticals.
 * In developing nations, **1 in 10 medical products** is substandard or falsified.
-* Traditional barcodes only track shipping pallets or warehouse boxes — **once individual blister packs reach retail pharmacies or rural clinics, patients have zero way to verify authenticity**.
+* Traditional barcodes only track shipping pallets or warehouse boxes — once individual blister packs reach retail pharmacies or rural clinics, patients have zero way to verify authenticity.
 
-Criminal networks exploit this gap by collecting empty authentic boxes and refilling them with contaminated or inert pills (e.g. chalk, starch, or toxic compounds).
+Criminal networks exploit this gap by refilling discarded authentic packaging with contaminated or inert substances (such as chalk, flour, or toxic industrial fillers).
 
-**Vite Pill solves this at the unit level.** By imprinting unique cryptographic micro-QR codes directly onto blister pockets, each pill package carries an unforgeable digital identity linked directly to manufacturer production records.
+**Vite Pill solves this at the individual package level.** By imprinting unique cryptographic micro-QR codes directly onto blister pockets and medicine bottles, each unit carries an unforgeable digital identity linked directly to verified manufacturer production records.
 
 ---
 
-## 💡 Core Architecture & Solution
+## 💡 How It Works
 
-Vite Pill operates as a three-pillar pharmaceutical verification network:
+Vite Pill operates across three distinct roles:
 
-1. **Pharmaceutical Manufacturer Registry (`/add`)**:
-   - Licensed pharmaceutical manufacturers securely input batch specifics: Active Pharmaceutical Ingredients (API), dosage strength (mg), clinical indications, manufacturing date, and expiry date.
+1. **Consumer & Patient Verification (`/scan`, `/verify/<uid>`)**:
+   - Anyone can snap a photo of the code or enter the 16-character serial code directly.
+   - The server instantly validates the serial against the verified pharmaceutical registry:
+     - 🟢 **Genuine**: Displays medication name, dosage (mg), active ingredients, indications, manufacturing batch, and expiry status.
+     - 🔴 **Counterfeit Alert**: Triggers a high-contrast emergency warning advising the patient not to ingest the medication, alongside direct toll-free reporting hotlines.
+
+2. **Pharmaceutical Manufacturer Portal (`/add`, `/manufacturer/dashboard`)**:
+   - Authorized manufacturers securely register production batches with manufacturing/expiry dates, chemical composition, and dosage.
    - Built-in duplicate detection blocks fraudulent attempts to re-register existing batch identifiers.
-   - Generates a unique 16-hex cryptographic serial UID and high-density micro-QR code.
+   - Automatically generates high-density micro-QR image matrices ready for packaging printing.
 
-2. **Consumer & Pharmacy Verification Engine (`/scan`, `/verify/<uid>`)**:
-   - Patients or pharmacists scan the blister pack's micro-QR with any camera or upload a photo.
-   - The server decodes the optical matrix and executes a sub-millisecond query against the secured database.
-   - Returns a high-visibility verified drug card:
-     - 🟢 **Verified Authentic**: Displays exact chemical composition, indications, manufacturer, and expiry status.
-     - 🔴 **Counterfeit Warning**: If the UID does not exist or has been cloned, triggers an immediate warning with hotlines to report the incident directly to health authorities.
-
-3. **Master Regulatory Authority (`/admin`)**:
-   - Provisioning portal for pharmaceutical enterprise accounts.
-   - Real-time audit log of all registered medication batches.
+3. **Master Health Authority (`/admin/users`)**:
+   - Dedicated portal for health inspectors and regulatory administrators.
+   - Manages and audits manufacturer credentials to ensure unauthorized counterfeiters cannot register fake accounts.
 
 ---
 
-## ⚡ The Zero-JavaScript Philosophy
+## ⚡ The Zero-JavaScript Architecture
 
-**Vite Pill is strictly built with 0% JavaScript (Pure HTML5 + Vanilla CSS3).**
+**Vite Pill runs with 0% client-side JavaScript.** There are zero `<script>` tags and zero inline event handlers.
 
 ### Why Zero JavaScript?
 
-| Vector | Traditional Web App (React/Vue/JS) | Vite Pill Zero-JS Architecture |
+| Advantage | Traditional JS Web App | Vite Pill Zero-JS Architecture |
 |---|---|---|
-| **Client-Side XSS Vulnerabilities** | High — vulnerable to script injection & DOM exploits | **Zero** — no client script execution possible |
-| **Device & Browser Compatibility** | Fails on older hospital terminals or feature phones | **100% universal** — works on any browser engine |
-| **Bandwidth & Initial Load** | Heavy (1MB+ bundle parsing & execution) | **Sub-100ms** instant paint (~12 KB payload) |
-| **Battery Consumption in Field** | CPU-intensive client re-rendering | Negligible battery draw for field inspectors |
-| **State Management** | Complex client-side stores | Pure CSS `:target`, checkbox hacks & native HTTP POST/GET |
+| **Client-Side Exploits** | Vulnerable to script injection (XSS) & extension tampering | **Zero** — no client script execution possible |
+| **Device Compatibility** | Often crashes on low-end phones or hospital terminals | **100% universal** — works on any modern or legacy browser |
+| **Payload & Speed** | Heavy megabyte bundles, slow parser startup | **Sub-100ms** paint, minimal payload |
+| **Bandwidth Efficiency** | Requires multiple network round-trips for JS frameworks | Instant server-rendered HTML forms |
 
-### How Pure CSS Powers Interactivity:
-* **Mobile Drawer Navigation**: Pure CSS checkbox toggle hack (`input.nav-toggle:checked ~ nav`).
-* **Modal Windows**: Pure CSS `:target` pseudo-class (`#admin-portal:target`).
-* **Interactive Live Simulator**: Pure CSS radio tabs (`#tab-authentic:checked`).
-* **Forms & Validation**: Native HTML5 form validation (`required`, `pattern`, `type="date"`, `type="number"`).
-
----
-
-## ✨ Key Features
-
-- **Unit-Level Cryptographic Serialization**: Unique 16-character hexadecimal identifier per batch or pill packet.
-- **Server-Side QR Image Analysis**: Pyzbar + Pillow decode pipeline directly on the server.
-- **Direct Serial Verification**: Immediate lookup via `https://domain/verify/<uid>` without needing proprietary apps.
-- **Expiry Safety Guard**: Automatic alert highlighting expired or near-expiry authentic medications.
-- **Duplicate Batch Collision Prevention**: Prevents duplicate production runs with identical metadata.
-- **Role-Based Authentication**: Isolated Manufacturer Portal and Master Admin Dashboard.
-- **Custom 404 & Safety Fallbacks**: Branded error handler preventing broken pages.
-
----
-
-## 📱 Android Field App (APK)
-
-For field drug inspectors, clinical dispensaries, and border control officers, Vite Pill includes a standalone Android APK:
-
-* **File**: [`vite-pill.apk`](vite-pill.apk) (753 KB)
-* **Compatibility**: Android 8.0+
-* **Functionality**: Optical camera micro-QR scanner with zero external tracking libraries.
+### Pure CSS Interactions:
+* **Mobile Drawer Navigation**: Accessible CSS checkbox toggle hack (`input.nav-checkbox:checked ~ nav`).
+* **Interactive Previews**: CSS radio states (`input.sim-radio:checked`).
+* **Accessible Typography**: High-contrast clinical palette, thumb-friendly tap targets (minimum 52px height).
 
 ---
 
@@ -117,14 +91,14 @@ For field drug inspectors, clinical dispensaries, and border control officers, V
 
 ```mermaid
 flowchart TD
-    A[Pharma Manufacturer] -->|Inputs Drug Details| B[Vite Pill Batch Registry]
+    A[Pharma Manufacturer] -->|Inputs Batch Details| B[Vite Pill Batch Registry]
     B -->|Check Duplicate Conditions| C{Exists in DB?}
     C -->|Yes| D[Block Duplicate & Alert]
     C -->|No| E[Generate Cryptographic 16-Hex UID]
     E --> F[Generate High-Density Micro-QR]
     F --> G[Imprint on Blister Pack]
 
-    H[Patient / Pharmacist] -->|Scans Micro-QR / Enters UID| I[Server-Side Decoder]
+    H[Patient / Pharmacist] -->|Scans Micro-QR / Enters UID| I[Server-Side Optical Decoder]
     I --> J{UID in Registry?}
     J -->|Yes| K[🟢 Authentic Drug Spec Card]
     K --> L[Verify Ingredients, Expiry & Dosage]
@@ -134,43 +108,68 @@ flowchart TD
 
 ---
 
-## 🗂️ Project Structure
+## 🚀 Hosting on Render (1-Click & Manual)
 
-```
-vite_pill/
-├── index.html                  # 100% Zero-JS High-Converting Landing Page
-├── vite-pill.apk               # Android Mobile Verification Application (753 KB)
-├── .gitignore                  # Git ignore rules for Python, SQLite & OS files
-├── README.md                   # Comprehensive System Documentation
-└── vite_pill/                  # Core Flask Application
-    ├── app.py                  # Zero-JS Routes, Auth, QR Generation & Pyzbar Logic
-    ├── requirements.txt        # Production Dependencies (Flask, Pyzbar, Pillow, Gunicorn)
-    ├── Procfile                # One-Click Deployment for Render / Railway
-    ├── static/
-    │   ├── logo.svg            # Official Vite Pill Brand Vector
-    │   ├── css/
-    │   │   └── style.css       # Zero-JS Design System & Responsive Foundation
-    │   └── qrcodes/            # Generated Cryptographic Micro-QR Assets
-    └── templates/
-        ├── base.html           # Master Layout (Pure CSS Mobile Menu, Header, Footer)
-        ├── index.html          # Portal Hub & Live Statistics
-        ├── scan_medicine.html  # Optical Scan & Manual UID Lookup
-        ├── add_medicine.html   # Manufacturer Batch Registry & QR Generator
-        ├── result.html         # Authentic vs Counterfeit Verified Specs Card
-        ├── login.html          # Manufacturer Employee Sign In
-        ├── admin_login.html    # Master Admin Authentication
-        ├── admin_users.html    # Enterprise Account Management Dashboard
-        └── 404.html            # Custom Zero-JS 404 Error Page
-```
+This repository includes a pre-configured [`render.yaml`](render.yaml) Blueprint that automatically provisions both the **Web Service** and a **Render Managed PostgreSQL** database.
+
+### Option A: 1-Click Blueprint Deployment (Fastest)
+
+1. Fork or push this repository to your GitHub account: `https://github.com/SenpaiMudit/Vite-Pill`.
+2. Log in to [Render](https://render.com).
+3. Click **New +** → **Blueprint**.
+4. Connect this repository and click **Apply**.
+5. Render will automatically:
+   - Provision a managed PostgreSQL database (`vite-pill-db`).
+   - Create the Python web service.
+   - Inject the internal `DATABASE_URL` and generate a secure `SECRET_KEY`.
+   - Run database schema initialization and seed the master admin account (`admin` / `admin123`).
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SenpaiMudit/Vite-Pill)
 
 ---
 
-## 🚀 Quickstart & Installation
+### Option B: Manual Web Service & Database Setup
+
+If you prefer to configure resources manually in the Render Dashboard:
+
+1. **Create Managed Database**:
+   - Go to **New +** → **PostgreSQL**.
+   - Name: `vite-pill-db`, Database: `vite_pill`, Plan: **Free**.
+   - Copy the **Internal Database URL**.
+
+2. **Create Web Service**:
+   - Go to **New +** → **Web Service** and select this GitHub repository.
+   - **Runtime**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn wsgi:app`
+   - **Plan**: Free
+
+3. **Configure Environment Variables**:
+   Add the following in the Web Service **Environment** tab:
+
+   | Variable | Value | Notes |
+   |---|---|---|
+   | `DATABASE_URL` | `<Internal Database URL>` | From your Render PostgreSQL instance |
+   | `SECRET_KEY` | `<Random 32-character string>` | Protects session cookies |
+   | `PYTHON_VERSION` | `3.11.9` | Recommended Python version |
+
+---
+
+## 🗄️ Database Configuration
+
+Vite Pill includes a multi-engine database adapter ([`vite_pill/db.py`](vite_pill/db.py)) with automatic driver selection:
+
+* **PostgreSQL (Render Managed)**: Activated automatically when `DATABASE_URL` is set. Standardizes `postgres://` to `postgresql://` and uses `psycopg2-binary` with dictionary row mappings.
+* **SQLite (Local Fallback)**: Automatically used if `DATABASE_URL` is absent. Creates `database.db` locally for zero-configuration development.
+
+---
+
+## 💻 Local Development & Installation
 
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/SenpaiMudit/Vite-Pill.git
-cd Vite-Pill/vite_pill
+cd Vite-Pill
 ```
 
 ### 2. Set Up Virtual Environment
@@ -189,67 +188,75 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-> **Note on Pyzbar**: On Windows, pyzbar includes bundled zbar DLLs. On Linux distributions (Ubuntu/Debian), install the system C library:
-> ```bash
-> sudo apt-get update && sudo apt-get install -y libzbar0
-> ```
+> **Note on QR Image Decoding (Pyzbar)**:
+> - On **Windows**, `pyzbar` includes bundled DLLs.
+> - On **Linux (Ubuntu/Debian)**: `sudo apt-get install -y libzbar0`
+> - If `pyzbar` is not present, manual UID lookup (`/scan?manual_uid=...`) continues to work without interruption.
 
-### 4. Run the Application
+### 4. Run the Local Server
 ```bash
-python app.py
+python wsgi.py
 ```
-Visit `http://127.0.0.1:5000` in your browser.
+Open **`http://127.0.0.1:5000`** in your browser.
 
 ---
 
-## 🌐 Deployment Guide
+## 📱 Android Field App (APK)
 
-### Deploying to Render / Railway / PaaS
+For field drug inspectors, rural dispensaries, and border control officers, Vite Pill provides a standalone Android APK:
 
-1. Connect your GitHub repository: `https://github.com/SenpaiMudit/Vite-Pill`
-2. **Build Command**: `pip install -r vite_pill/requirements.txt`
-3. **Start Command**: `cd vite_pill && gunicorn app:app`
-4. **Environment Variables**:
-   * `SECRET_KEY`: Set a secure random string.
-   * `PORT`: `5000` (auto-assigned by Render/Railway).
+* **File**: [`vite-pill.apk`](vite-pill.apk) (753 KB)
+* **Direct Download Route**: `https://your-domain/vite-pill.apk` or `https://your-domain/download/apk`
+* **Compatibility**: Android 8.0+
+* **Functionality**: Optical camera micro-QR scanner with zero external tracking libraries.
 
 ---
 
-## 🎨 Frontend Standard Compliance Matrix
+## 🗂️ Project Structure
 
-This project adheres strictly to modern web and usability standards:
-
-| Requirement | Implementation Detail | Status |
-|---|---|:---:|
-| **0% JavaScript** | No `<script>` tags, no inline event handlers, pure CSS interactivity | ✅ Passed |
-| **No Horizontal Scrolling** | `overflow-x: hidden`, strict max-width constraints on all viewports | ✅ Passed |
-| **No Broken Links** | All internal routes, portals, and anchor IDs mapped and verified | ✅ Passed |
-| **Pure CSS Mobile Menu** | Accessible hamburger navigation via pure CSS checkbox state | ✅ Passed |
-| **Favicon** | High-definition SVG pill & cross mark embedded in `<head>` | ✅ Passed |
-| **SEO Page Titles** | Descriptive, unique titles for every route | ✅ Passed |
-| **Meta Descriptions** | High-relevance pharmaceutical and safety meta tags | ✅ Passed |
-| **Footer & Copyright** | Fixed to **2026** with clean links across all views | ✅ Passed |
-| **Custom 404 Page** | Informative branded error page with recovery buttons | ✅ Passed |
-| **Clickable Phone** | Direct mobile dialing: `<a href="tel:+18005550199">` | ✅ Passed |
-| **Clickable Email** | Pre-formatted support link: `<a href="mailto:verify@vitepill.io">` | ✅ Passed |
-| **Clickable Logo** | Brand mark routes back to home hub | ✅ Passed |
-| **Mobile Optimized** | 100% responsive fluid grid down to 320px screen width | ✅ Passed |
+```
+Vite-Pill/
+├── index.html                  # Zero-JS High-Converting Marketing Landing Page
+├── logo.svg                    # Official Vite Pill Brand Vector
+├── vite-pill.apk               # Android Mobile Verification Application (753 KB)
+├── requirements.txt            # Production Dependencies (Flask, psycopg2, Pillow, etc.)
+├── Procfile                    # Render / Gunicorn Procfile
+├── render.yaml                 # Render Blueprint Specification (Web Service + PostgreSQL)
+├── wsgi.py                     # Root WSGI Application Entrypoint
+├── PRODUCT.md                  # Comprehensive Product & Anti-Fraud Specifications
+├── DESIGN.md                   # Clinical Design System & Typography Guidelines
+├── LICENSE                     # MIT Open Source License
+└── vite_pill/                  # Core Application Package
+    ├── app.py                  # Zero-JS Routes, Authentication, Verification Engine
+    ├── db.py                   # Multi-Engine DB Adapter (PostgreSQL, SQLite)
+    ├── database.db             # Local SQLite database (development only)
+    ├── requirements.txt        # Package-level requirements
+    ├── Procfile                # Package-level Procfile
+    ├── static/
+    │   ├── logo.svg            # Official Brand SVG
+    │   ├── vite-pill.apk       # Static APK copy for direct download
+    │   ├── css/
+    │   │   └── style.css       # Zero-JS Clinical Design System
+    │   └── qrcodes/            # Generated Cryptographic Micro-QR Assets
+    └── templates/
+        ├── base.html           # Layout with Pure CSS Navigation, Header, Footer
+        ├── index.html          # Public Medicine Verification Hub
+        ├── scan_medicine.html  # Optical Camera Scan & Manual UID Ingestion
+        ├── add_medicine.html   # Manufacturer Batch Registry & QR Generator
+        ├── result.html         # High-Visibility Genuine vs Counterfeit Card
+        ├── login.html          # Medicine Company Sign In
+        ├── admin_login.html    # Master Admin Authentication
+        ├── admin_users.html    # Company Provisioning & Batch Audit Logs
+        └── 404.html            # Custom Zero-JS 404 Error Page
+```
 
 ---
 
-## 🔒 Security & Disclosures
+## 📄 License & Author
 
-* **Tamper-Evident Hashing**: Cryptographic serials prevent enumeration attacks.
-* **Zero Client Scripts**: Immunizes the platform from browser extension tampering and XSS exploits.
-* **Responsible Disclosure**: To report potential drug counterfeit rings or software vulnerabilities, contact `security@vitepill.io`.
+Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
 
----
-
-## 📄 License & Contact
-
-Distributed under the **MIT License**. See `LICENSE` for details.
-
-- **Lead Maintainer**: [Mudit Misra (@SenpaiMudit)](https://github.com/SenpaiMudit)
-- **Direct Phone**: [+1 (800) 555-0199](tel:+18005550199)
-- **Official Inquiries**: [verify@vitepill.io](mailto:verify@vitepill.io)
-- **Repository**: [https://github.com/SenpaiMudit/Vite-Pill](https://github.com/SenpaiMudit/Vite-Pill)
+* **Author**: [Mudit Misra (@SenpaiMudit)](https://github.com/SenpaiMudit)
+* **Toll-Free Safety Hotline**: [+1 (800) 555-0199](tel:+18005550199)
+* **Official Inquiries**: [verify@vitepill.io](mailto:verify@vitepill.io)
+* **GitHub Repository**: [https://github.com/SenpaiMudit/Vite-Pill](https://github.com/SenpaiMudit/Vite-Pill)

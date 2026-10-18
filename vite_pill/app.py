@@ -23,85 +23,15 @@ app.secret_key = os.environ.get('SECRET_KEY', 'vite-pill-secure-key-2026-mudit')
 QR_FOLDER = os.path.join(app.root_path, 'static', 'qrcodes')
 os.makedirs(QR_FOLDER, exist_ok=True)
 
-DB_PATH = os.path.join(app.root_path, 'database.db')
-
-
 # -----------------------------------------------------------------------------
-# DATABASE SETUP & HELPERS
+# DATABASE ADAPTER (RunxBuild Managed PostgreSQL / MySQL + Local SQLite fallback)
 # -----------------------------------------------------------------------------
-def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+try:
+    from .db import get_db_connection, init_db, get_db_config
+except ImportError:
+    from db import get_db_connection, init_db, get_db_config
 
-
-def init_db():
-    conn = get_db_connection()
-    # Medicine registry table
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS medicine (
-            uid TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            manufacturing_date TEXT NOT NULL,
-            expiry_date TEXT NOT NULL,
-            ingredients TEXT NOT NULL,
-            ideal_use TEXT NOT NULL,
-            mg TEXT NOT NULL,
-            registered_by TEXT DEFAULT 'Pfizer Healthcare',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-
-    # Employee / Manufacturer user accounts table
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            full_name TEXT NOT NULL,
-            phone TEXT NOT NULL,
-            company_name TEXT NOT NULL,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            role TEXT NOT NULL DEFAULT 'company',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-
-    # Seed master admin if not exists
-    admin = conn.execute('SELECT * FROM users WHERE username = ?', ('admin',)).fetchone()
-    if not admin:
-        conn.execute('''
-            INSERT INTO users (full_name, phone, company_name, username, password, role)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', ('Master Administrator', '+18005550199', 'Vite Pill Authority', 'admin', 'admin123', 'admin'))
-
-    # Seed sample authentic medicine if database is empty
-    sample = conn.execute('SELECT COUNT(*) as count FROM medicine').fetchone()
-    if sample and sample['count'] == 0:
-        sample_uid = 'a8f4c2e1b9304958'
-        conn.execute('''
-            INSERT INTO medicine 
-            (uid, name, manufacturing_date, expiry_date, ingredients, ideal_use, mg, registered_by)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (
-            sample_uid,
-            'Amoxicillin Trihydrate',
-            '2025-01-15',
-            '2027-01-15',
-            'Amoxicillin 500mg, Magnesium Stearate, Titanium Dioxide',
-            'Bacterial respiratory infections, strep throat, and skin infections',
-            '500',
-            'Novartis Pharma'
-        ))
-
-        # Generate seed QR
-        qr = qrcode.make(sample_uid)
-        qr_filepath = os.path.join(QR_FOLDER, f"{sample_uid}.png")
-        qr.save(qr_filepath)
-
-    conn.commit()
-    conn.close()
-
-
+# Initialize schema & initial seeds
 init_db()
 
 
@@ -110,11 +40,13 @@ init_db()
 # -----------------------------------------------------------------------------
 @app.context_processor
 def inject_global_data():
+    cfg = get_db_config()
     return {
         'current_year': 2026,
         'support_phone': '+1 (800) 555-0199',
         'support_email': 'verify@vitepill.io',
-        'pyzbar_ready': PYZBAR_AVAILABLE
+        'pyzbar_ready': PYZBAR_AVAILABLE,
+        'db_backend': cfg['type']
     }
 
 
@@ -362,15 +294,16 @@ def admin_users():
         if not all([full_name, phone, company_name, username, password]):
             flash("All account fields are required.", "danger")
         else:
-            try:
+            existing_user = conn.execute('SELECT id FROM users WHERE username = ?', (username,)).fetchone()
+            if existing_user:
+                flash(f"Username '{username}' is already taken. Please choose another.", "danger")
+            else:
                 conn.execute('''
                     INSERT INTO users (full_name, phone, company_name, username, password, role)
                     VALUES (?, ?, ?, ?, ?, ?)
                 ''', (full_name, phone, company_name, username, password, 'company'))
                 conn.commit()
                 flash(f"Account for {full_name} ({company_name}) successfully created!", "success")
-            except sqlite3.IntegrityError:
-                flash(f"Username '{username}' is already taken.", "danger")
 
     users = conn.execute('SELECT * FROM users WHERE role = ? ORDER BY id DESC', ('company',)).fetchall()
     medicines = conn.execute('SELECT * FROM medicine ORDER BY created_at DESC LIMIT 10').fetchall()
@@ -397,6 +330,29 @@ def logout():
     session.clear()
     flash("You have been signed out safely.", "info")
     return redirect(url_for('index'))
+
+
+# -----------------------------------------------------------------------------
+# MOBILE APK DOWNLOAD ROUTE
+# -----------------------------------------------------------------------------
+@app.route('/download/apk')
+@app.route('/vite-pill.apk')
+def download_apk():
+    """Serve the 753 KB Android APK file for mobile users and field inspectors."""
+    search_dirs = [
+        os.path.join(app.root_path, 'static'),
+        os.path.dirname(app.root_path),
+        app.root_path
+    ]
+    for directory in search_dirs:
+        if os.path.exists(os.path.join(directory, 'vite-pill.apk')):
+            return send_from_directory(
+                directory,
+                'vite-pill.apk',
+                as_attachment=True,
+                mimetype='application/vnd.android.package-archive'
+            )
+    abort(404)
 
 
 # -----------------------------------------------------------------------------

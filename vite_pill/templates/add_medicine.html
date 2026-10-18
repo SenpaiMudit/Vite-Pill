@@ -3,46 +3,49 @@
 {% block title %}Register Medicine Batch — {{ company_name }} | Vite Pill{% endblock %}
 
 {% block content %}
-<div class="card-panel" style="max-width: 620px;">
-    <div class="card-header-block">
-        <div style="font-size: 0.82rem; font-weight: 600; color: var(--color-verified-green); margin-bottom: 0.25rem;">
+<div class="app-card" style="max-width: 650px;">
+    <div class="card-title-group">
+        <div style="font-size: 0.95rem; font-weight: 700; color: var(--blue-primary); margin-bottom: 0.35rem;">
             {{ company_name }}
         </div>
-        <h1>Register medicine batch</h1>
-        <p>Record a new production run into the verification registry and generate its micro-QR code.</p>
+        <h1 class="card-main-title">Add new medicine batch</h1>
+        <p class="card-sub-desc">
+            Enter the details of the medicine batch to generate its official verification QR code.
+        </p>
     </div>
 
     {% if error_msg %}
-        <div class="alert-box alert-danger">
-            <span>{{ error_msg }}</span>
+        <div class="status-banner danger" style="padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-weight: 700;">{{ error_msg }}</div>
         </div>
     {% endif %}
 
     {% if success_msg %}
-        <div class="alert-box alert-success">
-            <span>{{ success_msg }}</span>
+        <div class="status-banner safe" style="margin-bottom: 1.75rem;">
+            <div style="font-weight: 800; font-size: 1.25rem; margin-bottom: 0.25rem;">{{ success_msg }}</div>
+            <div style="font-size: 0.95rem;">The official QR code is ready below.</div>
         </div>
 
         {% if qr_filename %}
-            <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-verified-green-border); border-radius: var(--radius-sm); padding: 1.5rem; text-align: center; margin-bottom: 1.75rem;">
-                <div style="font-weight: 700; color: var(--color-verified-green); font-size: 0.95rem; margin-bottom: 0.75rem;">
-                    Micro-QR code generated
-                </div>
+            <div style="background: var(--bg-subtle); border: 2px solid var(--green-border); border-radius: var(--radius-md); padding: 1.75rem; text-align: center; margin-bottom: 2rem;">
+                <h3 style="color: var(--green-safe); font-size: 1.2rem; margin-bottom: 1rem;">
+                    Official Packaging QR Code
+                </h3>
                 
-                <div style="background: #ffffff; padding: 12px; border-radius: var(--radius-sm); display: inline-block; margin-bottom: 1rem; border: 1px solid var(--color-border);">
-                    <img src="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" alt="Batch QR Code" style="width: 180px; height: 180px; display: block;">
+                <div style="background: #ffffff; padding: 16px; border-radius: var(--radius-sm); display: inline-block; margin-bottom: 1.25rem; border: 2px solid var(--border-color);">
+                    <img src="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" alt="Batch QR Code" style="width: 200px; height: 200px; display: block;">
                 </div>
 
-                <div style="font-size: 0.85rem; color: var(--color-text-subtle); margin-bottom: 1rem;">
-                    Serial code: <code>{{ med_uid }}</code>
+                <div style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 1.25rem;">
+                    Batch Code: <code style="background: #fff; padding: 0.3rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-color);">{{ med_uid }}</code>
                 </div>
 
-                <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" download="vitepill_{{ med_uid }}.png" class="btn btn-primary" style="width: auto; padding: 0.55rem 1.25rem; font-size: 0.88rem;">
-                        Download QR image
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('static', filename='qrcodes/' + qr_filename) }}" download="qr_{{ med_uid }}.png" class="btn btn-green" style="width: auto; padding: 0.8rem 1.5rem;">
+                        📥 Download QR to Print on Foil/Box
                     </a>
-                    <a href="{{ url_for('verify_medicine', uid=med_uid) }}" target="_blank" class="btn btn-secondary" style="width: auto; padding: 0.55rem 1.25rem; font-size: 0.88rem;">
-                        View verification page
+                    <a href="{{ url_for('verify_medicine', uid=med_uid) }}" target="_blank" class="btn btn-white" style="width: auto; padding: 0.8rem 1.5rem;">
+                        Preview What Patients Will See ↗
                     </a>
                 </div>
             </div>
@@ -51,44 +54,44 @@
 
     <!-- Batch Form -->
     <form action="{{ url_for('add_medicine') }}" method="POST">
-        <div class="form-field">
-            <label class="form-label">Medicine name (trade or generic)</label>
-            <input type="text" name="name" class="form-input" placeholder="e.g. Amoxicillin Trihydrate" required autofocus>
+        <div class="form-box">
+            <label class="form-label-big">Medicine name (Trade or Generic)</label>
+            <input type="text" name="name" class="form-input-big" placeholder="e.g. Paracetamol Extra or Amoxicillin" required autofocus>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div class="form-field">
-                <label class="form-label">Dosage strength (mg)</label>
-                <input type="number" name="mg" class="form-input" placeholder="500" min="1" step="any" required>
+            <div class="form-box">
+                <label class="form-label-big">Strength (in mg)</label>
+                <input type="number" name="mg" class="form-input-big" placeholder="500" min="1" step="any" required>
             </div>
-            <div class="form-field">
-                <label class="form-label">Manufacturing date</label>
-                <input type="date" name="manufacturing_date" class="form-input" required>
+            <div class="form-box">
+                <label class="form-label-big">Manufacturing date</label>
+                <input type="date" name="manufacturing_date" class="form-input-big" required>
             </div>
         </div>
 
-        <div class="form-field">
-            <label class="form-label">Expiration date</label>
-            <input type="date" name="expiry_date" class="form-input" required>
+        <div class="form-box">
+            <label class="form-label-big">Expiry date (When does it expire?)</label>
+            <input type="date" name="expiry_date" class="form-input-big" required>
         </div>
 
-        <div class="form-field">
-            <label class="form-label">Active ingredients and formulation</label>
-            <textarea name="ingredients" class="form-textarea" placeholder="e.g. Amoxicillin 500mg, Magnesium Stearate, Titanium Dioxide" required></textarea>
+        <div class="form-box">
+            <label class="form-label-big">Active ingredients</label>
+            <textarea name="ingredients" class="form-textarea-big" placeholder="e.g. Paracetamol 500mg, Caffeine 30mg" required></textarea>
         </div>
 
-        <div class="form-field">
-            <label class="form-label">Approved indications and directions</label>
-            <textarea name="ideal_use" class="form-textarea" placeholder="e.g. Bacterial respiratory infections. Take as directed by physician." required></textarea>
+        <div class="form-box">
+            <label class="form-label-big">What is this medicine used for? (Indications)</label>
+            <textarea name="ideal_use" class="form-textarea-big" placeholder="e.g. For pain relief, fever reduction, headache, and body aches" required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">
-            Save batch and generate code
+        <button type="submit" class="btn btn-blue" style="font-size: 1.2rem; padding: 1.1rem; margin-top: 0.5rem;">
+            <span>Save Batch and Generate QR Code</span>
         </button>
     </form>
 
-    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); text-align: center;">
-        <a href="{{ url_for('manufacturer_dashboard') }}" style="font-size: 0.85rem; color: var(--color-text-subtle);">← Back to console</a>
+    <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); text-align: center;">
+        <a href="{{ url_for('manufacturer_dashboard') }}" style="font-size: 1rem; color: var(--text-muted);">← Back to Company Console</a>
     </div>
 </div>
 {% endblock %}

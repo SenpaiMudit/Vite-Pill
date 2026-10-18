@@ -1,46 +1,50 @@
 {% extends 'base.html' %}
 
-{% block title %}Manufacturer Sign In — Vite Pill{% endblock %}
+{% block title %}Medicine Company Login — Vite Pill{% endblock %}
 
 {% block content %}
-<div class="card-panel" style="max-width: 460px;">
-    <div class="card-header-block">
-        <h1>Manufacturer portal</h1>
-        <p>Sign in with your organization's credentials to serialize new medicine batches and view production history.</p>
+<div class="app-card" style="max-width: 480px;">
+    <div class="card-title-group">
+        <div class="card-icon-badge">🏢</div>
+        <h1 class="card-main-title">Medicine company login</h1>
+        <p class="card-sub-desc">
+            Sign in to register your medicine batches and generate official verification QR codes.
+        </p>
     </div>
 
     {% if error %}
-        <div class="alert-box alert-danger">
-            <span>{{ error }}</span>
+        <div class="status-banner danger" style="padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-weight: 700;">{{ error }}</div>
         </div>
     {% endif %}
 
-    <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--color-text-subtle); line-height: 1.5;">
-        <b>Anti-counterfeit safeguard:</b> Manufacturer accounts are created directly by the regulatory administrator. Public registration is permanently closed to prevent unauthorized parties from registering counterfeit batches.
+    <div style="background: var(--blue-bg); border: 2px solid #bae6fd; border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.75rem; font-size: 0.95rem; color: #0369a1; line-height: 1.5;">
+        ℹ️ <b>How company accounts work:</b> To stop fake sellers from making fake QR codes, only official medicine companies verified by the Health Admin can log in.
     </div>
 
     <form method="POST" action="{{ url_for('login') }}">
-        <div class="form-field">
-            <label class="form-label">Username</label>
-            <input type="text" name="username" class="form-input" placeholder="e.g. pfizer_ops" required autofocus>
+        <div class="form-box">
+            <label class="form-label-big">Company username</label>
+            <input type="text" name="username" class="form-input-big" placeholder="e.g. pfizer_ops" required autofocus>
         </div>
 
-        <div class="form-field">
-            <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-input" placeholder="••••••••••••" required>
+        <div class="form-box">
+            <label class="form-label-big">Password</label>
+            <input type="password" name="password" class="form-input-big" placeholder="••••••••••••" required>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">
-            Sign in
+        <button type="submit" class="btn btn-blue" style="font-size: 1.15rem; padding: 1rem; margin-top: 0.5rem;">
+            <span>Sign in to Company Portal</span>
         </button>
     </form>
 
-    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); text-align: center; font-size: 0.82rem; color: var(--color-text-subtle);">
-        If your pharmaceutical organization needs access, contact the regulatory administrator at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.
+    <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.95rem; color: var(--text-light);">
+        Does your company need an account? <br>
+        Contact our health inspection team at <a href="mailto:{{ support_email }}">{{ support_email }}</a>
     </div>
 
-    <div style="text-align: center; margin-top: 1rem;">
-        <a href="{{ url_for('index') }}" style="font-size: 0.85rem; color: var(--color-text-subtle);">← Back to home</a>
+    <div style="text-align: center; margin-top: 1.25rem;">
+        <a href="{{ url_for('index') }}" style="font-size: 0.95rem; color: var(--text-muted);">← Return to Home</a>
     </div>
 </div>
 {% endblock %}

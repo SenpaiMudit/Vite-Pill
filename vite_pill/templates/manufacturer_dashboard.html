@@ -1,79 +1,79 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ company_name }} — Manufacturer Console | Vite Pill{% endblock %}
+{% block title %}{{ company_name }} — Company Console | Vite Pill{% endblock %}
 
 {% block content %}
-<div class="card-panel" style="max-width: 950px; width: 100%;">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--color-border); padding-bottom: 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+<div class="app-card" style="max-width: 980px; width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-            <div style="font-size: 0.82rem; font-weight: 600; color: var(--color-verified-green); margin-bottom: 0.25rem;">
-                Authorized manufacturer entity
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--green-safe); margin-bottom: 0.25rem;">
+                ✓ Verified Medicine Manufacturer
             </div>
-            <h1 style="font-size: 1.65rem; margin-bottom: 0.25rem;">{{ company_name }}</h1>
-            <p style="font-size: 0.88rem; color: var(--color-text-subtle); margin: 0;">
-                Logged in as <code>{{ session.get('username') }}</code>
+            <h1 style="font-size: 1.85rem; margin-bottom: 0.25rem;">{{ company_name }}</h1>
+            <p style="font-size: 0.95rem; color: var(--text-light); margin: 0;">
+                Logged in as <b>{{ session.get('username') }}</b>
             </p>
         </div>
         <div style="display: flex; gap: 0.75rem;">
-            <a href="{{ url_for('add_medicine') }}" class="btn btn-primary" style="width: auto; padding: 0.55rem 1.25rem; font-size: 0.88rem;">
-                + Register new batch
+            <a href="{{ url_for('add_medicine') }}" class="btn btn-green" style="width: auto; padding: 0.7rem 1.4rem; font-size: 1rem;">
+                + Add New Medicine Batch
             </a>
-            <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="width: auto; padding: 0.55rem 1rem; font-size: 0.88rem;">
+            <a href="{{ url_for('logout') }}" class="btn btn-white" style="width: auto; padding: 0.7rem 1.1rem; font-size: 1rem;">
                 Sign out
             </a>
         </div>
     </div>
 
-    <!-- Metrics -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.75rem;">
-        <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--color-text-subtle);">Registered batches</div>
-            <div style="font-size: 1.6rem; font-weight: 800; color: var(--color-text-main);">{{ batches|length }}</div>
+    <!-- Simple summary cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <div style="background: var(--bg-subtle); border: 2px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <div style="font-size: 0.9rem; color: var(--text-light); font-weight: 600;">Total Batches Added</div>
+            <div style="font-size: 2rem; font-weight: 800; color: var(--text-main); margin-top: 0.25rem;">{{ batches|length }}</div>
         </div>
-        <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--color-text-subtle);">Account status</div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: var(--color-verified-green); margin-top: 0.25rem;">Verified active</div>
+        <div style="background: var(--green-bg); border: 2px solid var(--green-border); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <div style="font-size: 0.9rem; color: #166534; font-weight: 600;">Account Status</div>
+            <div style="font-size: 1.35rem; font-weight: 800; color: #14532d; margin-top: 0.25rem;">Active & Authorized</div>
         </div>
     </div>
 
-    <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">Production batches registered by {{ company_name }}</h3>
+    <h2 style="font-size: 1.35rem; margin-bottom: 1rem;">Medicine batches registered by {{ company_name }}</h2>
 
-    <div class="table-wrapper">
-        <table class="data-table">
+    <div class="table-scroll">
+        <table class="simple-table">
             <thead>
                 <tr>
-                    <th>Serial code</th>
-                    <th>Medicine name</th>
+                    <th>Batch Code</th>
+                    <th>Medicine Name</th>
                     <th>Strength</th>
-                    <th>Manufactured</th>
+                    <th>Made On</th>
                     <th>Expires</th>
-                    <th style="text-align: right;">Micro-QR & verification</th>
+                    <th style="text-align: right;">QR Code</th>
                 </tr>
             </thead>
             <tbody>
                 {% for b in batches %}
                 <tr>
-                    <td><code>{{ b['uid'] }}</code></td>
-                    <td style="font-weight: 600;">{{ b['name'] }}</td>
+                    <td><code style="font-weight: 700; color: var(--blue-primary);">{{ b['uid'] }}</code></td>
+                    <td style="font-weight: 700;">{{ b['name'] }}</td>
                     <td>{{ b['mg'] }} mg</td>
-                    <td style="color: var(--color-text-subtle);">{{ b['manufacturing_date'] }}</td>
-                    <td style="color: var(--color-warning-amber); font-weight: 600;">{{ b['expiry_date'] }}</td>
+                    <td style="color: var(--text-light);">{{ b['manufacturing_date'] }}</td>
+                    <td style="color: var(--green-safe); font-weight: 700;">{{ b['expiry_date'] }}</td>
                     <td style="text-align: right;">
-                        <a href="{{ url_for('static', filename='qrcodes/' + b['uid'] + '.png') }}" download="micro_qr_{{ b['uid'] }}.png" class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.65rem; font-size: 0.75rem; display: inline-flex;">
-                            Download QR
+                        <a href="{{ url_for('static', filename='qrcodes/' + b['uid'] + '.png') }}" download="qr_{{ b['uid'] }}.png" class="btn btn-white" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem; display: inline-flex; min-height: 38px;">
+                            📥 Download QR
                         </a>
-                        <a href="{{ url_for('verify_medicine', uid=b['uid']) }}" target="_blank" class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.65rem; font-size: 0.75rem; display: inline-flex;">
-                            Verify ↗
+                        <a href="{{ url_for('verify_medicine', uid=b['uid']) }}" target="_blank" class="btn btn-blue" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem; display: inline-flex; min-height: 38px;">
+                            View ↗
                         </a>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="6" style="padding: 2.5rem; text-align: center; color: var(--color-text-subtle);">
-                        No medicine batches registered yet.
-                        <div style="margin-top: 1rem;">
-                            <a href="{{ url_for('add_medicine') }}" class="btn btn-primary" style="width: auto; display: inline-flex; padding: 0.5rem 1.25rem;">
-                                Register your first batch
+                    <td colspan="6" style="padding: 3rem; text-align: center; color: var(--text-light);">
+                        You have not registered any medicine batches yet.
+                        <div style="margin-top: 1.25rem;">
+                            <a href="{{ url_for('add_medicine') }}" class="btn btn-green" style="width: auto; display: inline-flex; padding: 0.75rem 1.5rem;">
+                                Add Your First Medicine Batch
                             </a>
                         </div>
                     </td>

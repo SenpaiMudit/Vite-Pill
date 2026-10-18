@@ -2,101 +2,99 @@
 
 {% block title %}
     {% if is_authentic %}
-        Verified Authentic — {{ medicine['name'] }} | Vite Pill
+        SAFE: Medicine Is Genuine — {{ medicine['name'] }} | Vite Pill
     {% else %}
-        Counterfeit Alert — Unverified Medicine | Vite Pill
+        WARNING: Medicine Is Fake or Unregistered | Vite Pill
     {% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="card-panel" style="max-width: 600px;">
+<div class="app-card" style="max-width: 620px;">
 
     {% if is_authentic and medicine %}
-        <!-- AUTHENTIC VERIFIED STATE -->
-        <div style="background: var(--color-verified-green-soft); border: 1px solid var(--color-verified-green-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem; text-align: left;">
-            <div style="font-weight: 700; color: var(--color-verified-green); font-size: 1.1rem; margin-bottom: 0.25rem;">
-                ✓ Authentic medicine verified
-            </div>
-            <p style="font-size: 0.88rem; color: #166534; margin: 0;">
-                This package matches an authorized batch registered by {{ medicine['registered_by'] }}.
-            </p>
-        </div>
-
-        <div class="spec-list">
-            <div class="spec-entry">
-                <span class="spec-key">Medicine name</span>
-                <span class="spec-value">{{ medicine['name'] }}</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Strength</span>
-                <span class="spec-value">{{ medicine['mg'] }} mg</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Manufacturer</span>
-                <span class="spec-value">{{ medicine['registered_by'] }}</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Active ingredients</span>
-                <span class="spec-value" style="font-weight: 400; font-size: 0.85rem;">{{ medicine['ingredients'] }}</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Indications</span>
-                <span class="spec-value" style="font-weight: 400; font-size: 0.85rem;">{{ medicine['ideal_use'] }}</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Manufacturing date</span>
-                <span class="spec-value">{{ medicine['manufacturing_date'] }}</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Expiration date</span>
-                <span class="spec-value" style="color: var(--color-verified-green);">{{ medicine['expiry_date'] }} (Valid)</span>
-            </div>
-            <div class="spec-entry">
-                <span class="spec-key">Serial code</span>
-                <span class="spec-value"><code>{{ medicine['uid'] }}</code></span>
+        <!-- AUTHENTIC & SAFE RESULT -->
+        <div class="status-banner safe">
+            <div style="font-size: 3rem; margin-bottom: 0.25rem;">✅</div>
+            <div class="status-banner-title">GENUINE MEDICINE VERIFIED</div>
+            <div class="status-banner-desc">
+                This medicine was made by <b>{{ medicine['registered_by'] }}</b> and is safe to take according to doctor's advice.
             </div>
         </div>
 
-        <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.82rem; color: var(--color-text-subtle); margin-bottom: 1.5rem;">
-            Ensure the package seal is intact. Store at room temperature away from direct moisture.
+        <div class="medicine-facts">
+            <div class="fact-row">
+                <span class="fact-name">Medicine Name</span>
+                <span class="fact-val" style="color: var(--blue-primary); font-size: 1.2rem;">{{ medicine['name'] }}</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-name">Strength</span>
+                <span class="fact-val">{{ medicine['mg'] }} mg</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-name">Company Made By</span>
+                <span class="fact-val">{{ medicine['registered_by'] }}</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-name">Expiry Date</span>
+                <span class="fact-val" style="color: var(--green-safe); font-size: 1.1rem;">
+                    {{ medicine['expiry_date'] }} (Valid & Safe)
+                </span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-name">What It Treats</span>
+                <span class="fact-val" style="font-size: 0.95rem; font-weight: 500;">{{ medicine['ideal_use'] }}</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-name">Ingredients</span>
+                <span class="fact-val" style="font-size: 0.95rem; font-weight: 500;">{{ medicine['ingredients'] }}</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-name">Package Code</span>
+                <span class="fact-val" style="font-family: monospace; font-size: 0.95rem;">{{ medicine['uid'] }}</span>
+            </div>
+        </div>
+
+        <div style="background: var(--bg-subtle); border-radius: var(--radius-sm); padding: 1rem; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.75rem; text-align: left;">
+            💡 <b>Helpful reminder:</b> Always check that the foil seal isn't broken or damaged before swallowing any pill.
         </div>
 
     {% else %}
-        <!-- COUNTERFEIT WARNING STATE -->
-        <div style="background: var(--color-alert-red-soft); border: 1px solid var(--color-alert-red-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem; text-align: left;">
-            <div style="font-weight: 700; color: var(--color-alert-red); font-size: 1.15rem; margin-bottom: 0.35rem;">
-                ⚠️ Warning: Unverified or counterfeit package
+        <!-- COUNTERFEIT / FAKE WARNING -->
+        <div class="status-banner danger">
+            <div style="font-size: 3.5rem; margin-bottom: 0.25rem;">🛑</div>
+            <div class="status-banner-title">STOP — DO NOT TAKE THIS MEDICINE</div>
+            <div class="status-banner-desc">
+                This code was NOT found in any verified medicine company database. It may be a dangerous counterfeit or fake pill.
             </div>
-            <p style="font-size: 0.88rem; color: #991b1b; margin: 0; line-height: 1.5;">
-                The code <code>{{ scanned_uid or 'Unknown' }}</code> does not match any batch registered by an authorized manufacturer.
-            </p>
         </div>
 
-        <div style="background: #ffffff; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem; text-align: left;">
-            <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--color-alert-red);">Safety instructions</h4>
-            <ul style="font-size: 0.85rem; color: var(--color-text-muted); padding-left: 1.2rem; line-height: 1.6;">
-                <li>Do not take this medicine. Unverified pills may contain wrong dosages or dangerous contaminants.</li>
-                <li>Keep the blister pack or bottle as physical evidence.</li>
-                <li>Report where you purchased this medicine to your local drug safety authority.</li>
+        <div style="background: #ffffff; border: 2px solid var(--red-border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.75rem; text-align: left;">
+            <h3 style="color: var(--red-danger); margin-bottom: 0.75rem; font-size: 1.2rem;">
+                What you should do right now:
+            </h3>
+            <ul style="font-size: 1rem; color: var(--text-muted); padding-left: 1.5rem; line-height: 1.7;">
+                <li><b>Do NOT swallow or take this medicine.</b> Fake pills can contain chalk, harmful chemicals, or zero medicine.</li>
+                <li>Keep the packaging safe so you can show it to your doctor or pharmacist.</li>
+                <li>Call the free helpline below to report where you bought this medicine.</li>
             </ul>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-            <a href="tel:{{ support_phone }}" class="btn btn-danger">
-                Call safety hotline: {{ support_phone }}
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.75rem;">
+            <a href="tel:{{ support_phone }}" class="btn btn-red" style="font-size: 1.2rem; padding: 1.1rem;">
+                <span>📞 Call Safety Helpline: {{ support_phone }}</span>
             </a>
-            <a href="mailto:{{ support_email }}?subject=Counterfeit%20Drug%20Report%20Code%20{{ scanned_uid }}" class="btn btn-secondary" style="font-size: 0.88rem;">
-                Email incident report
+            <a href="mailto:{{ support_email }}?subject=Fake%20Medicine%20Alert%20Code%20{{ scanned_uid }}" class="btn btn-white">
+                <span>✉️ Report This Seller Online</span>
             </a>
         </div>
     {% endif %}
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-        <a href="{{ url_for('scan_medicine') }}" class="btn btn-primary" style="font-size: 0.88rem;">
-            Scan another package
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <a href="{{ url_for('scan_medicine') }}" class="btn btn-blue">
+            <span>Check Another Pill</span>
         </a>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary" style="font-size: 0.88rem;">
-            Back to home
+        <a href="{{ url_for('index') }}" class="btn btn-white">
+            <span>Back to Home</span>
         </a>
     </div>
 

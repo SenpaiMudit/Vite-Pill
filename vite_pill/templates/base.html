@@ -1,116 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Vite Pill — Zero-JS Pharmaceutical Anti-Counterfeit Verification & Safety System. Secure batch serialization and micro-QR medicine verification.">
-    <meta name="keywords"
-        content="anti-counterfeit, medicine verification, pharmaceutical safety, micro-QR, drug verification">
-    <meta name="author" content="Vite Pill">
-    <title>{% block title %}Vite Pill — Anti-Counterfeit Medicine Verification{% endblock %}</title>
-
-    <!-- Modern Favicon -->
+    <meta name="description" content="Vite Pill — Check if your medicine is genuine and safe. Quick verification for patients, families, and pharmacies.">
+    <title>{% block title %}Vite Pill — Check If Your Medicine Is Real{% endblock %}</title>
+    
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
-
-    <!-- Pure CSS Design System (Zero JS) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_head %}{% endblock %}
 </head>
-
 <body>
 
-    <!-- Header with 100% Zero-JS Pure CSS Mobile Menu -->
-    <header class="site-header">
-        <div class="header-container">
-            <a href="{{ url_for('index') }}" class="brand-link" title="Vite Pill Home">
-                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Vite Pill Logo" class="brand-logo-img">
+    <header class="site-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo-brand">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Vite Pill" class="brand-logo-img">
                 <span>Vite Pill</span>
-                <span class="brand-badge">Secured</span>
             </a>
 
-            <!-- Pure CSS Toggle Checkbox (No JavaScript) -->
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle Navigation">
-            <label for="nav-toggle" class="nav-toggle-label" title="Toggle Navigation">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </label>
+            <!-- Pure CSS Toggle for Mobile Phones -->
+            <input type="checkbox" id="nav-toggle" class="nav-checkbox" aria-label="Open menu">
+            <label for="nav-toggle" class="nav-menu-btn">Menu ☰</label>
 
-            <nav class="nav-links">
-                <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Hub</a>
-                <a href="{{ url_for('scan_medicine') }}"
-                    class="{% if request.endpoint == 'scan_medicine' %}active{% endif %}">🔍 Verify Pill</a>
-                <a href="{{ url_for('add_medicine') }}"
-                    class="{% if request.endpoint == 'add_medicine' %}active{% endif %}">🏢 Manufacturer Portal</a>
-                <a href="{{ url_for('admin_login') }}"
-                    class="{% if request.endpoint in ['admin_login', 'admin_users'] %}active{% endif %}">🔒 Admin</a>
-                <a href="{{ url_for('scan_medicine') }}" class="nav-cta">Instant Scan</a>
+            <nav class="nav-links-wrap">
+                <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+                <a href="{{ url_for('scan_medicine') }}" class="{% if request.endpoint == 'scan_medicine' %}active{% endif %}">Check Medicine</a>
+
+                {% if session.get('user_id') and session.get('role') == 'company' %}
+                    <a href="{{ url_for('manufacturer_dashboard') }}" class="{% if request.endpoint == 'manufacturer_dashboard' %}active{% endif %}">
+                        {{ session.get('company_name', 'Company') }}
+                    </a>
+                    <a href="{{ url_for('add_medicine') }}" class="{% if request.endpoint == 'add_medicine' %}active{% endif %}">+ New Batch</a>
+                    <a href="{{ url_for('logout') }}" style="color: var(--red-danger);">Sign out</a>
+                {% elif session.get('user_id') and session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_users') }}" class="{% if request.endpoint == 'admin_users' %}active{% endif %}">
+                        Manage Companies
+                    </a>
+                    <a href="{{ url_for('logout') }}" style="color: var(--red-danger);">Sign out</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="{% if request.endpoint == 'login' %}active{% endif %}">Company Login</a>
+                    <a href="{{ url_for('admin_login') }}" class="{% if request.endpoint in ['admin_login', 'admin_users'] %}active{% endif %}">Admin</a>
+                {% endif %}
+
+                <a href="{{ url_for('scan_medicine') }}" class="nav-cta-btn">Scan Code Now</a>
             </nav>
         </div>
     </header>
 
-    <!-- Flash Messages Container -->
-    <div style="max-width: 700px; width: 100%; margin: 1rem auto 0; padding: 0 1.25rem;">
+    <!-- Important Notice Messages -->
+    <div style="max-width: 650px; width: 100%; margin: 1.25rem auto 0; padding: 0 1.25rem;">
         {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'error' else 'danger' }}">
-            <span>{{ message }}</span>
-        </div>
-        {% endfor %}
-        {% endif %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="status-banner {{ 'safe' if category == 'success' else 'danger' }}" style="padding: 1rem; margin-bottom: 1rem;">
+                        <span style="font-weight: 700; font-size: 1.05rem;">{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
         {% endwith %}
     </div>
 
-    <!-- Main Content -->
+    <!-- Main Workspace -->
     <main class="main-wrapper">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Accessible, Mudit Misra Standard Footer -->
+    <!-- Universal Footer -->
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Vite Pill"
-                        style="width: 24px; height: 24px;">
-                    <h4 style="margin: 0; color: #fff;">Vite Pill</h4>
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Vite Pill" style="width: 28px; height: 28px; border-radius: 6px; object-fit: contain;">
+                    <h4 style="margin: 0;">Vite Pill</h4>
                 </div>
-                <p>Decentralized pharmaceutical supply chain verification eliminating counterfeit medications via
-                    unit-level cryptographic serialization.</p>
-                <p style="margin-top: 0.75rem; font-size: 0.82rem; color: #64748b;">
-                    ⚡ Powered by 100% Zero-JavaScript architecture for ultimate speed and privacy.
-                </p>
+                <p>Helping families, patients, and pharmacies check if their medicine is genuine, safe, and unexpired.</p>
             </div>
 
             <div class="footer-col">
                 <h5>Portals</h5>
                 <ul>
-                    <li><a href="{{ url_for('scan_medicine') }}">Patient QR Scanner</a></li>
-                    <li><a href="{{ url_for('add_medicine') }}">Manufacturer Registry</a></li>
-                    <li><a href="{{ url_for('admin_login') }}">Master Admin</a></li>
-                    <li><a href="{{ url_for('login') }}">Employee Sign In</a></li>
+                    <li><a href="{{ url_for('scan_medicine') }}">Check your medicine</a></li>
+                    <li><a href="{{ url_for('login') }}">Medicine company login</a></li>
+                    <li><a href="{{ url_for('admin_login') }}">Health inspector / Admin</a></li>
                 </ul>
             </div>
 
             <div class="footer-col">
-                <h5>Direct Contact</h5>
+                <h5>Free Safety Helpline</h5>
                 <ul>
-                    <li>Phone: <a href="tel:{{ support_phone }}">{{ support_phone }}</a></li>
-                    <li>Email: <a href="mailto:{{ support_email }}">{{ support_email }}</a></li>
-                    <li>Security: <a href="mailto:security@vitepill.io">security@vitepill.io</a></li>
+                    <li>Call anytime: <a href="tel:{{ support_phone }}">{{ support_phone }}</a></li>
+                    <li>Email us: <a href="mailto:{{ support_email }}">{{ support_email }}</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <span>© {{ current_year }} Vite Pill. All rights reserved. Zero-JS verified.</span>
-            <span>Pharmaceutical Supply Chain Integrity Standard v2.0</span>
+            <span>© {{ current_year }} Vite Pill. Designed for everyone. No complicated software needed.</span>
+            <span>Protecting families from counterfeit medicine</span>
         </div>
     </footer>
 
 </body>
-
 </html>

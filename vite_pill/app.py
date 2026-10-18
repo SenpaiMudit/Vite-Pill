@@ -100,10 +100,13 @@ def scan_medicine():
             return redirect(url_for('verify_medicine', uid=uid))
 
     if request.method == 'POST':
-        if 'qr_image' not in request.files or request.files['qr_image'].filename == '':
-            return render_template('scan_medicine.html', error_msg="No file selected. Please choose a pill image or QR code.")
+        # Two inputs share name="qr_image" — gallery and camera.
+        # getlist() returns both; we pick the first one that actually has a file.
+        all_files = request.files.getlist('qr_image')
+        file = next((f for f in all_files if f and f.filename), None)
 
-        file = request.files['qr_image']
+        if not file:
+            return render_template('scan_medicine.html', error_msg="No file selected. Please choose an image from gallery or take a photo.")
 
         try:
             img = Image.open(file)

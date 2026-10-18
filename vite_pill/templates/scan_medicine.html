@@ -21,7 +21,8 @@
     <!-- Photo Upload Form (Native HTML5 Form, Zero JS) -->
     <form id="scan-form" action="{{ url_for('scan_medicine') }}" method="POST" enctype="multipart/form-data">
         <!-- Hidden inputs — triggered by the styled labels below -->
-        <input type="file" id="gallery-input" name="qr_image" accept="image/*" style="display:none" required>
+        <!-- No 'required' here — validated server-side so either input can submit independently -->
+        <input type="file" id="gallery-input" name="qr_image" accept="image/*" style="display:none">
         <input type="file" id="camera-input" name="qr_image" accept="image/*" capture="environment" style="display:none">
 
         <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">

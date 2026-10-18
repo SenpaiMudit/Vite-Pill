@@ -75,6 +75,7 @@
   <form action="{{ url_for('scan_medicine') }}" method="POST"
         enctype="multipart/form-data" style="margin-bottom: 1rem;"
         onsubmit="showLoading(this)">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label class="scan-panel scan-panel-green">
       <span style="font-size: 2.4rem;">🖼️</span>
       Upload from Gallery
@@ -92,6 +93,7 @@
   <form action="{{ url_for('scan_medicine') }}" method="POST"
         enctype="multipart/form-data" style="margin-bottom: 1.5rem;"
         onsubmit="showLoading(this)">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label class="scan-panel scan-panel-blue">
       <span style="font-size: 2.4rem;">📷</span>
       Take a Photo Now

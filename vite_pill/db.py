@@ -8,6 +8,7 @@ Supports:
 
 import os
 import sqlite3
+from werkzeug.security import generate_password_hash
 from typing import Any, Dict, List, Optional, Tuple
 
 
@@ -290,7 +291,8 @@ def init_db():
             conn.execute('''
                 INSERT INTO users (full_name, phone, company_name, username, password, role)
                 VALUES (?, ?, ?, ?, ?, ?)
-            ''', ('Master Administrator', '+18005550199', 'Vite Pill Authority', 'admin', 'admin123', 'admin'))
+            ''', ('Master Administrator', '+18005550199', 'Vite Pill Authority', 'admin',
+                  generate_password_hash('admin123'), 'admin'))
             conn.commit()
 
         # Seed sample authentic medicine if database is empty

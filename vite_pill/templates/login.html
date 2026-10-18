@@ -23,6 +23,7 @@
     </div>
 
     <form method="POST" action="{{ url_for('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-box">
             <label class="form-label-big">Company username</label>
             <input type="text" name="username" class="form-input-big" placeholder="e.g. pfizer_ops" required autofocus>

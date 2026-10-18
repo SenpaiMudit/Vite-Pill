@@ -36,6 +36,7 @@
         <h2 style="font-size: 1.3rem; margin-bottom: 1.25rem;">+ Add and approve a new medicine company</h2>
 
         <form method="POST" action="{{ url_for('admin_users') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
                 <div class="form-box">
                     <label class="form-label-big">Company name</label>
@@ -90,6 +91,7 @@
                     <td style="color: var(--text-light);">{{ u['created_at'][:10] if u['created_at'] else '2026-01-01' }}</td>
                     <td style="text-align: right;">
                         <form action="{{ url_for('delete_user', user_id=u['id']) }}" method="POST" style="display: inline; margin: 0;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-red" style="width: auto; padding: 0.4rem 0.85rem; font-size: 0.85rem; min-height: 38px; display: inline-flex;">
                                 Remove Access
                             </button>

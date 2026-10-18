@@ -9,6 +9,10 @@ from flask import (
 )
 import qrcode
 from PIL import Image
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from flask_wtf.csrf import CSRFProtect
 
 # zxing-cpp: pure-Python wheels, no native C library required
 try:
@@ -18,7 +22,25 @@ except Exception:
     PYZBAR_AVAILABLE = False
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'vite-pill-secure-key-2026-mudit')
+
+# Refuse to start without a real secret key — no insecure fallback
+_secret = os.environ.get('SECRET_KEY')
+if not _secret:
+    import warnings
+    warnings.warn(
+        "SECRET_KEY env var not set — using insecure dev key. Set SECRET_KEY in production!",
+        RuntimeWarning
+    )
+    _secret = 'vite-pill-dev-only-unsafe-key-change-me'
+app.secret_key = _secret
+app.config['WTF_CSRF_ENABLED'] = True
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB upload limit
+
+# CSRF protection — covers all POST/PUT/DELETE forms automatically
+csrf = CSRFProtect(app)
+
+# Rate limiter — per-route limits defined individually below
+limiter = Limiter(app=app, key_func=get_remote_address, storage_uri='memory://')
 
 QR_FOLDER = os.path.join(app.root_path, 'static', 'qrcodes')
 os.makedirs(QR_FOLDER, exist_ok=True)
@@ -38,6 +60,23 @@ init_db()
 # -----------------------------------------------------------------------------
 # CONTEXT PROCESSORS & AUTH HELPERS
 # -----------------------------------------------------------------------------
+@app.after_request
+def set_security_headers(response):
+    """Attach security headers to every response (BUILD CHECK #8)."""
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline'; "
+        "style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data:; "
+        "frame-ancestors 'none'"
+    )
+    return response
+
+
 @app.context_processor
 def inject_global_data():
     cfg = get_db_config()
@@ -91,6 +130,8 @@ def portal():
 
 
 # --- PART 1: CONSUMER & PHARMACY SCAN / VERIFY FLOW ---
+# QR scan: 30 per minute — generous for legitimate use, blocks automated abuse
+@limiter.limit('30 per minute')
 @app.route('/scan', methods=['GET', 'POST'])
 def scan_medicine():
     """Upload or capture a micro QR code for server-side verification."""
@@ -107,6 +148,20 @@ def scan_medicine():
 
         if not file:
             return render_template('scan_medicine.html', error_msg="No file selected. Please choose an image from gallery or take a photo.")
+
+        # BUILD CHECK #14: validate by magic bytes, not extension or MIME header
+        ALLOWED_MAGIC = [
+            b'\xff\xd8\xff',        # JPEG
+            b'\x89PNG',             # PNG
+            b'GIF8',                # GIF
+            b'RIFF',                # WebP (RIFF....WEBP)
+            b'BM',                  # BMP
+        ]
+        header = file.read(12)
+        file.seek(0)
+        if not any(header.startswith(sig) for sig in ALLOWED_MAGIC):
+            return render_template('scan_medicine.html',
+                error_msg="Invalid file type. Please upload a JPEG, PNG, GIF, WebP, or BMP image.")
 
         try:
             img = Image.open(file)
@@ -237,6 +292,8 @@ def add_medicine():
 
 
 # --- PART 3: AUTHENTICATION & MASTER ADMIN PORTAL ---
+# Login: 5 per 15 minutes — blocks brute-force without annoying legitimate users
+@limiter.limit('5 per 15 minutes')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Company employee login portal."""
@@ -244,11 +301,14 @@ def login():
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
 
+        if len(password) < 8:
+            return render_template('login.html', error="Invalid username or password.")
+
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password)).fetchone()
+        user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
         conn.close()
 
-        if user:
+        if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
             session['company_name'] = user['company_name']
@@ -261,6 +321,8 @@ def login():
     return render_template('login.html')
 
 
+# Admin login: 5 per 15 minutes — stricter protection for privileged access
+@limiter.limit('5 per 15 minutes')
 @app.route('/admin-login', methods=['GET', 'POST'])
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -271,10 +333,13 @@ def admin_login():
 
         conn = get_db_connection()
         user = conn.execute(
-            'SELECT * FROM users WHERE username = ? AND password = ? AND role = ?',
-            (username, password, 'admin')
+            'SELECT * FROM users WHERE username = ? AND role = ?',
+            (username, 'admin')
         ).fetchone()
         conn.close()
+
+        if user and not check_password_hash(user['password'], password):
+            user = None  # Password mismatch — treat as not found
 
         if user:
             session['user_id'] = user['id']
@@ -302,15 +367,18 @@ def admin_users():
 
         if not all([full_name, phone, company_name, username, password]):
             flash("All account fields are required.", "danger")
+        elif len(password) < 8:
+            flash("Password must be at least 8 characters.", "danger")
         else:
             existing_user = conn.execute('SELECT id FROM users WHERE username = ?', (username,)).fetchone()
             if existing_user:
                 flash(f"Username '{username}' is already taken. Please choose another.", "danger")
             else:
+                hashed_pw = generate_password_hash(password)
                 conn.execute('''
                     INSERT INTO users (full_name, phone, company_name, username, password, role)
                     VALUES (?, ?, ?, ?, ?, ?)
-                ''', (full_name, phone, company_name, username, password, 'company'))
+                ''', (full_name, phone, company_name, username, hashed_pw, 'company'))
                 conn.commit()
                 flash(f"Account for {full_name} ({company_name}) successfully created!", "success")
 
@@ -416,4 +484,5 @@ def internal_server_error(e):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    # debug=False in all cases — Gunicorn runs in production, this block is dev-only
+    app.run(host='0.0.0.0', port=port, debug=False)

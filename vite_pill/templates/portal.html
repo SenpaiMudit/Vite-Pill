@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Vite Pill — Check If Your Medicine Is Genuine and Safe{% endblock %}
+
+{% block content %}
+<div class="app-card" style="max-width: 650px;">
+    <div class="card-title-group">
+        <div class="card-icon-badge">💊</div>
+        <h1 class="card-main-title">Check your medicine</h1>
+        <p class="card-sub-desc">
+            Make sure your pills are 100% genuine and safe before you or your family take them.
+        </p>
+    </div>
+
+    <!-- The 3 Simple Steps Anyone Can Follow -->
+    <div style="background: var(--bg-subtle); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem; text-align: left;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: var(--text-main);">
+            How to check your pills in 3 steps:
+        </h3>
+        
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--blue-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0;">1</div>
+            <div>
+                <b style="color: var(--text-main); font-size: 1.05rem;">Find the code</b>
+                <p style="font-size: 0.95rem; margin-top: 0.15rem;">Look on the back of your pill strip or side of the box for the small square QR code.</p>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--blue-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0;">2</div>
+            <div>
+                <b style="color: var(--text-main); font-size: 1.05rem;">Take a quick photo</b>
+                <p style="font-size: 0.95rem; margin-top: 0.15rem;">Click the green button below and point your phone camera at the code.</p>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--green-safe); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; flex-shrink: 0;">3</div>
+            <div>
+                <b style="color: var(--text-main); font-size: 1.05rem;">See instant results</b>
+                <p style="font-size: 0.95rem; margin-top: 0.15rem;">You will immediately see if it's real, who made it, and the expiry date.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Big Action Buttons (Thumb friendly) -->
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <a href="{{ url_for('scan_medicine') }}" class="btn btn-green" style="font-size: 1.25rem; padding: 1.2rem;">
+            <span>📸 Check Your Medicine Now</span>
+        </a>
+
+        <a href="{{ url_for('login') }}" class="btn btn-blue">
+            <span>🏢 Medicine Company Login (Register Batches)</span>
+        </a>
+
+        <a href="{{ url_for('admin_login') }}" class="btn btn-white" style="font-size: 0.95rem;">
+            <span>🔒 Health Inspector / Admin Portal</span>
+        </a>
+    </div>
+
+    <!-- Simple trust note -->
+    <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-light); line-height: 1.5;">
+        🔒 <b>Why you can trust this system:</b> Only verified medicine companies approved by health inspectors can create codes. Fake sellers are completely blocked.
+    </div>
+</div>
+{% endblock %}

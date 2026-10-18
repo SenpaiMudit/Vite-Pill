@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite Pill — Check If Your Medicine Is Real and Safe</title>
+    <meta name="description" content="Check if your medicine is genuine in seconds. Stop counterfeit pills and protect your family with Vite Pill. 100% Zero JavaScript.">
+    
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           Vite Pill — Universal Accessibility Design (100% Zero JavaScript)
+           Designed for everyone: patients, elderly, parents, pharmacists, workers.
+           ========================================================================== */
+        :root {
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-subtle: #f1f5f9;
+            --border-color: #cbd5e1;
+
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --text-light: #64748b;
+
+            --blue-primary: #0284c7;
+            --blue-hover: #0369a1;
+            --blue-bg: #e0f2fe;
+
+            --green-safe: #16a34a;
+            --green-hover: #15803d;
+            --green-bg: #dcfce7;
+            --green-border: #86efac;
+
+            --red-danger: #dc2626;
+            --red-hover: #b91c1c;
+            --red-bg: #fee2e2;
+            --red-border: #fca5a5;
+
+            --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 17px;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--text-main);
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        a {
+            color: var(--blue-primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            color: var(--blue-hover);
+            text-decoration: underline;
+        }
+
+        /* --------------------------------------------------------------------------
+           Header
+           -------------------------------------------------------------------------- */
+        .site-header {
+            background: #ffffff;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none !important;
+        }
+
+        .brand-logo-img {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--blue-primary);
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            font-weight: 800;
+        }
+
+        /* Mobile Drawer in pure CSS */
+        .nav-toggle-input {
+            display: none;
+        }
+
+        .nav-toggle-btn {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem 0.9rem;
+            background: var(--bg-subtle);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.45rem 0.65rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue-primary);
+        }
+
+        .nav-cta {
+            background: var(--green-safe) !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            padding: 0.6rem 1.25rem !important;
+            border-radius: 9999px !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--green-hover) !important;
+            text-decoration: none !important;
+        }
+
+        /* --------------------------------------------------------------------------
+           Hero Section (Clear, Large, Reassuring)
+           -------------------------------------------------------------------------- */
+        .hero {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 4.5rem 1.25rem 3.5rem;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3.5rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: var(--blue-bg);
+            border: 1px solid #bae6fd;
+            border-radius: 9999px;
+            color: var(--blue-primary);
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.18;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 2rem;
+            max-width: 540px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Big, accessible buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.95rem 1.6rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: var(--font-family);
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-decoration: none !important;
+            transition: all 0.15s ease;
+            min-height: 54px;
+        }
+
+        .btn-green {
+            background: var(--green-safe);
+            color: #ffffff;
+        }
+
+        .btn-green:hover {
+            background: var(--green-hover);
+        }
+
+        .btn-blue {
+            background: var(--blue-primary);
+            color: #ffffff;
+        }
+
+        .btn-blue:hover {
+            background: var(--blue-hover);
+        }
+
+        .btn-white {
+            background: #ffffff;
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+
+        .btn-white:hover {
+            background: var(--bg-subtle);
+            border-color: var(--text-muted);
+        }
+
+        /* --------------------------------------------------------------------------
+           Interactive Live Demo (Pure CSS, accessible for anyone)
+           -------------------------------------------------------------------------- */
+        .demo-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .sim-radio {
+            display: none;
+        }
+
+        .sim-tabs {
+            display: flex;
+            background: var(--bg-subtle);
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .sim-tabs label {
+            flex: 1;
+            padding: 0.6rem 0.85rem;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 6px;
+            color: var(--text-light);
+            transition: all 0.15s ease;
+        }
+
+        #tab-safe:checked ~ .sim-tabs label[for="tab-safe"] {
+            background: #ffffff;
+            color: var(--green-safe);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        #tab-fake:checked ~ .sim-tabs label[for="tab-fake"] {
+            background: #ffffff;
+            color: var(--red-danger);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .panel-safe, .panel-fake {
+            display: none;
+        }
+
+        #tab-safe:checked ~ .panel-safe {
+            display: block;
+        }
+
+        #tab-fake:checked ~ .panel-fake {
+            display: block;
+        }
+
+        .fact-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .fact-item:last-child {
+            border-bottom: none;
+        }
+
+        /* --------------------------------------------------------------------------
+           3 Steps Section
+           -------------------------------------------------------------------------- */
+        .section {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 4.5rem 1.25rem;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .section-desc {
+            font-size: 1.15rem;
+            text-align: center;
+            margin: 0 auto 3rem;
+            max-width: 600px;
+        }
+
+        .steps-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .step-box {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: left;
+        }
+
+        .step-number {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--blue-primary);
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-heading {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-copy {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* --------------------------------------------------------------------------
+           Why Fake Sellers Can't Fake This Section
+           -------------------------------------------------------------------------- */
+        .trust-banner {
+            background: var(--blue-bg);
+            border: 2px solid #bae6fd;
+            border-radius: var(--radius-lg);
+            padding: 3rem 2.5rem;
+            margin: 2rem auto 4.5rem;
+            max-width: 1140px;
+            width: 100%;
+        }
+
+        .trust-title {
+            font-size: 2rem;
+            color: var(--blue-primary);
+            margin-bottom: 1rem;
+        }
+
+        .trust-copy {
+            font-size: 1.1rem;
+            color: #0369a1;
+            line-height: 1.7;
+            max-width: 780px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --------------------------------------------------------------------------
+           Mobile App Download Card (753 KB APK)
+           -------------------------------------------------------------------------- */
+        .apk-card {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.75rem 2.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* --------------------------------------------------------------------------
+           Pure CSS Modal for Portal Choices
+           -------------------------------------------------------------------------- */
+        .css-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1.5rem;
+        }
+
+        .css-modal:target {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        /* --------------------------------------------------------------------------
+           Footer
+           -------------------------------------------------------------------------- */
+        .site-footer {
+            background: #ffffff;
+            border-top: 2px solid var(--border-color);
+            padding: 3.5rem 1.25rem 2rem;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .footer-grid {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-col h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.85rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .footer-col a:hover {
+            color: var(--blue-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 3rem;
+            }
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 680px) {
+            html {
+                font-size: 16px;
+            }
+            .nav-toggle-btn {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1.5rem;
+                gap: 0.75rem;
+                border-bottom: 2px solid var(--border-color);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            }
+            .nav-toggle-input:checked ~ .nav-links {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Accessible Navigation -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="brand-logo">
+                <img src="logo.svg" alt="Vite Pill" class="brand-logo-img">
+                <span>Vite Pill</span>
+            </a>
+
+            <!-- Pure CSS Toggle for Mobile Phones -->
+            <input type="checkbox" id="mobile-toggle" class="nav-toggle-input">
+            <label for="mobile-toggle" class="nav-toggle-btn">Menu ☰</label>
+
+            <nav class="nav-links">
+                <a href="#how-it-works">How it works</a>
+                <a href="#try-demo">Try demo</a>
+                <a href="vite-pill.apk" download>Download Android App</a>
+                <a href="/scan">Web scanner</a>
+                <a href="#portal-modal" class="nav-cta">Check Medicine Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>🛡️ Safe & Genuine Medicine Checker</span>
+            </div>
+            <h1 class="hero-title">Make sure your medicine is real and safe to take</h1>
+            <p class="hero-desc">
+                Counterfeit and fake pills cause over 1,000,000 deaths every year. Vite Pill lets anyone check their medicine in seconds using the small square code on the foil pack or box.
+            </p>
+            <div class="hero-actions">
+                <a href="/scan" class="btn btn-green" style="font-size: 1.2rem; padding: 1.1rem 1.8rem;">
+                    <span>📸 Check Your Medicine Now</span>
+                </a>
+                <a href="vite-pill.apk" class="btn btn-white" download>
+                    <span>📱 Download Android App (753 KB)</span>
+                </a>
+                <a href="/login" class="btn btn-white">
+                    <span>🏢 Medicine Company Login</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Live Demo Card (Pure CSS, Instant Understanding for Anyone) -->
+        <div class="demo-card" id="try-demo">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-light); margin-bottom: 0.75rem;">
+                Try this live preview:
+            </div>
+
+            <!-- Radio tab switchers in pure CSS -->
+            <input type="radio" name="sim" id="tab-safe" class="sim-radio" checked>
+            <input type="radio" name="sim" id="tab-fake" class="sim-radio">
+
+            <div class="sim-tabs">
+                <label for="tab-safe">✅ Genuine Medicine</label>
+                <label for="tab-fake">🛑 Fake Medicine Alert</label>
+            </div>
+
+            <!-- Safe State -->
+            <div class="panel-safe">
+                <div style="background: var(--green-bg); border: 2px solid var(--green-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.25rem;">✅</div>
+                    <div style="color: #14532d; font-weight: 800; font-size: 1.2rem;">
+                        GENUINE MEDICINE VERIFIED
+                    </div>
+                    <div style="font-size: 0.95rem; color: #166534;">
+                        Made by Novartis Pharma AG — Safe to take
+                    </div>
+                </div>
+
+                <div class="fact-item">
+                    <span class="fact-label">Medicine:</span>
+                    <span style="font-weight: 700;">Amoxicillin Trihydrate</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Strength:</span>
+                    <span style="font-weight: 700;">500 mg</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">Expires:</span>
+                    <span style="color: var(--green-safe); font-weight: 700;">2027-01-15 (Valid)</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-label">What it treats:</span>
+                    <span>Bacterial cough, fever, infections</span>
+                </div>
+            </div>
+
+            <!-- Fake State -->
+            <div class="panel-fake">
+                <div style="background: var(--red-bg); border: 2px solid var(--red-border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;">
+                    <div style="font-size: 2.2rem; margin-bottom: 0.25rem;">🛑</div>
+                    <div style="color: #7f1d1d; font-weight: 800; font-size: 1.2rem;">
+                        DO NOT TAKE THIS MEDICINE
+                    </div>
+                    <div style="font-size: 0.95rem; color: #991b1b;">
+                        This code is NOT found in any verified company database.
+                    </div>
+                </div>
+
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem;">
+                    Fake pills may contain chalk or dangerous chemicals. Keep the pack and call the free helpline:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                    <a href="tel:+18005550199" class="btn btn-red" style="font-size: 1rem; min-height: 48px;">
+                        <span>📞 Call Helpline: +1 (800) 555-0199</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3 Simple Steps Anyone Can Follow -->
+    <section class="section" id="how-it-works">
+        <h2 class="section-title">How anyone can check their medicine in 3 steps</h2>
+        <p class="section-desc">
+            No complicated apps or technical knowledge required. It works on any phone.
+        </p>
+
+        <div class="steps-row">
+            <div class="step-box">
+                <div class="step-number">1</div>
+                <h3 class="step-heading">Find the square code</h3>
+                <p class="step-copy">
+                    Look at the back of your medicine foil strip or side of the box for the small square QR code.
+                </p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">2</div>
+                <h3 class="step-heading">Take a photo</h3>
+                <p class="step-copy">
+                    Open our free scanner and snap a clear photo of the code with your phone camera, or type the code.
+                </p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">3</div>
+                <h3 class="step-heading">See instant results</h3>
+                <p class="step-copy">
+                    You will immediately see a big green checkmark if it is genuine, or a clear red warning if it is fake.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Fake Sellers Can't Fake This -->
+    <div style="padding: 0 1.25rem;">
+        <div class="trust-banner">
+            <h2 class="trust-title">Why counterfeiters cannot cheat this system</h2>
+            <p class="trust-copy">
+                Anyone can copy a barcode label, but <b>fake sellers are completely locked out of Vite Pill</b>.
+                Medicine companies cannot simply sign up on the internet. Health inspectors personally check the company's government drug manufacturing license and create their login for them. Every genuine pill pack is linked directly to that approved company.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="/scan" class="btn btn-green">
+                    <span>Try The Scanner Right Now</span>
+                </a>
+                <a href="/admin-login" class="btn btn-white">
+                    <span>Health Inspector Portal</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Android Mobile App Download -->
+    <section class="section" style="padding-top: 0;">
+        <div class="apk-card">
+            <div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Free Android Mobile App</h3>
+                <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 520px; margin-bottom: 1.5rem;">
+                    For pharmacists, clinic staff, and families who want a dedicated app on their phone. It is very small (less than 1 MB) and works even on older Android phones.
+                </p>
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <a href="vite-pill.apk" class="btn btn-blue" download>
+                        <span>📥 Download vite-pill.apk (753 KB)</span>
+                    </a>
+                    <span style="color: var(--text-light); font-size: 0.95rem;">Works on Android 8.0 and above</span>
+                </div>
+            </div>
+            <div style="background: var(--bg-subtle); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; min-width: 160px;">
+                <div style="font-size: 2.2rem; margin-bottom: 0.25rem;">📱</div>
+                <div style="font-weight: 800; font-size: 1.05rem;">Version 1.0.4</div>
+                <div style="font-size: 0.85rem; color: var(--text-light);">Only 753 KB</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pure CSS Modal for Portal Choices -->
+    <div id="portal-modal" class="css-modal">
+        <div class="modal-box">
+            <a href="#" class="modal-close" title="Close">×</a>
+            <div style="margin-bottom: 1.75rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Choose what you want to do</h3>
+                <p style="font-size: 1rem; color: var(--text-muted);">Select the portal you want to use</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="/scan" class="btn btn-green">
+                    <span>🔍 Check a Medicine Package</span>
+                </a>
+                <a href="/login" class="btn btn-blue">
+                    <span>🏢 Medicine Company Login</span>
+                </a>
+                <a href="/admin-login" class="btn btn-white">
+                    <span>🔒 Health Inspector / Admin</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Universal Footer -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;">
+                    <img src="logo.svg" alt="Vite Pill" style="width: 32px; height: 32px; border-radius: 7px; object-fit: contain;">
+                    <h4 style="margin: 0; font-size: 1.25rem;">Vite Pill</h4>
+                </div>
+                <p style="margin-bottom: 1rem;">
+                    Protecting families, patients, and pharmacies from counterfeit and dangerous medicine.
+                </p>
+                <div style="font-size: 0.9rem; font-weight: 700; color: var(--green-safe);">
+                    ✓ 100% Zero JavaScript • Works on all phones
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h5>Portals</h5>
+                <ul>
+                    <li><a href="/scan">Check medicine</a></li>
+                    <li><a href="/login">Company login</a></li>
+                    <li><a href="/admin-login">Health inspector login</a></li>
+                    <li><a href="vite-pill.apk" download>Download Android App</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Free Helpline</h5>
+                <ul>
+                    <li>Call toll-free: <a href="tel:+18005550199">+1 (800) 555-0199</a></li>
+                    <li>Email: <a href="mailto:verify@vitepill.io">verify@vitepill.io</a></li>
+                    <li>Open source: <a href="https://github.com/SenpaiMudit/Vite-Pill">GitHub code</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 Vite Pill. Made for everyone. Safe, simple, and free.</span>
+            <span>Protecting public health worldwide</span>
+        </div>
+    </footer>
+
+</body>
+</html>

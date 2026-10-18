@@ -75,12 +75,19 @@ def admin_required(f):
 # -----------------------------------------------------------------------------
 @app.route('/')
 def index():
-    """Portal selection hub with live registry statistics."""
+    """Full marketing landing page with interactive demo, WHO stats, and APK download."""
+    return render_template('landing.html')
+
+
+@app.route('/portal')
+@app.route('/hub')
+def portal():
+    """Quick portal selection hub with live registry statistics."""
     conn = get_db_connection()
     medicine_count = conn.execute('SELECT COUNT(*) as count FROM medicine').fetchone()['count']
     user_count = conn.execute('SELECT COUNT(*) as count FROM users WHERE role = ?', ('company',)).fetchone()['count']
     conn.close()
-    return render_template('index.html', medicine_count=medicine_count, user_count=user_count)
+    return render_template('portal.html', medicine_count=medicine_count, user_count=user_count)
 
 
 # --- PART 1: CONSUMER & PHARMACY SCAN / VERIFY FLOW ---
@@ -352,6 +359,21 @@ def download_apk():
                 as_attachment=True,
                 mimetype='application/vnd.android.package-archive'
             )
+    abort(404)
+
+
+@app.route('/logo.svg')
+@app.route('/favicon.ico')
+def serve_logo():
+    """Serve the official brand SVG logo and favicon."""
+    search_dirs = [
+        os.path.join(app.root_path, 'static'),
+        os.path.dirname(app.root_path),
+        app.root_path
+    ]
+    for directory in search_dirs:
+        if os.path.exists(os.path.join(directory, 'logo.svg')):
+            return send_from_directory(directory, 'logo.svg', mimetype='image/svg+xml')
     abort(404)
 
 

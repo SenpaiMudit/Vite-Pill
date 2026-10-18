@@ -3,108 +3,145 @@
 {% block title %}Scan Medicine — Vite Pill{% endblock %}
 
 {% block content %}
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 1.1rem; height: 1.1rem;
+    border: 3px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+  }
+  .scan-btn { width: 100%; border-radius: 0 0 16px 16px; padding: 0.95rem; font-size: 1.05rem; margin-top: 0; }
+  .scan-panel {
+    border-radius: 16px 16px 0 0;
+    padding: 1.4rem 1rem 1.2rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.55rem;
+    font-weight: 800; font-size: 1rem; text-align: center; cursor: pointer;
+  }
+  .scan-panel-green { background: var(--green-bg, #f0fdf4); border: 2.5px solid var(--green-safe, #16a34a); color: var(--green-safe, #16a34a); }
+  .scan-panel-blue  { background: var(--blue-bg, #eff6ff);  border: 2.5px solid var(--blue-primary, #2563eb); color: var(--blue-primary, #2563eb); }
+  .scan-panel input[type=file] { font-size: 0.82rem; margin-top: 0.3rem; max-width: 100%; }
+  .processing-notice {
+    display: none;
+    margin-top: 0.8rem;
+    padding: 0.85rem 1rem;
+    background: #fefce8; border: 2px solid #ca8a04;
+    border-radius: 12px; color: #854d0e;
+    font-weight: 700; font-size: 0.93rem; text-align: center;
+  }
+</style>
+
 <div class="app-card" style="max-width: 540px;">
-    <div class="card-title-group">
-        <div class="card-icon-badge" style="background: var(--green-bg); color: var(--green-safe);">📷</div>
-        <h1 class="card-main-title">Scan your medicine code</h1>
-        <p class="card-sub-desc">
-            Take a clear photo of the square code printed on your foil strip or medicine box.
-        </p>
+  <div class="card-title-group">
+    <div class="card-icon-badge" style="background: var(--green-bg); color: var(--green-safe);">📷</div>
+    <h1 class="card-main-title">Scan your medicine code</h1>
+    <p class="card-sub-desc">
+      Take a clear photo of the square code printed on your foil strip or medicine box.
+    </p>
+  </div>
+
+  {% if error_msg %}
+  <!-- Scan failed — show rich retry banner -->
+  <div style="
+    background: #fff1f2; border: 2.5px solid #f43f5e;
+    border-radius: 16px; padding: 1.2rem 1.2rem 1rem;
+    margin-bottom: 1.5rem;
+  ">
+    <div style="font-size: 1.8rem; text-align:center; margin-bottom:0.4rem;">⚠️</div>
+    <div style="font-weight: 800; font-size: 1.05rem; color: #be123c; text-align:center; margin-bottom:0.8rem;">
+      {{ error_msg }}
     </div>
-
-    {% if error_msg %}
-        <div class="status-banner danger" style="padding: 1rem; margin-bottom: 1.5rem;">
-            <div style="font-weight: 700; font-size: 1.05rem;">{{ error_msg }}</div>
-        </div>
-    {% endif %}
-
-    <!-- Photo Upload Form (Native HTML5 Form, Zero JS) -->
-    <form id="scan-form" action="{{ url_for('scan_medicine') }}" method="POST" enctype="multipart/form-data">
-        <!-- Hidden inputs — triggered by the styled labels below -->
-        <!-- No 'required' here — validated server-side so either input can submit independently -->
-        <input type="file" id="gallery-input" name="qr_image" accept="image/*" style="display:none">
-        <input type="file" id="camera-input" name="qr_image" accept="image/*" capture="environment" style="display:none">
-
-        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-
-            <!-- Option 1: Choose from Gallery -->
-            <label for="gallery-input" style="
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                padding: 1.4rem 1rem;
-                background: var(--green-bg, #f0fdf4);
-                border: 2.5px solid var(--green-safe, #16a34a);
-                border-radius: 16px;
-                cursor: pointer;
-                font-weight: 800;
-                color: var(--green-safe, #16a34a);
-                font-size: 1rem;
-                text-align: center;
-                transition: transform 0.15s, box-shadow 0.15s;
-            ">
-                <span style="font-size: 2.2rem;">🖼️</span>
-                Upload from<br>Gallery
-            </label>
-
-            <!-- Option 2: Use Camera -->
-            <label for="camera-input" style="
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                padding: 1.4rem 1rem;
-                background: var(--blue-bg, #eff6ff);
-                border: 2.5px solid var(--blue-primary, #2563eb);
-                border-radius: 16px;
-                cursor: pointer;
-                font-weight: 800;
-                color: var(--blue-primary, #2563eb);
-                font-size: 1rem;
-                text-align: center;
-                transition: transform 0.15s, box-shadow 0.15s;
-            ">
-                <span style="font-size: 2.2rem;">📷</span>
-                Use<br>Camera
-            </label>
-        </div>
-
-        <p style="text-align:center; font-size:0.9rem; color:var(--text-muted); margin-bottom:1.2rem;">
-            Make sure the square code is well-lit and in frame
-        </p>
-
-        <button type="submit" class="btn btn-green" style="font-size: 1.2rem; padding: 1.1rem;">
-            <span>Check This Photo Now</span>
-        </button>
-    </form>
-
-    <div style="display: flex; align-items: center; margin: 2rem 0; color: var(--text-light); font-size: 0.95rem;">
-        <span style="flex: 1; border-bottom: 2px solid var(--border-color);"></span>
-        <span style="padding: 0 1rem; font-weight: 700;">OR TYPE THE CODE BY HAND</span>
-        <span style="flex: 1; border-bottom: 2px solid var(--border-color);"></span>
+    <div style="font-size:0.9rem; color:#9f1239; font-weight:700; margin-bottom:0.3rem;">
+      Try these fixes and scan again:
     </div>
-
-    <!-- Manual Serial Code Lookup -->
-    <form action="{{ url_for('scan_medicine') }}" method="GET">
-        <div class="form-box">
-            <label class="form-label-big">Type the code written near the square</label>
-            <input type="text" name="manual_uid" class="form-input-big" placeholder="e.g. a8f4c2e1b9304958" style="font-size: 1.15rem; font-weight: 700;" required>
-            <small style="color: var(--text-light); display: block; margin-top: 0.35rem;">
-                Tip: Look for the 16 numbers and letters right below the square QR code.
-            </small>
-        </div>
-        <button type="submit" class="btn btn-blue">
-            <span>Check Written Code</span>
-        </button>
-    </form>
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <a href="{{ url_for('index') }}" style="font-size: 1rem; color: var(--text-muted);">← Return to Home</a>
+    <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.88rem; color: #9f1239; line-height: 1.8;">
+      <li>Hold camera <strong>5–10 cm</strong> from the code</li>
+      <li>Make sure the <strong>entire square</strong> is in frame</li>
+      <li>Find <strong>good lighting</strong> — no shadows on the code</li>
+      <li>Keep phone <strong>still</strong> while taking the photo</li>
+      <li>Tap the screen to <strong>focus</strong> before shooting</li>
+    </ul>
+    <div style="margin-top:0.9rem; text-align:center; font-size:0.88rem; color:#be123c; font-weight:700;">
+      Or type the 16-character code manually below ↓
     </div>
+  </div>
+  {% endif %}
+
+  <!-- GALLERY FORM -->
+  <form action="{{ url_for('scan_medicine') }}" method="POST"
+        enctype="multipart/form-data" style="margin-bottom: 1rem;"
+        onsubmit="showLoading(this)">
+    <label class="scan-panel scan-panel-green">
+      <span style="font-size: 2.4rem;">🖼️</span>
+      Upload from Gallery
+      <input type="file" name="qr_image" accept="image/*" required>
+    </label>
+    <button type="submit" class="btn btn-green scan-btn">
+      <span>✓ Verify this image</span>
+    </button>
+    <div class="processing-notice">
+      <span class="spinner"></span> Scanning QR code — please wait 15–30 seconds…
+    </div>
+  </form>
+
+  <!-- CAMERA FORM -->
+  <form action="{{ url_for('scan_medicine') }}" method="POST"
+        enctype="multipart/form-data" style="margin-bottom: 1.5rem;"
+        onsubmit="showLoading(this)">
+    <label class="scan-panel scan-panel-blue">
+      <span style="font-size: 2.4rem;">📷</span>
+      Take a Photo Now
+      <input type="file" name="qr_image" accept="image/*" capture="environment" required>
+    </label>
+    <button type="submit" class="btn btn-blue scan-btn">
+      <span>✓ Verify this photo</span>
+    </button>
+    <div class="processing-notice">
+      <span class="spinner"></span> Scanning QR code — please wait 15–30 seconds…
+    </div>
+  </form>
+
+  <div style="display: flex; align-items: center; margin: 2rem 0; color: var(--text-light); font-size: 0.95rem;">
+    <span style="flex: 1; border-bottom: 2px solid var(--border-color);"></span>
+    <span style="padding: 0 1rem; font-weight: 700;">OR TYPE THE CODE BY HAND</span>
+    <span style="flex: 1; border-bottom: 2px solid var(--border-color);"></span>
+  </div>
+
+  <!-- MANUAL CODE LOOKUP -->
+  <form action="{{ url_for('scan_medicine') }}" method="GET">
+    <div class="form-box">
+      <label class="form-label-big">Type the code written near the square</label>
+      <input type="text" name="manual_uid" class="form-input-big"
+             placeholder="e.g. a8f4c2e1b9304958"
+             style="font-size: 1.15rem; font-weight: 700;" required>
+      <small style="color: var(--text-light); display: block; margin-top: 0.35rem;">
+        Tip: Look for the 16 numbers and letters right below the square QR code.
+      </small>
+    </div>
+    <button type="submit" class="btn btn-blue">
+      <span>Check Written Code</span>
+    </button>
+  </form>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <a href="{{ url_for('index') }}" style="font-size: 1rem; color: var(--text-muted);">← Return to Home</a>
+  </div>
 </div>
+
+<script>
+/* UX-only: shows spinner + disables button after form submit so user knows it's working */
+function showLoading(form) {
+  var btn    = form.querySelector('button[type=submit]');
+  var notice = form.querySelector('.processing-notice');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Scanning…';
+  }
+  if (notice) notice.style.display = 'block';
+}
+</script>
 {% endblock %}
